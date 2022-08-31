@@ -1,0 +1,384 @@
+﻿@{
+    ViewBag.Title = "Báo cáo bất thường";
+    var dept = (TBL_DEPARTMENT_MST)ViewBag.dept;
+    var app = (OL_User_Approver)ViewBag.app ?? new OL_User_Approver();
+    var user = (UserModels)ViewBag.user;
+}
+
+@using ProductionApp.Models
+@model List<HR_ABN_Mst>
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title text-center">
+            Báo cáo bất thường / Abnormal report
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="row">
+    <div class="col-md-12"><p id="uploadmss" class="message">@Html.Raw(TempData["msg"])</p> </div>
+</div>
+
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-primary btn-sm" href="#" style="margin-bottom: 10px" data-toggle="modal" data-target="#myModalAdd">Thêm nhân viên/ Add Employee</a> |
+        <a class="btn btn-primary btn-sm" href="#" style="margin-bottom: 10px" data-toggle="modal" data-target="#myModalDownload">Tải về file/ Download File</a>
+        »
+        <a class="btn btn-primary btn-sm" href="#" style="margin-bottom: 10px" data-toggle="modal" data-target="#myModalUpload">Tải lên file/ Upload File</a>
+    </div>
+</div>
+
+<form action="@Url.Action("Create" ,"Abnormal")" method="post">
+    <div class="panel panel-default" id="panel-oddcase">
+        <div class="panel-heading">Chi tiết / Details</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Requester</label>
+                        <br />
+                        <input type="text" name="name" class="form-control" value="@user.Fullname" readonly />
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <br />
+                        <select name="dept" id="dept1" readonly class="form-control">
+                            <option value="@dept.DEPT_ID">@dept.NAME</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Approver</label>
+                        <br />
+                        <input type="text" name="approver" class="form-control" value="@app.ApproverName" id="approver1" readonly />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>HR PIC</label>
+                        <br />
+                        <select name="nameHR" class="form-control" id="nameHR1" readonly>
+
+                            <option>@ViewBag.hr.fullname</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2"><br /><input type="submit" name="" class="btn btn-success" value="Submit"> </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Danh sách/ List </div>
+        <div class="panel-body">
+            <table id="tbcabm" class="table table-bordered " style="width: 100%; background: #fff">
+                <thead>
+                    <tr>
+                        <th style="text-align: center" rowspan="2">
+                            Xưởng /Division
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Phòng /Department
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Ca làm việc /Shift
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Tổ /Line
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Mã NV /ID
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Họ và tên /Name
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Vị trí Công đoạn /Operation
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Ngày làm việc /Date
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Giờ bắt đầu ca làm việc /Shift start
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Giờ bắt đầu ca làm việc thực tế /Actual start
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Giờ kết thúc ca làm việc /Shift end
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Giờ kết thúc thực tế /Actual end
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Đi muộn /Late
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Về sớm /Soon
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Bất thường /Abnormal
+                        </th>
+                        <th style="text-align: center" colspan="2">
+                            Đề nghị được sửa /Request to edit
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            Lý do /Reason
+                        </th>
+                        <th style="text-align: center" rowspan="2">
+                            @Html.Raw("<button type=\"button\" class=\"btn  btn-danger\" onclick='Remove(\"ALL\")'>Xóa hết /Remove All</button>")
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align: center">
+                            Giờ bắt đầu /Start
+
+                        </th>
+                        <th style="text-align: center">
+                            Giờ kết thúc /End
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="dataField">@Html.Action("ListItem" ,"Abnormal")</tbody>
+            </table>
+
+        </div>
+    </div>
+</form>
+
+<div id="myModalAdd" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <form id="fr-additem" action="/Abnormal/AddItem" method="post">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Chọn nhân viên</h4>
+                </div>
+
+                <div class="modal-body" id="body">
+                    <div class="form-group">
+                        <label>Chọn nhân viên</label>
+                        <select name="listEmpID" id="listEmpID" class="form-control" multiple="multiple" size="@(Model.Count()>20?20:Model.Count())">
+                            @foreach(var item in Model) {
+                                <option value="@item.EmpID">@item.EmpID (@item.Name)</option>
+                            }
+                        </select>
+                        <input type="hidden" id="TacDong" name="TacDong" value="Add" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-info" value="Add Employee" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="myModalDownload" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <form action="/Abnormal/AddItem" method="post">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Tải về danh sách bất thường</h4>
+                </div>
+                <div class="modal-body" id="body">
+                    <div class="form-group">
+                        <label>Chọn nhân viên</label>
+                        <select name="listEmpID" id="listEmpID" class="form-control" multiple="multiple" size="@(Model.Count()>20?20:Model.Count())">
+                            @foreach(var item in Model) {
+                                <option value="@item.EmpID">@item.EmpID (@item.Name)</option>
+                            }
+                        </select>
+                        <input type="hidden" id="TacDong" name="TacDong" value="Export" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Export Excel" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="myModalUpload" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <form method="post" enctype="multipart/form-data" action="">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload danh sách bất thường</h4>
+                </div>
+                <div class="modal-body" id="body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Chọn file: <input type="file" name="UploadedFile" id="UploadedFile" class="form-control" /></p>
+                                <input type="hidden" name="hanhdong" value="Upload" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Submit" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section styles
+{
+    <style>
+        [contenteditable=false]:empty:before {
+            content: attr(placeholder);
+            pointer-events: none;
+            display: block; /* For Firefox */
+            font-style: italic;
+            background: yellow;
+        }
+
+        /* */
+
+        td[contenteditable=false] {
+            border: 1px dashed #AAA !important;
+        }
+    </style>
+}
+@section Scripts {
+    <script>
+        //function initTime() {
+        //    $('.timepicker').timepicker({ format: 'HH:mm', showMeridian: false });
+
+        //}
+
+        $(document).ready(function () {
+            $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+            // initTime();
+            $("#tbcabm").on('click.input',
+                'input',
+                function (event) {
+                    event.stopPropagation();
+                });
+
+            $("#tbcabm").on('click.td',
+                '.tddatepicker',
+                function () {
+                    var $td = $(this);
+                    var text = $(this).html() == '' ? '0:00' : $(this).html();
+                    if (text.length <= 5) {
+                        var $input =
+                            $('<input autocomplete="off" class="timepicker form-control"  onchange="EditItem(\'' +
+                                $td.data('empid') +
+                                '\',\'' +
+                                $td.data('uploaddate') +
+                                '\',\'' +
+                                $td.data('td') +
+                                '\',' +
+                                $td.data('rindex') +
+                                ',' +
+                                $td.data('cindex') +
+                                ',this)" id="' +
+                                $td.data('id') +
+                                '" value="' +
+                                text +
+                                '"/>');
+                        $td.html('').append($input);
+                        $('.timepicker').timepicker({ format: 'HH:mm', showMeridian: false });
+                    }
+                    //$input.timepicker({
+                    //    format: 'HH:mm',
+                    //    showMeridian: false,
+                    //    onClose: function (dateText, inst) {
+                    //        $td.html(dateText.split('-').reverse().join('/'));
+                    //        //$td.html('').append('xxx');
+                    //        $td.attr('disabled', false);
+                    //    }
+                    //});
+
+                });
+
+            $('#fr-additem').submit(function () {
+                App.blockUI('body');
+                $.ajax({
+                    url: '/Abnormal/AddItem',
+                    method: 'post',
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        App.unblockUI($("body"));
+                        $("#dataField").html(data);
+                        //initTime();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        App.unblockUI($("body"));
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+                return false;
+            });
+        });
+
+        function Remove(ID) {
+        //    App.blockUI('body');
+            $.ajax({
+                url: '/Abnormal/Remove',
+                method: 'post',
+                data: { ID: ID },
+                success: function (data) {
+                  //  App.unblockUI($("body"));
+                    $("#dataField").html(data);
+                    //initTime();
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                   // App.unblockUI($("body"));
+                    alert('Error! Please retry or contact to IT team.');
+                }
+            });
+        }
+
+        function EditItem(empid, tacdong, rIndex, cIndex,id) {
+            //  var table = document.getElementById("tbcabm");
+            var value = document.getElementById(empid + "-" +id + "-" + rIndex + "-" + cIndex).value;           
+            // App.blockUI('body');
+            $.ajax({
+                url: '/Abnormal/EditItem',
+                method: 'post',
+                data: { id: id, EmpID: empid, field: tacdong, value: value },
+                success: function (data) {
+                    if ((tacdong == 'RequestChangeStart' || tacdong == 'RequestChangeEnd') && value == '') {
+                      //  dom.remove();
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                    // App.unblockUI($("body"));
+                    alert('Error! Please retry or contact to IT team.');
+                }
+            });
+        }
+
+
+    </script>
+}

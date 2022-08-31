@@ -1,0 +1,127 @@
+﻿@using ProductionApp.Models
+@model List<PROC_GET_REALTIME_UPDATE_Result>
+@{
+    ViewBag.Title = "Realtime Report";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<meta http-equiv="refresh" content="60">
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+             <small>Realtime Report</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("ExportExcel","Report", FormMethod.Post))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+        
+    </div>
+    <div class="portlet-body ">
+        <div class="row">
+            <div class="table-responsive" style="align-items:center">
+                <div class="col-md-2 margin-top-10 margin-bottom-5">
+                    @*@Html.DropDownList("listWs", null, new { @class = "form-control bs-select", @data_width = "100%", @id = "dlEcnTypes" })*@
+                </div>
+                <table class="table table-striped table-bordered table-hover align-center"; style="width:100%;">
+                    <thead style="background-color:lightsteelblue; color: black">
+                        <tr>
+                            <th colspan="5"style="text-align:center; background-color:white; padding:0px;"></th>
+                            <th colspan="2" style="text-align:center ; font-weight:bold; font-size:20px; width:20%; padding:0px;">REALTIME</th>
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px; background-color:white;"></th>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center; font-weight:bold; font-size:30px; padding:0px;">No.</th>
+                            @*<th style="text-align:center;  font-weight:bold; font-size:20px; padding:0px;">PLANT</th>*@
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px;" >WORKSHOP</th>
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px;">GROUP</th>
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px;">SHIFT</th>
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px;">TARGET</th>
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px; width:10%;">Actual</th>
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px; width:10%;">Target</th>
+                            <th style="text-align:center ; font-weight:bold; font-size:30px; padding:0px;">EFFICIENCY</th>
+                            @*<th style="text-align:center ; font-weight:bold; font-size:20px; width:15%;">LAST SHIFT (Actual/Target/Eff)</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (Model != null)
+                        {
+                            int firt = 0; int last = 0;
+                            for (var i = 0; i < Model.Count; i++)
+                            {
+                                //------ add total for WS
+                                last = i;
+                                double targ = Convert.ToDouble(Model[i].TARGET);
+                                double actl = Convert.ToDouble(Model[i].ACTUAL);
+
+                                if (Model[firt].WS_NAME != Model[last].WS_NAME)
+                                {
+                                    double total_Output = 0; double total_Sah = 0; double total_hours = 0;
+                                    for (int x = firt; x < last; x++)
+                                    {
+                                        total_Output += Convert.ToDouble(Model[x].ACTUAL);
+                                    }
+                                        <tr>
+                                            <td colspan="5"></td>
+                                            <td colspan="2" style="font:bold 20px arial;">
+                                                Total WS: @(total_Output.ToString("#,###"))
+                                            </td>
+                                        </tr>
+                                        firt = last;
+                                    }   
+                                    // end add total for WL
+
+                                <tr style="font-size:25px; font-weight:bold; padding:0px;">
+                                    <td style="font-size:25px; font-weight:bold; padding:0px; ">@(i + 1)</td>
+                                    @*<td style="font-size:15px; font-weight:bold; padding:0px;">@Model[i].PLANT_NAME</td>*@
+                                    <td class="WS" style="font-size:30px; font-weight:bold; padding:0px;">@Model[i].WS_NAME<label class="lblWID" hidden="hidden"></label></td>
+                                    <td style="font-size:30px; font-weight:bold; padding:0px;">@Model[i].GROUP_NAME</td>
+                                    <td style="font-size:30px; font-weight:bold; padding:0px;">@Model[i].SHIFT_NAME</td>
+                                    <td style="font-size:30px; font-weight:bold; padding:0px;">@(targ.ToString("#,###")) </td>
+                                    <td style="font-size:30px; font-weight:bold; padding:0px; background-color:@Model[i].COLOR;">@(actl.ToString("###,#"))</td>
+                                    <td style="font-size:30px; font-weight:bold; padding:0px; background-color:@Model[i].COLOR;">@(Math.Round(Convert.ToDouble((Model[i].TARGET / 16) * (Model[i].PIECE)), 1).ToString("###,#"))</td>
+                                    <td style="font-size:30px; font-weight:bold; padding:0px;">@((Model[i].EFFICIENCY * 100))%</td>
+                                    @*<td style="font-size:15px; font-weight:bold;">@(Model[i].WL_OVER_7DAYS)</td>*@
+                                </tr>
+
+                                //------ add last total for WS
+                                if (last == Model.Count - 1)
+                                {
+                                    double total_Output = 0; double total_Sah = 0; double total_hours = 0;
+                                    for (int x = firt; x <= last; x++)
+                                    {
+                                        total_Output += Convert.ToDouble(Model[x].ACTUAL);
+                                    }
+                                    <tr>
+                                        <td colspan="5"></td>
+                                        <td colspan="2" style="font:bold 20px arial;">
+                                            Total WS: @(total_Output.ToString("#,###"))
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            //------ end add last total for WS
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+}

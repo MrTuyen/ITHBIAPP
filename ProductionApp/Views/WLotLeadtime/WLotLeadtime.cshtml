@@ -1,0 +1,249 @@
+﻿@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model List<PROC_GET_WL_LEADTIME_REPORT_BY_DATE_GROUPID_Result>
+    @{
+        
+        IEnumerable<PROC_GET_ALL_GROUP_2_Result> LstWC = ViewBag.LstWC;
+        ViewBag.Title = "Worklot Leadtime";
+        var FromDate = ViewBag.FromDate;
+        var ToDate = ViewBag.ToDate;
+        var LstWcID = ViewBag.LstWCID;
+    }
+<style>
+     .changecolortogreen {
+        background-color: forestgreen;
+        /*color: white;*/
+        margin: 1px;
+        padding: 15px;
+    }
+
+    .changecolortoyellow {
+        background-color: yellow;
+        /*color: white;*/
+        margin: 1px;
+        padding: 15px;
+
+    }
+
+    .changecolortored {
+        background-color: red;
+        color: white;
+        margin: 1px;
+        padding: 15px;
+    }
+</style>
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>Worklot Leadtime</small>
+        </h3>
+    <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+    @using (Html.BeginForm("WLotLeadtime", "WLotLeadtime", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        <!-- END PAGE HEADER-->
+        <div class="portlet box gray ">
+            <div class="portlet-title">
+
+            </div>
+            <div class="portlet-body ">
+                <div class="row margin-bottom-10">
+                    <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                        Tổ/Group:
+                    </div>
+                    <div class="col-md-2 margin-top-10">
+                        @Html.ListBox("listWC", null, new { @class = "form-control multi-select margin-bottom-10", @multiple = "multiple", size = 5 })
+                    </div>
+
+                    <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                        From
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" name="txtFrom" id="txtFrom" class="form-control isdate" autocomplete="off" />
+                    </div>
+                    <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                        To
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" name="txtTo" id="txtTo" class="form-control isdate" autocomplete="off" />
+                    </div>
+                    <div class="col-md-1">
+                        <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit">
+                    </div>
+                </div>
+                <div class="row margin-bottom-10 margin-top-20" id="DivShowData">
+                    <div class="row">
+                        <div class="table-responsive" style="align-items: center; width: 95%; margin-left:40px">
+                            <table class="table table-striped table-bordered table-hover align-center" id="example">
+                                <thead>
+                                    <tr style="border:0px dotted white">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="text-align: center">
+                                            <label>
+                                                <input type="checkbox" id="checkbox1">Age <= 1 &nbsp
+                                            </label>
+                                            <label>
+                                                <input type="checkbox" id="checkbox2">Age = 2 &nbsp
+                                            </label>
+                                            <label>
+                                                <input type="checkbox" id="checkbox3">Age >= 3
+                                            </label>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:center; width: 25px">No.</th>
+                                        <th style="text-align:center; width: 150px">Multi-Pack</th>
+                                        <th style="text-align:center; width: 150px">Selling Style</th>
+                                        <th style="text-align:center; width: 100px; ">Size</th>
+                                        <th style="text-align:center; width: 100px">Location</th>
+                                        <th style="text-align:center; width:150px">Date/Time Issued</th>
+                                        <th style="text-align:center; width: 50px">Age</th>
+                                        <th style="text-align:center; width: 210px">Status</th>
+                                    </tr>
+                                </thead>
+                                @if (Model.Count > 0)
+                                {
+                                    <tbody>
+                                        @for (int i = 0; i < Model.Count; i++)
+                                        {
+                                            <tr>
+                                                <td style="text-align:center">@(i + 1)</td>
+                                                <td style="text-align:center">@Model[i].Asst_WL</td>
+                                                <td style="text-align:center">@Model[i].Selling_Style</td>
+                                                <td style="text-align:center">@Model[i].Size </td>
+                                                <td style="text-align:center">@Model[i].Loc_Name</td>
+                                                <td style="text-align:center">@Model[i].Issued_date</td>
+                                                <td style="text-align:center">@Model[i].Aging</td>
+                                                <td style="text-align:center">
+                                                    @if (int.Parse(@Model[i].Aging) <= 1)
+                                                    {
+                                                        <p class="changecolortogreen"></p>
+                                                    }
+                                                    @if (int.Parse(@Model[i].Aging) == 2)
+                                                    {
+                                                        <p class="changecolortoyellow"></p>
+                                                    }
+                                                    @if (int.Parse(@Model[i].Aging) >= 3)
+                                                    {
+                                                        <p class="changecolortored"></p>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                }
+                                else
+                                {
+
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @section Scripts {
+  
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script>
+            $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+            //$('#DivShowData').hide();
+            $("#Submit").click(function (e) {
+                var From = $('#txtFrom').val();
+                var To = $('#txtTo').val();
+                if (From == "") {
+                    alert('Please select date!');
+                    $('#txtFrom').focus();
+                    e.preventDefault();
+                    return 0;
+                }
+                if (To == "") {
+                    alert('Please select date!');
+                    $('#txtTo').focus();
+                    e.preventDefault();
+                    return 0;
+                }
+
+            });
+
+            $(document).ready(function () {
+                $.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
+                    var checked1 = $('#checkbox1').is(':checked');
+                    var checked2 = $('#checkbox2').is(':checked');
+                    var checked3 = $('#checkbox3').is(':checked');
+                    if (!checked1 && !checked2 && !checked3) {
+                        return true;
+                    }
+                    if (checked1 == true && checked2 == true && checked3 == true) {
+                        return true;
+                    }
+                    if (checked1 == true && aData[6] <= 1 && checked2 == false && checked3 == false) {
+                        return true;
+                    }
+                    if (checked1 == false && aData[6] == 2 && checked2 == true && checked3 == false) {
+                        return true;
+                    }
+                    if (checked1 == false && aData[6] >= 3 && checked2 == false && checked3 == true) {
+                        return true;
+                    }
+                    if (checked1 == true && aData[6] <= 2 && checked2 == true && checked3 == false) {
+                        return true;
+                    }
+                    if (checked1 == true && aData[6] <= 1 || aData[6] >= 3 && checked2 == false && checked3 == true) {
+                        return true;
+                    }
+                    if (checked1 == false && aData[6] >= 2 && checked2 == true && checked3 == true) {
+                        return true;
+                    }
+                    return false;
+
+                });
+
+                var oTable = $('#example').dataTable({
+                    dom: 'Bfrtip',
+                    "paging": false,
+                    "info": false,
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            title: 'Worklot Leadtime'
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            title: 'Worklot Leadtime'
+                        }
+                    ],
+
+                });
+                $('#checkbox1').on("click", function (e) {
+                    console.log('click');
+                    oTable.fnDraw();
+                });
+                $('#checkbox2').on("click", function (f) {
+                    console.log('click');
+                    oTable.fnDraw();
+                });
+                $('#checkbox3').on("click", function (g) {
+                    console.log('click');
+                    oTable.fnDraw();
+                });
+
+            });
+        </script>
+    }

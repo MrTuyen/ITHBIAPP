@@ -1,0 +1,255 @@
+﻿@{
+    ViewBag.Title = "Báo cáo bất thường";
+}
+
+@using ProductionApp.Models
+@model HR_ABN_Request
+
+
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title text-center">
+            Báo cáo bất thường / Abnormal report
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="row">
+    <div class="col-md-12"><p id="uploadmss" class="message">@ViewBag.mss</p> </div>
+</div>
+@Html.Raw(TempData["msg"])
+<br />
+
+<form action="@Url.Action("EditAbn" ,"Abnormal")" method="post">
+    <div class="panel panel-default" id="panel-oddcase">
+        <div class="panel-heading">Chi tiết / Details</div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Requester</label>
+                        <br />
+                        <input type="text" name="name" class="form-control" value="@Model.TBL_USERS_MST.FULLNAME" readonly />
+
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <br />
+                        <select name="dept" id="dept1" readonly class="form-control">
+                            <option>@Model.TBL_USERS_MST.TBL_DEPARTMENT_MST.NAME</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Approver</label>
+                        <br />
+                        <input type="text" name="approver" class="form-control" value="@Model.ApproveName" id="approver1" readonly />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <br />
+                        <input type="text" name="approverMail" value="@Model.ApproveMail" id="approverMail1" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <br />
+                    @if(Model.Status == 1) {
+                        <input type="submit" name="tacdong" class="btn btn-success" value="Approve">
+                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_theme_primary">Reject</a>
+                    } else if(Model.Status > 1) {
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+                    } else if(Model.Status == -1) {
+                        <span style="color: #0000ff; font-weight: bold">Rejected: </span>
+                        <span style="color: red; font-weight: bold">@Model.ReasonReject</span>
+                    }
+
+                </div>
+
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>HR PIC</label>
+                        <br />
+                        <select name="nameHR" class="form-control" id="nameHR1" readonly onchange="HR1()">
+
+                            <option>@Model.HrName</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <br />
+                        <input type="text" name="mailHR" value="@Model.HrMail" id="mailHR1" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <br />
+
+
+
+                    @if(Model.Status < 3) {
+                        <input type="submit" name="tacdong" class="btn btn-success" value="Process">
+                    } else if(Model.Status == 3) {
+                        <span style="color:#5b9b0a;font-weight:bold">Processed</span>
+                    }
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+<div id="modal_theme_primary" class="modal fade in" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Please provide your comments</h5>
+            </div>
+            @using(Html.BeginForm("EditAbn" ,"Abnormal" ,FormMethod.Post ,new { @class = "form-horizontal" ,role = "form" })) {
+                <input type="hidden" name="tacdong" value="Reject" />
+                <input type="hidden" name="ID" value="@Model.ID" />
+                @Html.AntiForgeryToken()
+                <div style="width:570px;margin:10px">
+
+                    <textarea class="form-control" name="body"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Danh sách/ List </div>
+    <div class="panel-body">
+        <table id="tbcabm" class="table table-bordered " style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="text-align: center" rowspan="2">
+                        Xưởng /Division
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Phòng /Department
+                    </th>
+
+                    <th style="text-align: center" rowspan="2">
+                        Ca làm việc /Shift
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Tổ /Line
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Mã NV /ID
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Họ và tên /Name
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Vị trí Công đoạn /Operation
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Ngày làm việc /Date
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Giờ bắt đầu ca làm việc /Shift start
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Giờ bắt đầu ca làm việc thực tế /Actual start
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Giờ kết thúc ca làm việc /Shift end
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Giờ kết thúc thực tế /Actual end
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Đi muộn /Late
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Về sớm /Soon
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Bất thường /Abnormal
+                    </th>
+
+                    <th style="text-align: center" colspan="2">
+                        Đề nghị được sửa /Request to edit
+
+                    </th>
+                    <th style="text-align: center" rowspan="2">
+                        Lý do /Reason
+
+
+                    </th>
+
+
+                </tr>
+                <tr>
+                    <th style="text-align: center">
+                        Giờ bắt đầu /Start
+
+                    </th>
+                    <th style="text-align: center">
+                        Giờ kết thúc /End
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @if(Model != null) {
+                    foreach(var item in Model.HR_ABN_Items) {
+                        <tr>
+                            <td class="text-left">@item.Division</td>
+                            <td class="text-left">@item.TBL_DEPARTMENT_MST.NAME</td>
+                            <td class="text-left">@item.Shift</td>
+                            <td class="text-left">@item.Line</td>
+                            <td class="text-left">@item.EmpID</td>
+                            <td class="text-left">@item.Name</td>
+                            <td class="text-left">@item.Operation</td>
+                            <td>@string.Format("{0:MM/dd/yyyy}" ,item.uploaddate)</td>
+                            <td class="text-left">@item.ShiftStart</td>
+                            <td class="text-left">@item.ActualStart</td>
+                            <td class="text-left">@item.ShiftEnd</td>
+                            <td class="text-left">@item.ActualEnd</td>
+                            <td class="text-left">@item.Late</td>
+                            <td class="text-left">@item.Soon</td>
+                            <td class="text-left">@item.Abnormal</td>
+                            <td class="text-left">@item.RequestChangeStart</td>
+                            <td class="text-left">@item.RequestChangeEnd</td>
+                            <td class="text-left">@item.Reason</td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

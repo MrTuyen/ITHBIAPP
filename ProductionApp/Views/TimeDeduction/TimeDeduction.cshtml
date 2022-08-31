@@ -1,0 +1,104 @@
+﻿@{ ViewBag.Title = "Đăng ký tách giờ làm việc/ Time Deduction Request"; }
+@using ProductionApp.Models
+@{
+    var user = (TBL_USERS_MST)ViewData["user"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var app = (OL_User_Approver)ViewData["app"];
+
+    //var item = (TDS_UserApprover)ViewData["item"];
+
+}
+@Html.Raw(TempData["msg"])
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Đăng ký tách giờ làm việc/ Time Deduction Request
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+@using(Html.BeginForm("Upload_TimeDeduction" ,"TimeDeduction" ,FormMethod.Post ,new {
+    enctype = "multipart/form-data"
+})) {
+
+
+    <div id="info3">
+        <div class="row">
+            <div class="col-md-5">
+                <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" id="UploadedFile" /></p>
+            </div>
+            <div class="col-md-3" style="margin-top: 20px;">
+                <input type="Submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            
+            <div class="col-md-2">
+
+                <div class="form-group">
+                    <label>Requester Name</label>
+                    <br />
+                    <input type="text" name="name" value="@user.FULLNAME" readonly class="form-control" />
+                    <input type="text" name="mail" value="@user.EMAIL" readonly class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Line Manager</label>
+                    <br />
+                    <input type="text" name="approver" value="@app.ApproverName" id="approver1" readonly class="form-control" />
+                    <input type="text" name="approverMail" value="@app.ApproverEmail" id="approverMail1" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>HR PIC</label>
+                    <br />
+                    <select name="nameHR" id="nameHR1"  class="form-control" readonly>
+                        <div class="form-control" readonly>
+
+                            @foreach(TDS_UserApprover item in ViewBag.hr) {
+                            <option value="@item.FullName">@item.FullName</option>
+
+
+                            }
+                        </div>
+
+                    </select>
+
+                    @foreach(TDS_UserApprover item in ViewBag.hr) {
+
+                    <input type="text" name="mailHR" value="@item.Email" id="mailHR" readonly class="form-control" />
+                        }
+
+                    @*<input type="text" name="mailHR" value="" id="mailHR1" readonly class="form-control" />*@
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>HR Supervisor</label>
+                    <br />
+                    <select name="CBSup" id="CBSup" class="form-control" readonly>
+                        @*<input type="text" name="hrsup " value="@hrsup.value3" id="hrsup" readonly class="form-control" />*@
+                        @foreach(TDS_UserApprover item in ViewBag.hrsup) {
+                        <option value="@item.FullName">@item.FullName</option>
+                        }
+                    </select>
+
+                    @foreach(TDS_UserApprover item in ViewBag.hrsup) {
+                    <input type="text" name="CBSupMail" value="@item.Email" id="CBSupMail" readonly class="form-control" />
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+

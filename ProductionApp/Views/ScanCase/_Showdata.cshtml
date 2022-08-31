@@ -1,0 +1,91 @@
+﻿@using System.Web.UI.WebControls
+@using ProductionApp.Models
+
+
+@{
+    var showScanCase = ViewBag.tmp == null ? new ShowScanCase() : ViewBag.tmp as ShowScanCase;
+    var status = ViewBag.Status == null ? "..." : ViewBag.Status;
+    var color = "blue";
+    var mess = "";
+    if (status == "WLNotFound")
+    {
+        mess = "WorkLot not Found/ Không tìm thấy WorkLot!";
+        color = "danger";
+    }
+
+    else if (status == "Duplicate")
+    {
+        mess = "Duplicate/ Scan Trùng lặp!";
+        color = "danger";
+    }
+
+    else if (status == "TemNotFound")
+    {
+        mess = "No Data/ Không có dữ liệu!";
+        color = "danger";
+    }
+    else if (status == "LINEVALIDATE")
+    {
+        mess = "Line not found/ Mã line không đúng!";
+        color = "danger";
+    }
+    else if (status == "DATAVALIDATE")
+    {
+        mess = "Data validate/ Dữ liệu nhập không đúng!";
+        color = "danger";
+    }
+    else if (status == "SYSERROR")
+    {
+        mess = "System Error/ Contact to Admin!";
+        color = "danger";
+    }
+    else if (status == "GroupNotFound")
+    {
+        mess = "Group not found/ Không tìm thấy nhóm!";
+        color = "danger";
+    }
+    
+
+
+}
+@if(mess != "") {
+    <div class="row font-weight-bold"> <div class="col-xs-12 ">  <div class="alert alert-@color text-center" style="font-size: 25px">@mess</div> </div> </div>
+}
+<div class="row">
+    @*<div class="col-md-4 col-xs-12 "><div class="text-center bold ">Line / Tổ</div></div>*@
+    <div class="col-md-6 col-xs-12 "><div class="text-center  bold">Count / Số tem</div></div>
+    <div class="col-md-6 col-xs-12 "><div class="text-center bold">Status / Trạng thái</div></div>
+</div>
+
+<div class="row">
+   @* <div class="col-md-4 col-xs-12 "><div class="text-center text-uppercase scan"><span style="font-size: 8vw;">@Html.Raw(showScanCase.GroupName == null ? "..." : showScanCase.GroupName)</span></div></div>*@
+    <div class="col-md-6 col-xs-12 "><div class="text-center text-uppercase scan"><span style="font-size: 17vw; color: blue;line-height: 1 ">@showScanCase.count</span></div></div>
+    <div class="col-md-6 col-xs-12 "><div class="text-center text-uppercase scan"><span class="status-@color" style=" font-size :9vw; ">@Html.Raw(status == "..." ? "..." : (status == "OK" ? "OK" : "FAIL"))</span></div></div>
+</div>
+
+<style>
+    .scan {
+        font-weight: bold;
+        border: 2px solid #333;
+        min-height: 400px;
+        display: table;
+        width: 100%;
+    }
+
+        .scan span {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+    .status-success {
+        color: green;
+    }
+
+    .status-danger {
+        color: red;
+    }
+
+    .status-blue {
+        color: blue;
+    }
+</style>

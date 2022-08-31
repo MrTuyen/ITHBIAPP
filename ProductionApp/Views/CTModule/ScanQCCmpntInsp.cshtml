@@ -1,0 +1,96 @@
+﻿@using ProductionApp.Models
+@{
+    ViewBag.Title = "Component Insp";
+    PostbackValue Postback = (PostbackValue)Session["Postback_CmpntInspt"];
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>QC Part Inspect</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box gray">
+    <div class="portlet-title">
+        <div class="row margin-bottom-10">
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="row margin-bottom-10">
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                Table NO
+            </div>
+            <div class="col-md-1">
+                @Html.DropDownList("TblList" ,null ,new { @class = "form-control bs-select" ,@data_width = "100%" ,@id = "TABLE_ID" })
+            </div>
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                Date
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtDate" id="txtDate" class="form-control isdate" autocomplete="off" value="@(Postback.TS_1==null?(DateTime.Now).Date.ToString(): (Convert.ToDateTime(Postback.TS_1)).Date.ToString())" />
+            </div>
+            <div class="col-md-1">
+                <input type="submit" name="Submit" id="Submit" value="Select" class="btn green purple-stripe margin-bottom-10" />
+            </div>
+        </div>
+        <div id="materialchange" class="row margin-bottom-10">
+            @Html.Action("ShowQCCmpntInsp" ,"CTModule")
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+
+        $('#Submit').click(function (e) {
+            var Date = $('#txtDate').val();
+            var TblNo = $('.bs-select').val();
+            //alert(TblNo);
+            $("#materialchange").load("/CTModule/ShowQCCmpntInsp",
+            { dt: Date, tbl: TblNo });
+
+        });
+
+
+
+        jQuery(document).ready(function () {
+            $(function () {
+                $(document).on('keypress', function (e) {
+                    var that = document.activeElement;
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        var max = -1;
+                        $('tabindex', function (a, b) {
+                            max = Math.max(max, +b);
+                        });
+                      //  alert(max);
+                        //if (that.tabIndex + 1 < max)
+                        //{
+
+                        $('[tabIndex=' + (+that.tabIndex + 1) + ']')[0].focus();
+                        //}
+                    }
+                });
+            });
+        });
+
+
+    </script>
+}

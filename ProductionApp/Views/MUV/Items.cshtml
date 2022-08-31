@@ -1,0 +1,159 @@
+﻿@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model MUV_GROUP_ITEM
+
+@{
+    ViewBag.Title = "Group Item Management";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Group Item Management
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+
+<div class="panel panel-default" id="panel-oddcase">
+    <div class="panel-heading">Group Item</div>
+    <div class="panel-body">
+        <form id="fr-oddcase" action="" method="post">
+            <div class="row">
+                <div class="col-md-3"><span class="col-input">ID /Mã</span><input type="text" class="form-control" value="@Model.ID" name="ID" /></div>
+                <div class="col-md-3"><span class="col-input">Name /Tên</span><input type="text" class="form-control" value="@Model.NAME" name="NAME" /></div>
+                <div class="col-md-3">
+                    <span class="col-input"></span>
+                    <input type="submit" class="btn btn-success" value="Update/ Cập nhật" />
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Upload items</button>
+                </div>
+            </div>
+            @if (ViewBag.mss != null)
+            {
+                <div class="row"><div class="col-md-12"> <span id="mss" class="message"><br /> @ViewBag.mss</span></div> </div>
+            }
+        </form>
+    </div>
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        @using (Html.BeginForm("UploadItems", "MUV", FormMethod.Post, new { enctype = "multipart/form-data", id = "fr-upload" }))
+        {   <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Choose a file to upload</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row margin-bottom-20">
+
+                        <div class="col-md-12"><p id="uploadmss" class="message"></p> </div>
+
+                    </div>
+                    <p>Choose file: <input type="file" name="UploadedFile" id="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">List Group Item</div>
+    <div class="panel-body">
+
+        <table id="tblOddCase" class="table table-striped table-bordered table-hover align-center" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="text-align: center">ID /Mã</th>
+                    <th style="text-align: center">Name /Tên</th>
+                    <th style="text-align: center">Action /hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var listItem = ViewBag.listGroupItem as List<MUV_GROUP_ITEM>;
+                    if (listItem != null)
+                    {
+                        foreach (var item in listItem)
+                        {
+                            <tr>
+                                <td class="text-center">@item.ID</td>
+                                <td class="text-left">@item.NAME</td>
+                                <td class="text-center"><a href="~/MUV/Items?editID=@item.ID">Sửa</a> | <a href="~/MUV/Items?deleteID=@item.ID" onclick="if (!confirm('Are you sure? / Bạn chắc chắn?')) return false;">Xóa</a></td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        var intervaltimeitem;
+        $(document).ready(function () {
+
+            $('#fr-upload').submit(function () {
+                App.blockStatus($(".modal-content"), false, 'Waiting');
+                CheckStatus();
+
+                var data = new FormData();
+                var files = $("#UploadedFile").get(0).files;
+                if (files.length > 0) {
+                    data.append("UploadedFile", files[0]);
+                }
+                $.ajax({
+                    url: "/MUV/UploadItems",
+                    data: data,
+                    dataType: 'json',
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    success: function (html) {
+                        $('#uploadmss').html(html);
+                        App.unblockStatus($(".modal-content"));
+                        clearInterval(intervaltimeitem);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        App.unblockStatus($(".modal-content"));
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+                return false;
+            });
+        });
+        function CheckStatus() {
+            var doneajax = true;
+            intervaltimeitem = setInterval(function () {
+                if (doneajax) {
+                    doneajax = false;
+                    $.ajax({
+                        url: "/MUV/StatusItems",
+                        method: "Get",
+                        success: function (html) {
+                            App.blockStatus($(".modal-content"), false, html);
+                            if (html === 'NONE')
+                                App.unblockStatus($(".modal-content"));
+                            doneajax = true;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                            alert('Error! Please retry or contact to IT team.');
+                        }
+                    });
+                }
+
+            }, 3000);
+        }
+    </script>
+}

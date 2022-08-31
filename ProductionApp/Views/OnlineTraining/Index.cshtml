@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<style>
+    ol {
+        list-style: none;
+        padding-left: 0px;
+        width: 300px;
+        border: 1px solid #000
+    }
+
+
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .mainleft ol li {
+        font-size: 17px;
+        width: 100%;
+        padding-left: 20px;
+        line-height: 40px;
+        border-bottom: 1px dashed grey;
+    }
+
+        .mainleft ol li:hover {
+            background-color: #D8B6EE;
+            cursor: pointer;
+        }
+
+    ol li a:hover {
+        text-decoration: none;
+    }
+
+    .mainleft div {
+        border: 1px solid grey;
+        padding-bottom: 20px;
+    }
+
+    .ttl {
+        margin-top: 0px;
+    }
+
+    input {
+        background: #fff;
+        color: #fff;
+        border: 0px;
+    }
+
+        input[readonly] {
+            cursor: pointer;
+            background-color: #fff !important;
+        }
+
+            input[readonly]:hover {
+                background-color: #D8B6EE !important;
+                cursor: pointer;
+            }
+
+    p {
+        text-align: right;
+    }
+</style>
+
+<div class="container">
+    <h3 class="ttl">ONLINE TESTING</h3>
+
+    <div class="mainleft">
+
+        <ol>
+            <li>
+                <a href="@Url.Action("AllQuestions", "OnlineTraining")">
+                    <span class=" glyphicon glyphicon-question-sign "></span>&nbsp&nbsp&nbsp Ngân hàng câu hỏi
+                </a>
+
+            </li>
+            <li>
+                <a href="@Url.Action("AllExams", "OnlineTraining")">
+                    <span class=" glyphicon glyphicon-file "></span>&nbsp&nbsp&nbsp Ngân hàng đề thi
+                </a>
+            </li>
+           
+            <li>
+                <a href="@Url.Action("ReportResult", "OnlineTraining")">
+                    <span class=" glyphicon glyphicon-print "></span>&nbsp&nbsp&nbsp Báo cáo kết quả
+                </a>
+            </li>
+
+        </ol>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>
+
+</script>

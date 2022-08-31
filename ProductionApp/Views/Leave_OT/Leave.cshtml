@@ -1,0 +1,1101 @@
+﻿@{ ViewBag.Title = "Leave"; }
+@using ProductionApp.Models
+
+@{
+    var balance = (OL_LeaveBalance)ViewData["balance"];
+    var user = (TBL_USERS_MST)ViewData["user"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var app = (OL_User_Approver)ViewData["app"];
+
+    ViewBag.remai = balance.TotalLeave - balance.UsedLeave;
+}
+
+@Html.Raw(TempData["msg"])
+<div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <input type="radio" id="one" name="Register" value="1" onchange="my_check()" checked="" />
+            <label>Request for 1 person</label>
+
+            <input type="radio" id="more" name="Register" value="2" onchange="my_check()" />
+            <label>Request for more than 1 person</label>
+            <input type="radio" id="more" name="Register" value="3" onchange="my_check()" />
+            <label>Import for Emp List</label>
+            <br />
+        </div>
+
+    </div>
+    <div class="message" id="mss"></div>
+    <hr />
+
+
+
+
+    <div class="col-md-2 text-right" style=" border-right: 1px solid #eee;">
+        <div class="one1">
+            <div class="form-group">
+                <select name="one_LeaveCD" id="leaveID" class="form-control">
+                    @foreach(OL_LeaveCode code in ViewBag.leave_code)
+                    {
+                        <option value="@code.LeaveCD">@code.LeaveName (@code.LeaveCD)</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Total Leave</label>
+                <input type="text" name="one_total" value="@balance.TotalLeave" id="total" readonly class="form-control" style="display: inline-block;  max-width: 85px" />
+            </div>
+            <div class="form-group">
+                <label>Used leave</label>
+                <input type="text" name="one_user" value="@balance.UsedLeave" id="used" readonly class="form-control" style="display: inline-block;  max-width: 85px" />
+            </div>
+            <div class="form-group">
+                <label>Remain</label>
+                <input type="text" name="one_reamin" value="@ViewBag.remai" readonly class="form-control" style="display: inline-block;  max-width: 85px" />
+            </div>
+        </div>
+        <div class="one2">
+            <div class="form-group">
+                <label>Emp Name</label>
+                <select name="EmpName" id="EmpName" class="form-control">
+                    <option value="-1" selected="selected" disabled="disabled" class="Italic ">Chọn Nhân viên</option>
+                    @foreach(OL_User_Approver code in ViewBag.user_list)
+                    {
+                        <option value="@code.EmpID">@(code.EmpID + "-" + code.EmpName)</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Leave Code</label>
+                <select name="LeaveCD" id="LeaveCD" class="form-control">
+                    @foreach(OL_LeaveCode code in ViewBag.leave_code)
+                    {
+                        <option value="@code.LeaveCD">@code.LeaveName (@code.LeaveCD) </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+
+                <label>Total Leave</label>
+                <input type="text" name="" value="" id="total_more" readonly class="form-control" style="display: inline-block;  max-width: 85px" />
+            </div>
+            <div class="form-group">
+                <label>Used leave</label>
+                <input type="text" name="" value="" id="used_more" readonly class="form-control" style="display: inline-block;  max-width: 85px" />
+            </div>
+            <div class="form-group">
+                <label>Remain</label>
+                <input type="text" name="" value="" id="remai_more" readonly class="form-control" style="display: inline-block;  max-width: 85px" />
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-md-8" style="border-right: 1px solid #eee;">
+    <div class="one1">
+        <div class="row">
+            <div class="col-md-2">
+                <input type="radio" id="fullday" name="fullday" value="fullday" onchange="check_day()" checked="" />
+                <label style="font-weight: 500;">Full Day</label>
+                <br />
+                <input type="radio" id="halfday" name="fullday" value="halfday" onchange="check_day()" />
+                <label>Half Day</label>
+                <br />
+            </div>
+            <div class="col-md-10" id="fullday1">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>From Date:</label><br />
+
+                        <input type="text" id="fromdate" name="one_fromdate" class="form-control isdate" autocomplete="off" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>To Date:</label><br />
+
+                        <input type="text" id="todate" name="one_todate" class="form-control isdate" autocomplete="off" onchange="date()" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <br />
+                        <input type="button" name="Add new " class="btn btn-info" value="Add new" onclick="add()" />
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9" id="fullday2">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Date:</label><br />
+
+                        <input type="text" id="one_date" name="one_date" class="form-control isdate" autocomplete="off" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Day#:</label><br />
+                        <input type="text" id="total_date_more" name="total_date_more" class="form-control" value="0.5" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <br />
+                        <input type="checkbox" id="dauca" name="dauca" />
+                        <label>Beginning Shift</label>
+                    </div>
+                    <div class="col-md-2">
+                        <br />
+                        <input type="button" name="Add new " class="btn btn-info" value="Add new" style="margin-bottom: 10px; width: 80px;" onclick="add1()" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <br />
+                <table class="table table-bordered" id="table1">
+
+                    <tr style="text-align: center; background-color: #f5f5f5">
+                        <td>No</td>
+                        <td>Leave Code</td>
+
+                        <td>From Date</td>
+                        <td>To Date</td>
+                        <td>Total</td>
+
+                        <td></td>
+                    </tr>
+
+                    <tbody id="list_supply"></tbody>
+                </table>
+                <table class="table table-bordered" id="table2">
+
+                    <tr style="text-align: center; background-color: #f5f5f5">
+                        <td>No</td>
+                        <td>Leave Code</td>
+                        <td>Date</td>
+                     
+                        <td>Leave in morning</td>
+                        <td>Total</td>
+                        <td>#</td>
+                    </tr>
+
+                    <tbody id="list_supply1"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="one2">
+
+        <div class="row">
+            <div class="col-md-2">
+                <input type="radio" id="more_full" name="more_full" value="fullday" onchange="check_day1()" checked="" />
+                <label style="font-weight: 500;">Full Day</label>
+                <br />
+                <input type="radio" id="more_half" name="more_full" value="halfday" onchange="check_day1()" />
+                <label>Half Day</label>
+                <br />
+            </div>
+            <div class="col-md-10" id="more_full1">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>From Date:</label><br />
+
+                        <input type="text" id="more_fromdate" name="more_fromdate" class='form-control isdate' autocomplete="off" />
+                    </div>
+                    <div class="col-md-4">
+                        <label>To Date:</label><br />
+
+                        <input type="text" id="more_todate" name="more_todate" onchange="date()" class='form-control isdate' autocomplete="off" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <br />
+                        <input type="button" name="Add new " class="btn btn-info" value="Add new" onclick="add_more_full()" />
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9" id="more_half1">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Date:</label><br />
+
+                        <input type="text" id="more_date" name="more_date" class='form-control isdate' autocomplete="off" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Day#</label><br />
+                        <input type="text" id="more_total" name="more_total" value="0.5" readonly class='form-control'  />
+                    </div>
+                    <div class="col-md-3">
+                        <br />
+                        <input type="checkbox" id="more_dauca" name="dauca" />
+                        <label>Beginning Shift</label>
+                    </div>
+                    <div class="col-md-2">
+                        <br />
+                        <input type="button" name="Add new " class="btn btn-info" value="Add new" style="margin-bottom: 10px; width: 80px;" onclick="add_more_half()" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <br />
+                <table class="table table-bordered" id="table3">
+
+                    <tr style="text-align: center; background-color: #f5f5f5">
+                        <td>No</td>
+                        <td>Leave Code</td>
+                        <td>Emp Name</td>
+                        <td>Emp Email</td>
+
+                        <td>From date</td>
+                        <td>To date</td>
+                        <td>Total</td>
+                        <td>#</td>
+                    </tr>
+
+                    <tbody id="list_more_full"></tbody>
+                </table>
+                <table class="table table-bordered" id="table4">
+
+                    <tr style="text-align: center; background-color: #f5f5f5">
+                        <td>No</td>
+                        <td>Leave Code</td>
+                        <td>Emp Name</td>
+                        <td>Emp Email</td>
+
+                        <td>Date</td>
+                        <td>Leave in morning</td>
+                        <td>Total</td>
+                        <td></td>
+                    </tr>
+
+                    <tbody id="list_more_half"></tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+<div class="col-md-2" id="info">
+    <div class="form-group">
+        <label>Requester ID</label>
+        <br />
+        <input type="text" name="username" value="@user.USERNAME" readonly class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Requester Name</label>
+        <br />
+        <input type="text" name="name" value="@user.FULLNAME" readonly class="form-control" />
+        <input type="text" name="mail" value="@user.EMAIL" readonly class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Department</label>
+        <br />
+        <input type="text" name="dept" value="@dept.NAME" id="dept" readonly class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Approver</label>
+        <br />
+        <input type="text" name="approver" value="@app.ApproverName" id="approver" readonly class="form-control" />
+        <input type="text" name="approverMail" value="@app.ApproverEmail" id="approverMail" readonly class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>HR PIC</label>
+        <br />
+
+        <select name="nameHR" id="nameHR" class="form-control">
+            @foreach(TBL_SYSTEM item in ViewBag.hr)
+            {
+                <option value="@item.id">@item.fullname</option>
+            }
+        </select>
+
+        <input type="text" name="mailHR" value="" id="mailHR" readonly class="form-control" />
+    </div>
+    <div class="form-group">
+            <label>Note</label>
+            <br />
+            @*<textarea id="note"></textarea>*@
+        <input type="text" name="note" value="" id="note" class="form-control" />
+        </div>
+    <div class="form-group">
+        <button type="submit" name="" class="btn btn-info" onclick="Submit()">Submit</button>
+        @*<input type="submit" name="" value="Exit " class="btn btn-primary" />*@
+    </div>
+</div>
+
+
+
+<div class="col-md-12" id="info3">
+    @using(Html.BeginForm("Upload_More" ,"Leave_OT" ,FormMethod.Post ,new
+            {
+                enctype = "multipart/form-data"
+            }))
+    {
+        <div class="row">
+            <div class="col-md-5">
+                <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" id="UploadedFile" /></p>
+            </div>
+            <div class="col-md-3" style="margin-top: 20px;">
+                <input type="Submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-2">
+
+                <div class="form-group">
+                    <label>Department</label>
+                    <br />
+                    <select name="dept"  id="dept1" readonly class="form-control">
+                        <option value="@dept.DEPT_ID">@dept.NAME</option>
+                    </select>
+                </div>
+            </div>  <div class="col-md-2">
+
+                <div class="form-group">
+                    <label>Requester Name</label>
+                    <br />
+                    <input type="text" name="name" class="form-control" value="@user.FULLNAME" readonly />
+                    <input type="text" name="mail" value="@user.EMAIL" readonly class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Approver</label>
+                    <br />
+                    <input type="text" name="approver" class="form-control" value="@app.ApproverName" id="approver1" readonly />
+                    <input type="text" name="approverMail" value="@app.ApproverEmail" id="approverMail1" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>HR PIC</label>
+                    <br />
+                    <select name="nameHR" class="form-control" id="nameHR1" onchange="HR1()" >
+                        @foreach(TBL_SYSTEM item in ViewBag.hr)
+                        {
+                            <option value="@item.id">@item.fullname</option>
+                        }
+                    </select>
+                    <input type="text" name="mailHR" value="" id="mailHR1" readonly class="form-control" />
+                </div>
+            </div>
+
+
+        </div>
+    }
+</div>
+
+
+
+
+@*<input id='test' value='Xóa' type='submit'>*@
+@section styles
+{
+    <style>
+        .one2, #import, #info3, #fullday2, #table2 {
+            display: none;
+        }
+    </style>
+}
+@section scripts
+{ <script>
+      $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+  </script>
+
+    <script>
+        function mess(mss) {
+            $('#mss').html(mss);
+        }
+
+
+        $(window).on("load",
+            function () {
+                $('#EmpName').select2({ width: '100%' });
+                //  // $(".one1").hide();
+                //   $(".one2").hide();
+                ////   $("#info").hide();
+                //   $("#import").hide();
+                //   $("#info3").hide();
+
+                //  $("#fullday2").hide();
+                //  $("#table2").hide();
+                load();
+                var tea = $("#nameHR").val();
+                $.ajax({
+                    url: '@(Url.Action("load_cb"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: tea
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        //console.log(data);
+                        if (data != null) {
+                            $("#mailHR").val(data.value);
+
+
+                        }
+
+                    }
+                });
+                var tea1 = $("#EmpName").val();
+                $.ajax({
+                    url: '@(Url.Action("User_Load"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: tea1
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        //console.log(data);
+                        if (data != null) {
+                            $("#total_more").val(data.TotalLeave);
+                            $("#used_more").val(data.UsedLeave);
+                            $("#remai_more").val((data.TotalLeave) - (data.UsedLeave));
+
+                        }
+
+                    }
+                });
+                var id1 = $("#nameHR1").val();
+                $.get("/Leave_OT/load_cb/",
+                    { id: id1 },
+                    function (data) {
+                        //console.log(data);
+                        $("#mailHR1").val(data.value);
+                    });
+
+            });
+
+        function HR1() {
+            var id = $("#nameHR1").val();
+            $.get("/OTModule/load_cb/",
+                { id: id },
+                function (data) {
+                    //console.log(data);
+                    $("#mailHR1").val(data.value);
+                });
+        }
+
+        function my_check() {
+            if ($("input[name='Register']:checked").val() == "1") {
+                $(".one1").show();
+                $("#info").show();
+                $("#info3").hide();
+                $(".one2").hide();
+                $("#table1").show();
+                $("#table2").hide();
+                $("#fullday1").show();
+                $("#fullday2").hide();
+                $("#more_full1").hide();
+                $("#more_half1").hide();
+                $("#import").hide();
+                load();
+            } else {
+                if ($("input[name='Register']:checked").val() == "2") {
+                    $(".one2").show();
+                    $("#info").show();
+                    $(".one1").hide();
+                    $("#table1").hide();
+                    $("#table2").hide();
+                    $("#fullday1").hide();
+                    $("#fullday2").hide();
+                    $("#more_full1").show();
+                    $("#more_half1").hide();
+                    $("#table3").show();
+                    $("#table4").hide();
+                    $("#import").hide();
+                    $("#info3").hide();
+                    load_morefull();
+                } else {
+                    if ($("input[name='Register']:checked").val() == "3") {
+                        $(".one2").hide();
+                        $("#info").hide();
+                        $(".one1").hide();
+                        $("#table1").hide();
+                        $("#table2").hide();
+                        $("#fullday1").hide();
+                        $("#fullday2").hide();
+                        $("#more_full1").hide();
+                        $("#more_half1").hide();
+                        $("#table3").hide();
+                        $("#table4").hide();
+                        $("#import").hide();
+                        $("#info3").show();
+                    }
+                }
+            }
+        }
+
+        function check_day() {
+            if ($("input[name='fullday']:checked").val() == "fullday") {
+                $("#fullday1").show();
+                $("#fullday2").hide();
+                $("#table1").show();
+                $("#table2").hide();
+                load();
+            } else {
+                if ($("input[name='fullday']:checked").val() == "halfday") {
+                    $("#fullday2").show();
+                    $("#table1").hide();
+                    $("#table2").show();
+                    $("#fullday1").hide();
+                    load1();
+                }
+            }
+        }
+
+        function check_day1() {
+            if ($("input[name='more_full']:checked").val() == "fullday") {
+                $("#more_full1").show();
+                $("#more_half1").hide();
+                $("#table3").show();
+                $("#table4").hide();
+                load_morefull();
+            } else {
+                if ($("input[name='more_full']:checked").val() == "halfday") {
+                    $("#more_half1").show();
+                    $("#table3").hide();
+                    $("#table4").show();
+                    $("#more_full1").hide();
+                    load_more_half();
+                }
+            }
+        }
+
+        function date() {
+            var from = $("#fromdate").val().substring(1, 2);
+            var to = $("#todate").val().substring(1, 2);
+            var from1 = $("#fromdate").val().substring(3, 5);
+            var to1 = $("#todate").val().substring(3, 5);
+            var date = 0
+            if (from == to) {
+
+                if (from1 == to1) {
+                    date = 1;
+                } else {
+                    date = 30;
+                }
+            } else {
+                date = parseInt(to) - parseInt(from) + 1;
+            }
+            $("#total_date").val(date);
+        }
+
+        $(document).ready(function () {
+
+            $("#EmpName").change(function () {
+                var tea = $(this).val();
+
+                $.ajax({
+                    url: '@(Url.Action("User_Load"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: tea
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        // console.log(data);
+                        if (data != null) {
+                            $("#total_more").val(data.TotalLeave);
+                            $("#used_more").val(data.UsedLeave);
+                            $("#remai_more").val((data.TotalLeave) - (data.UsedLeave));
+
+                        }
+
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+
+            $("#nameHR").change(function () {
+                var tea = $(this).val();
+
+                $.ajax({
+                    url: '@(Url.Action("load_cb"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: tea
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        console.log(data);
+                        if (data != null) {
+                            $("#mailHR").val(data.value);
+
+
+                        }
+
+                    }
+                });
+            });
+        });
+
+        function load() {
+            $('#list_supply').html("");
+            $.get("/Leave_OT/Load",
+                function (data) {
+                    //  console.log(data);
+                    if (data != null)
+                        $.each(data,
+                            function (i, val) {
+                                $("#list_supply").append(' <tr>\
+                    <td>' +
+                                    (i + 1) +
+                                    '</td>\
+                    <td>' +
+                                    val.leaveName +
+                                    '</td>\
+                    <td>' +
+
+                                    val.fromdate +
+                                    '</td>\
+                    <td>' +
+                                    val.todate +
+                                    '</td>\
+                    <td>' +
+                                    val.total_date +
+                                    '</td>\
+                    <td><a class="test" style="cursor:pointer" data-id=' +
+                                    val.leaveID +
+                                    '>Delete</a></td>\</tr>'
+                                )
+                            });
+
+
+                })
+        }
+
+        $(document).on('click',
+            '.test',
+            function () {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url: '@(Url.Action("Delete"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: id
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        load();
+                    }
+                });
+            });
+        $(document).on('click',
+            '.test1',
+            function () {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url: '@(Url.Action("Delete1"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: id
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        load1();
+                    }
+                });
+            });
+        $(document).on('click',
+            '.more_full1',
+            function () {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url: '@(Url.Action("Delete_full"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: id
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        load_morefull();
+                    }
+                });
+            });
+        $(document).on('click',
+            '.more_half1',
+            function () {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url: '@(Url.Action("Delete_half"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: id
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        load_more_half();
+                    }
+                });
+            });
+
+        function load1() {
+            $('#list_supply1').html("");
+            var str = "";
+            $.get("/Leave_OT/Load1",
+                function (data) {
+                    // console.log(data);
+                    if (data != null)
+                        $.each(data,
+                            function (i, val) {
+                                if (val.dauca == 1) {
+                                    str = "Beginning Shift";
+                                } else {
+                                    str = "Cuối ca";
+                                }
+                                $("#list_supply1").append(" <tr>\
+                    <td>" +
+                                    (i + 1) +
+                                    "</td>\
+                    <td>" +
+                                    val.leaveName +
+                                    "</td>\
+                    <td>" +
+
+                                    val.date +
+                                    "</td>\
+                    <td>" +
+                                    str +
+                                    "</td>\
+                    <td>" +
+                                    val.total_date +
+                                    "</td>\
+                    <td><a class='test1'  style='cursor:pointer'  data-id=" +
+                                    val.leaveID +
+                                    ">Delete</a></td>\
+                </tr>"
+                                )
+                            });
+                })
+        }
+
+        function load_morefull() {
+            $('#list_more_full').html("");
+            var str = "";
+            $.get("/Leave_OT/Load_morefull",
+                function (data) {
+                    //   console.log(data);
+                    if (data != null)
+                        $.each(data,
+                            function (i, val) {
+                                $("#list_more_full").append(" <tr>\
+                    <td>" +
+                                    (i + 1) +
+                                    "</td>\
+                    <td>" +
+                                    val.leaveName +
+                                    "</td>\
+                    <td>" +
+                                    val.EmpName +
+                                    "</td>\
+                    <td>" +
+                                    val.EmpEmail +
+                                    "</td>\
+                    <td>" +
+                                    val.fromdate +
+                                    "</td>\
+                    <td>" +
+                                    val.todate +
+                                    "</td>\
+                    <td>" +
+                                    val.total_date +
+                                    "</td>\
+                    <td><a class='more_full1'  style='cursor:pointer' data-id=" +
+                                    val.leaveID +
+                                    ">Delete</a></td>\
+                </tr>"
+                                )
+                            });
+                })
+        }
+
+        function load_more_half() {
+            $('#list_more_half').html("");
+            var str = "";
+            $.get("/Leave_OT/Load_morehalf",
+                function (data) {
+                    //console.log(data);
+                    if (data != null)
+                        $.each(data,
+                            function (i, val) {
+                                if (val.dauca == 1) {
+                                    str = "Beginning Shift";
+                                } else {
+                                    remai_more
+                                    str = "Cuối ca";
+                                }
+                                $("#list_more_half").append(" <tr>\
+                    <td>" +
+                                    (i + 1) +
+                                    "</td>\
+                    <td>" +
+                                    val.leaveName +
+                                    "</td>\
+                    <td>" +
+                                    val.EmpName +
+                                    "</td>\
+                    <td>" +
+                                    val.EmpEmail +
+                                    "</td>\
+                    <td>" +
+                                    val.date +
+                                    "</td>\
+                    <td>" +
+                                    str +
+                                    "</td>\
+                    <td>" +
+                                    val.total_date +
+                                    "</td>\
+                    <td><a class='more_half1' data-id=" +
+                                    val.leaveID +
+                                    ">Delete</a></td>\
+                </tr>"
+                                )
+                            });
+                })
+        }
+
+        function add() {
+
+            var leaveID = $("#leaveID").val();
+            var total = $("#total").val();
+            var used = $("#used").val();
+            var from = $("#fromdate").val();
+            var to = $("#todate").val();
+            var date = $("#total_date").val();
+            $.get("/Leave_OT/Add_new",
+                { leaveID: leaveID, total: total, used: used, fromdate: from, todate: to, total_date: date },
+                function (data) {
+                    mess(data);
+                    load();
+                })
+
+
+        }
+
+        function add1() {
+
+            var leaveID = $("#leaveID").val();
+            var total = $("#total").val();
+            var used = $("#used").val();
+            var one_date = $("#one_date").val();
+            var dauca = 0;
+            var total_date_more = $("#total_date_more").val();
+            var remai = total - used;
+            if ($('#dauca').is(":checked")) {
+                dauca = 1;
+            } else {
+                dauca = 0;
+            }
+            $.get("/Leave_OT/Add_half",
+                {
+                    leaveID: leaveID,
+                    total: total,
+                    used: used,
+                    one_date: one_date,
+                    dauca: dauca,
+                    total_date_more: total_date_more
+                },
+                function (data) {
+                    mess(data);
+                    load1();
+                })
+
+
+        }
+
+        function add_more_full() {
+
+            var LeaveCD = $("#LeaveCD").val();
+            var total_more = $("#total_more").val();
+            var used_more = $("#used_more").val();
+            var more_fromdate = $("#more_fromdate").val();
+            var more_todate = $("#more_todate").val();
+            var EmpName = $("#EmpName").val();
+            $.get("/Leave_OT/Add_Morefull",
+                {
+                    LeaveCD: LeaveCD,
+                    total_more: total_more,
+                    used_more: used_more,
+                    more_fromdate: more_fromdate,
+                    more_todate: more_todate,
+                    EmpName: EmpName
+                },
+                function (data) {
+                    mess(data);
+                    load_morefull();
+                })
+
+
+        }
+
+        function add_more_half() {
+
+            var LeaveCD = $("#LeaveCD").val();
+            var total_more = $("#total_more").val();
+            var used_more = $("#used_more").val();
+            var more_date = $("#more_date").val();
+            var dauca = 0;
+            var more_total = $("#more_total").val();
+            var remai = total - used;
+            var EmpName = $("#EmpName").val();
+            if ($('#more_dauca').is(":checked")) {
+                dauca = 1;
+            } else {
+                dauca = 0;
+            }
+            $.get("/Leave_OT/Add_MoreHalf",
+                {
+                    LeaveCD: LeaveCD,
+                    total_more: total_more,
+                    used_more: used_more,
+                    more_date: more_date,
+                    more_dauca: dauca,
+                    more_total: more_total,
+                    EmpName: EmpName
+                },
+                function (data) {
+                    mess(data);
+                    load_more_half();
+                })
+
+
+        }
+
+        function Submit() {
+            var section = '';
+            var dept = $("#dept").val();
+            var approver = $("#approver").val();
+            var approverMail = $("#approverMail").val();
+            var nameHR = $("#nameHR").val();
+            var mailHR = $("#mailHR").val();
+            var note = $("#note").val();
+            if (($('#one').is(":checked"))) {
+                if (($('#fullday').is(":checked"))) {
+                    $.post("/Leave_OT/One_full",
+                        {
+                            section: section,
+                            dept: dept,
+                            approver: approver,
+                            approverMail: approverMail,
+                            nameHR: nameHR,
+                            mailHR: mailHR,
+                            note: note
+                        },
+                        function (data) {
+                            PushAlert('Digitalization', data, 'lime');
+                            load();
+
+                        })
+                } else {
+                    if (($('#halfday').is(":checked"))) {
+                        $.post("/Leave_OT/One_half",
+                            {
+                                section: section,
+                                dept: dept,
+                                approver: approver,
+                                approverMail: approverMail,
+                                nameHR: nameHR,
+                                mailHR: mailHR,
+                                note: note
+                            },
+                            function (data) {
+                                PushAlert('Digitalization', data, 'lime');
+                                load1();
+                            })
+                    }
+                }
+
+
+            } else {
+                if (($('#more').is(":checked"))) {
+                    if (($('#more_full').is(":checked"))) {
+                        $.post("/Leave_OT/More_full",
+                            {
+                                section: section,
+                                dept: dept,
+                                approver: approver,
+                                approverMail: approverMail,
+                                nameHR: nameHR,
+                                mailHR: mailHR,
+                                note: note
+                            },
+                            function (data) {
+                                PushAlert('Digitalization', data, 'lime');
+                                load_morefull();
+                            })
+                    } else {
+                        if (($('#more_half').is(":checked"))) {
+                            $.post("/Leave_OT/More_half",
+                                {
+                                    section: section,
+                                    dept: dept,
+                                    approver: approver,
+                                    approverMail: approverMail,
+                                    nameHR: nameHR,
+                                    mailHR: mailHR,
+                                    note: note
+                                },
+                                function (data) {
+                                    PushAlert('Digitalization', data, 'lime');
+                                    load_more_half();
+                                })
+                        }
+                    }
+
+
+                }
+            }
+        }
+
+    </script>
+}
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        @using(Html.BeginForm("Upload_More" ,"Leave_OT" ,FormMethod.Post ,new
+        {
+            enctype = "multipart/form-data"
+        }))
+        {<!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

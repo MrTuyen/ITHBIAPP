@@ -1,0 +1,192 @@
+﻿@using ProductionApp.Models
+@model GRC_TransferAssets
+@{
+
+}
+
+@{
+    ViewBag.Title = "Asset Transfer";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Asset Transfer
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12"><p id="uploadmss" class="message">@Html.Raw(ViewBag.mss)</p> </div>
+</div>
+<form method="post">
+    <div class="panel panel-default" id="panel1" style="max-width: 1336px;margin: 0 auto">
+        <div class="panel-heading">Detail</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Tên người chuyển/Full Name:</span>
+                    <input type="text" readonly="" class="form-control" value="@Model.TBL_USERS_MST.FULLNAME" />
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Bộ phận/Department:</span>
+                    <input type="text" readonly="" class="form-control" value="@Model.TBL_DEPARTMENT_MST.NAME" />
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <span class="col-input">Tên tài sản/ Assets name:</span>
+                    <input type="text" name="Detail" class="form-control" required="" value="@Model.Detail" readonly="" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <span class="col-input">Địa chỉ/Address:</span>
+                    <input type="text" name="Address" class="form-control" required="" value="@Model.TransferTo" readonly="" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Ngày Chuyển/Date:</span>
+                    <input type="text" name="Address" class="form-control" readonly="readonly" value=" @string.Format("{0:MM/dd/yyyy}" ,Model.TransferDate) " />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Số lượng/Quantity:</span>
+                    <input type="number" name="Quantity" class="form-control" required="" value="@Model.Count" readonly="" />
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Đơn vị tính/Unit:</span>
+                    <input type="text" name="Unit" class="form-control" required="" value="@Model.Unit" readonly="" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <span class="col-input">Chuyển tạm thời/Temporary transfer:</span>
+                    <div class="checkbox  checkbox-primary checkbox-inline">
+                        <input id="TemporaryTransfer" name="Temporary" type="checkbox" @(Model.Temporary ? "checked" : "") onchange="fnTemporaryTransfer(this.checked)">
+                        <label for="TemporaryTransfer">Chuyển tạm thời/Temporary transfer</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="TemporaryTransferDate">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Từ ngày/Start date:</span>
+                    <input type="text" name="Address" class="form-control" readonly="readonly" value="@string.Format("{0:MM/dd/yyyy}", Model.TemporaryStart)" />
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Đến ngày/End date:</span>
+                    <input type="text" name="Address" class="form-control" readonly="readonly" value="@string.Format("{0:MM/dd/yyyy}", Model.TemporaryEnd)" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <span class="col-input">Tài sản nội bộ/Internal Transfer:</span>
+                    <div class="checkbox  checkbox-primary checkbox-inline">
+                        <input id="InternalAssets" name="InternalAssets" type="checkbox" onchange="ApproveBy(this.checked)" @(Model.Local ? "checked" : "")>
+                        <label for="InternalAssets">Tài sản nội bộ/Internal Transfer</label>
+                    </div>
+
+                </div>
+            </div><hr />
+            <div class="row">
+                <div class="col-md-4 col-xs-12 text-center">
+                    <span class="col-input">Approved by:</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-xs-12 text-center">
+                    <span style="font-weight: bold">Manager</span><br />
+                    <span style="font-style: italic">@Model.ApproveMgr</span>
+                </div>
+                <div id="ApproveBy">
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <span style="font-weight: bold">Finance Manager</span><br />
+                        <span style="font-style: italic">@Model.FinanceMgr</span>
+                    </div>
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <span style="font-weight: bold">HR Manager</span><br />
+                        <span style="font-style: italic">@Model.HrMgr</span>
+                    </div>
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <span style="font-weight: bold">Plant Manager</span><br />
+                        <span style="font-style: italic">@Model.Director</span>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    @if(Model.attackfile != null && Model.attackfile.Length > 1) {
+                        <a class="btn btn-info" target="_blank" href="/TransferAssets/viewfile/@Model.ID">» Check list</a>
+
+                    }
+                    <input type="submit" value="Approve" class="btn btn-success" />
+                    <input type="hidden" name="tacdong" value="Approve" />
+                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_theme_primary">Reject</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+
+<div id="modal_theme_primary" class="modal fade in" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Please provide your comments</h5>
+            </div>
+            @using(Html.BeginForm("Edit" ,"TransferAssets" ,FormMethod.Post ,new { @class = "form-horizontal" ,role = "form" })) {
+                <input type="hidden" name="tacdong" value="Reject" />
+                <input type="hidden" name="ID" value="@Model.ID" />
+                @Html.AntiForgeryToken()
+                <div style="width:570px;margin:10px">
+
+                    <textarea class="form-control" name="body"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section styles
+{
+    @if(Model.Temporary == false) {
+        <style>
+            #TemporaryTransferDate {
+                display: none;
+            }
+        </style>
+    }
+    @if(Model.Local == true) {
+        <style>
+            #ApproveBy {
+                display: none;
+            }
+        </style>
+    }
+
+}
+

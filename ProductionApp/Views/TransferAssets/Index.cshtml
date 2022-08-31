@@ -1,0 +1,182 @@
+﻿@{
+    ViewBag.Title = "Asset Transfer";
+}
+@using ProductionApp.Models;
+
+@model List<GRC_TransferAssets>
+
+<meta http-equiv="refresh" content="300;url=/transferAssets" />
+
+<h3 style="text-align: center; margin-bottom: 40px">ASSETS TRANSFER</h3>
+
+<a class="btn btn-primary btn-sm" href="@Url.Action("Create", "TransferAssets")">Add new</a> |
+<a href="#" class="btn btn-primary  btn-sm" data-toggle="modal" data-target="#myModal1">Export Request</a>
+@if(ViewBag.per > 1) {
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#delegate">Manager Delegation</button>
+}
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Xuất file Excel</h5>
+            </div>
+            <form action="@Url.Action("Export" ,"TransferAssets")" method="post">
+                <div class="modal-body">
+                    <label>Ngày bắt đầu</label>
+                    <input type="text" name="date" class="form-control isdate" autocomplete="off" />
+                    <label>Ngày kết thúc</label>
+                    <input type="text" name="date1" class="form-control isdate" autocomplete="off" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info" value="Thực Hiện" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+
+    @Html.Raw(TempData["msg"])
+    <!-- Modal -->
+    <div class="modal fade" id="delegate" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Manager Delegation</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="@Url.Action("ManagerDeligate" ,"TransferAssets")" method="post">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>Email:<input type="text" name="email" id="txtFromDate" class="form-control " value="@ViewBag.ApproveMail"> </p>
+                            </div>
+                            <div class="col-md-4"><br /><input type="Submit" class="btn btn-primary" value="Delegate" /></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <form action="@Url.Action("ManagerDeligateRemove" ,"TransferAssets")" method="post">
+                        <input type="Submit" class="btn btn-danger" value="revoke" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+    <table class="table  table-bordered table-hover " id="table1">
+        <tbody>
+            <tr style="text-align: center;font-weight:bold;background-color:#f5f5f5 ">
+                <th>No#</th>
+                <th>Requester</th>
+                <th>Department</th>
+                <th>Description</th>
+                <th>Manager</th>
+                <th>Finance Mgr</th>
+                <th>HR Mgr</th>
+                <th>Plant Manager</th>
+                <th>Security team</th>
+                <th>Detail</th>
+            </tr>
+            @foreach(var item in Model) {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.TBL_USERS_MST.FULLNAME</td>
+                    <td>@item.TBL_DEPARTMENT_MST.NAME</td>
+                    <td>@item.Detail</td>
+                    @if(item.ApproveStatus == -2) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">Rejected</span>
+                        </td>
+                    } else if(item.ApproveStatus == 1) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">@item.ApproveMgr</span>
+                        </td>
+                    } else if(item.ApproveStatus == 2) {
+                        <td>
+                            <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+                        </td>
+                    } else {
+                        <td></td>
+                    }
+
+                    @if(item.FinanceStatus == -2) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">Rejected</span>
+                        </td>
+                    } else if(item.FinanceStatus == 1) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">@item.FinanceMgr</span>
+                        </td>
+                    } else if(item.FinanceStatus == 2) {
+                        <td>
+                            <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+                        </td>
+                    } else {
+                        <td></td>
+                    }
+
+
+                    @if(item.HrStatus == -2) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">Rejected</span>
+                        </td>
+                    } else if(item.HrStatus == 1) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">@item.HrMgr</span>
+                        </td>
+                    } else if(item.HrStatus == 2) {
+                        <td>
+                            <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+                        </td>
+                    } else {
+                        <td></td>
+                    }
+
+                    @if(item.DirectorStatus == -2) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">Rejected</span>
+                        </td>
+                    } else if(item.DirectorStatus == 1) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">@item.Director</span>
+                        </td>
+                    } else if(item.DirectorStatus == 2) {
+                        <td>
+                            <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+                        </td>
+                    } else {
+                        <td></td>
+                    }
+
+                    @if(item.SecurityStatus == -2) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">Rejected</span>
+                        </td>
+                    } else if(item.SecurityStatus == 1) {
+                        <td>
+                            <span style="color:#ff0000;font-weight:bold">@item.Security</span>
+                        </td>
+                    } else if(item.SecurityStatus == 2) {
+                        <td>
+                            <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+                        </td>
+                    } else {
+                        <td></td>
+                    }
+                    <td><a href="@Url.Action("Edit","TransferAssets",new { id = item.ID })" class="btn btn-info btn-sm">Detail</a></td>
+                    @*}*@
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    @section scripts
+{
+        <script>
+            $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        </script>
+    }

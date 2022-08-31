@@ -1,0 +1,276 @@
+﻿@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model List<MuView>
+@{
+    ViewBag.Title = "MU Tracking";
+
+}
+@section styles {
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            MU Tracking
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<div class="portlet box gray" id="fr-option">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Lọc dữ liệu
+            @*<button type="button" class="btn btn-primary btn-sm" style="float: right" onclick="LoadWeekActual()">Cập nhật tổ</button>*@
+
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" style="float: right">Upload Bom And Actual</button>
+            <a class="btn btn-primary btn-sm" href="~/MUV/items" style="float: right">Items Management</a>
+        </div>
+        <div class="panel-body">
+            <form method="post">
+                <div class="col-md-4 col-xs-12 ">
+                    Group/ Tổ:
+                    <select class=" form-control" multiple="multiple" id="GROUP_ID" name="GROUP_ID">
+                        @foreach(var item in ViewBag.Group as List<TBL_GROUP_MST>) {
+                            <option @(ViewBag.fgroupId != null && ((string)ViewBag.fgroupId).Contains(item.GROUP_NAME) ? "selected" : "") value="@item.GROUP_NAME">@item.GROUP_NAME</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2   col-xs-12 ">
+                    Week/ Tuần:
+                    <input type="number" value="@ViewBag.week" name="week" min="1" max="55" class="form-control" />
+                </div>
+                <div class="col-md-2   col-xs-12 ">
+                    <br />
+                    <input type="submit" class="btn btn-success" value="Search" name="hanhdong" onclick=" App.blockStatus($('body'), false, 'Wait...');" />
+                    <input type="submit" class="btn btn-primary" value="Export" name="hanhdong" onclick=" App.blockStatus($('body'), false, 'Wait...');" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        @using(Html.BeginForm("UploadMuv" ,"MUV" ,FormMethod.Post ,new { enctype = "multipart/form-data" ,id = "fr-upload" })) {   <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Choose a file to upload</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-12 bold">Loại tài liệu: </div>
+                        <div class="col-md-12 bold" style="line-height: 32px; text-align: left">
+                            <label> <input type="radio" id="RdoModule" name="RdoModule" value="Actual" style="" checked="checked" /> Actual(Zi287) </label>
+                            <label> <input type="radio" id="RdoModule" name="RdoModule" value="Bom" style="" /> BOM </label>
+                        </div>
+
+                    </div>
+                    <div class="row margin-bottom-20">
+
+                        <div class="col-md-12"><p id="uploadmss" class="message"></p> </div>
+
+                    </div>
+                    <p>Choose file: <input type="file" name="UploadedFile" id="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<!-- End Modal -->
+<!-- ItemModal -->
+<div class="modal fade" id="ItemModal" role="dialog">
+    <div class="modal-dialog">
+
+        @using(Html.BeginForm("UploadMuv" ,"MUV" ,FormMethod.Post ,new { enctype = "multipart/form-data" ,id = "fr-upload" })) {   <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Choose a file to upload</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-12 bold">Loại tài liệu: </div>
+                        <div class="col-md-12 bold" style="line-height: 32px; text-align: left">
+                            <label> <input type="radio" id="RdoModule" name="RdoModule" value="Actual" style="" checked="checked" /> Actual(Zi287) </label>
+                            <label> <input type="radio" id="RdoModule" name="RdoModule" value="Bom" style="" /> BOM </label>
+                        </div>
+
+                    </div> <div class="row margin-bottom-20">
+
+                        <div class="col-md-12"><p id="uploadmss"></p> </div>
+
+                    </div>
+                    <p>Choose file: <input type="file" name="UploadedFile" id="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<!-- End ItemModal -->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box gray">
+    <div class="panel panel-default">
+        <div class="panel-heading">MU List</div>
+        <div class="panel-body">
+            <table id="tbScanCase" class="table table-bordered " style="width:100%;">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">Tổ</th>
+                        <th style="text-align: center">Item</th>
+                        <th style="text-align: center">Week</th>
+                        <th style="text-align: center">Standard</th>
+                        <th style="text-align: center">Actual</th>
+                        <th style="text-align: center">Var</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model != null) {
+                        var xanh = "changecolortogreen";
+                        var cam = "";
+                        var dotham = "changecolortored";
+
+                        var row = 0;
+                        // var groupName = Model.First().GroupName;
+                        foreach(var item in Model) {
+                            @*if ( groupName != item.GroupName)
+                                {
+                                    groupName = item.GroupName;
+                                    <tr>
+                                        <td colspan="6"></td>
+                                    </tr>
+                                }*@
+
+                            <tr>
+                                <td class="text-left">@item.GroupName</td>
+                                <td class="text-left">@item.Item</td>
+                                <td class="text-center">@item.Week</td>
+                                <td class="text-center">@(Utilities.NumberFormat(int.Parse(Math.Round(item.Standard ,0).ToString())))</td>
+                                <td class="text-center">@(Utilities.NumberFormat(int.Parse(Math.Round(item.Actual ,0).ToString())))</td>
+                                <td class="text-center @( Math.Round(item.DM ,0) > 0 ? dotham : xanh)">@(Utilities.NumberFormat(int.Parse(Math.Round(item.DM ,0).ToString())))</td>
+                            </tr>
+                            row++;
+                            if(row == Model.Count(a => a.GroupName == item.GroupName)) {
+                                row = 0;
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td class="text-center" style=" font-weight: bold">SUM</td>
+                                    <td class="text-center" style=" font-weight: bold">@(Utilities.NumberFormat(int.Parse(Math.Round(Model.Where(a => a.GroupName == item.GroupName).Sum(a => a.Standard) ,0).ToString())))</td>
+                                    <td class="text-center" style=" font-weight: bold">@(Utilities.NumberFormat(int.Parse(Math.Round(Model.Where(a => a.GroupName == item.GroupName).Sum(a => a.Actual) ,0).ToString())))</td>
+                                    <td class="text-center" style=" font-weight: bold">@(Utilities.NumberFormat(int.Parse(Math.Round(Model.Where(a => a.GroupName == item.GroupName).Sum(a => a.DM) ,0).ToString())))</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script>
+        var intervaltimemuv;
+        function CheckStatus() {
+            var doneajax = true;
+            intervaltimemuv = setInterval(function () {
+                if (doneajax) {
+                    doneajax = false;
+                    $.ajax({
+                        url: "/MUV/Status",
+                        method: "Get",
+                        success: function (html) {
+                            App.blockStatus($(".modal-content"), false, html);
+                            if (html === 'NONE')
+                                App.unblockStatus($(".modal-content"));
+                            doneajax = true;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                            alert('Error! Please retry or contact to IT team.');
+                        }
+                    });
+                }
+
+            }, 3000);
+        }
+        function LoadWeekActual() {
+
+            App.blockStatus($("#fr-option"), true, 'Vui lòng chờ, tổ đang được cập nhật');
+            $.ajax({
+                url: "/MUV/LoadWeekActual",
+                method: "Get",
+                success: function (html) {
+                    App.unblockStatus($("#fr-option"));
+                    alert(html);
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                    alert('Error! Please retry or contact to IT team.');
+                }
+            });
+
+
+        }
+        $(document).ready(function () {
+
+            $('#fr-upload').submit(function () {
+                App.blockStatus($(".modal-content"), false, 'Wait...');
+                CheckStatus();
+
+                var data = new FormData();
+                var files = $("#UploadedFile").get(0).files;
+                if (files.length > 0) {
+                    data.append("UploadedFile", files[0]);
+                }
+                data.append("RdoModule", document.querySelector('input[name="RdoModule"]:checked').value);
+                $.ajax({
+                    url: "/MUV/UploadMuv",
+                    data: data,
+                    dataType: 'json',
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    success: function (html) {
+                        $('#uploadmss').html(html);
+                        App.unblockStatus($(".modal-content"));
+                        clearInterval(intervaltimemuv);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        App.unblockStatus($(".modal-content"));
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+                return false;
+            });
+        });
+
+
+
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+
+
+
+}

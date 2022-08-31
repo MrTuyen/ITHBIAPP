@@ -1,0 +1,219 @@
+﻿@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model ProductionApp.Models.TBL_CASE_LABEL
+
+@{
+    ViewBag.Title = "Odd Case Label";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Odd Case Label
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+
+<div class="panel panel-default" id="panel-oddcase">
+    <div class="panel-heading">Case Detail</div>
+    <div class="panel-body">
+        <form id="fr-oddcase" action="" method="post">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <span class="col-input">WorkShop:</span><select class="form-control search-select" name="WSHOP_ID" onchange="GetGroupByWshop(this.value)">
+                        <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                        @foreach (var item in ViewBag.Business as List<TBL_BUSINESS_MST>)
+                        {
+                            <option value="@item.ID">@item.BIZ_NAME</option>
+                        }
+
+                    </select>
+
+                </div>
+                <div class="col-md-3"><span class="col-input">Group:</span><select class="form-control search-select" id="GROUP_ID" name="GROUP_ID"><option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option></select></div>
+                <div class="col-md-3"><span class="col-input">Label ID</span><input type="text" class="form-control" value="" name="LABEL_ID" onchange="$('#mss').html('');" /></div>
+                <div class="col-md-3"><span class="col-input">Count/ Số lượng:</span><input type="number" class="form-control" name="QUANTITY" min="0" value="0" /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <span class="col-input">Sell ID/ Mã bán hàng:</span><select class="form-control search-select" id="STYLE" name="PkgStyle" onchange="GetSizeBySell(this.value)">
+                        <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                        @foreach (var item in ViewBag.listStyle as List<String>)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+
+
+
+                </div>
+                <div class="col-md-3"><span class="col-input">Size/ kích cỡ:</span><select class="form-control search-select" id="SIZE" name="SIZE" onchange="GetColorBySize(this.value)"><option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option></select></div>
+                <div class="col-md-3"><span class="col-input">Color/ Màu:</span><select class="form-control search-select" id="COLOR" name="COLOR"><option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option></select></div>
+                <div class="col-md-3">
+                    <span class="col-input"></span>
+                    <input type="submit" class="btn btn-success" value="Create/ Thêm" />
+                    <span id="mss" class="message"></span>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"> Odd list case label</div>
+    <div class="panel-body">
+        <table id="tblOddCase" class="table table-striped table-bordered table-hover align-center" style="width:100%;">
+            <thead>
+                <tr>
+                    <th style="text-align: center">Ngày</th>
+                    <th style="text-align: center">Ca</th>
+                    <th style="text-align: center">Chuyền</th>
+                    <th style="text-align: center">Kiểu dáng</th>
+                    <th style="text-align: center">Màu</th>
+                    <th style="text-align: center">Cỡ</th>
+                    <th style="text-align: center">Số lượng</th>
+                    <th style="text-align: center">Người nhập</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var listItem = ViewBag.listItem as List<TBL_CASE_LABEL>;
+                    if (listItem != null)
+                    {
+                        foreach (var item in listItem)
+                        {
+                            <tr>
+                                <td class="text-center">@(Utilities.GetMMDDYYYY(item.TS_1.ToString()))</td>
+                                <td class="text-center">@(Utilities.GetTT(item.TS_1.ToString()))</td>
+                                <td class="text-center">@item.TBL_GROUP_MST.GROUP_NAME</td>
+                                <td class="text-center">@item.PkgStyle</td>
+                                <td class="text-center">@item.COLOR</td>
+                                <td class="text-center">@item.SIZE</td>
+                                <td class="text-center">@item.QUANTITY</td>
+                                <td class="text-center">@item.TS_1_USER</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+  
+    <script>
+        $(window).ready(function () {
+            $('#fr-oddcase').submit(function () {
+                App.blockUI($("#panel-oddcase"));
+                $.ajax({
+                    url: '/ScanCase/SaveOddCase',
+                    data: $(this).serialize(),
+                    method: "Post",
+                    success: function (data) {
+                        if (data == "")
+                            alert('Error! Please retry or contact to IT team.');
+                        else {
+                            $('#tblOddCase').find('tbody').prepend(data);
+                            $('#mss').html('Success!');
+                        }
+
+                        App.unblockUI($("#panel-oddcase"));
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        App.unblockUI($("#panel-oddcase"));
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+                return false;
+            });
+
+        });
+
+
+        function GetGroupByWshop(value) {
+            App.blockUI($("#panel-oddcase"));
+            $.ajax({
+                url: "/Scancase/GetGroupByWshop",
+                data: { wshopId: value },
+                method: "Get",
+                success: function (data) {
+                    $('#GROUP_ID').html("");
+                    $("#GROUP_ID")
+                        .append($(
+                            '<option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>'));
+                    for (var k in data) {
+                        $("#GROUP_ID").append($('<option></option>').val(data[k].GROUP_ID).html(data[k].GROUP_NAME));
+                    }
+                    App.unblockUI($("#panel-oddcase"));
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                    App.unblockUI($("#panel-oddcase"));
+                    alert('Error! Please retry or contact to IT team.');
+                }
+            });
+
+        }
+
+        function GetSizeBySell(value) {
+            App.blockUI($("#panel-oddcase"));
+            $.ajax({
+                url: "/Scancase/GetSizeBySell",
+                data: { PkgStyle: value },
+                method: "Get",
+                success: function (data) {
+                    $('#SIZE').html("");
+                    $("#SIZE").append($(
+                        '<option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>'));
+                    for (var k in data) {
+                        $("#SIZE").append($('<option></option>').val(data[k].Size_Des).html(data[k].Size_Des));
+                    }
+                    App.unblockUI($("#panel-oddcase"));
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                    App.unblockUI($("#panel-oddcase"));
+                    alert('Error! Please retry or contact to IT team.');
+                }
+            });
+
+        }
+
+        function GetColorBySize(value) {
+            App.blockUI($("#panel-oddcase"));
+            $.ajax({
+                url: "/Scancase/GetColorBySize",
+                data: { Size: value },
+                method: "Get",
+                success: function (data) {
+                    $('#COLOR').html("");
+                    $("#COLOR").append($(
+                        '<option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>'));
+                    for (var k in data) {
+                        $("#COLOR").append($('<option></option>').val(data[k].Color).html(data[k].Color));
+                    }
+                    App.unblockUI($("#panel-oddcase"));
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                    App.unblockUI($("#panel-oddcase"));
+                    alert('Error! Please retry or contact to IT team.');
+                }
+            });
+
+        }
+    </script>
+
+}
+
+

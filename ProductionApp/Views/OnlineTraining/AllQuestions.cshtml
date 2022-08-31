@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "AllQuestions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models;
+
+@section styles{
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+    <style>
+
+        .modal-title {
+            font-size: 17px
+        }
+
+        #btnmore {
+            margin-left: 20px;
+        }
+
+        .rowHidden {
+            display: none;
+        }
+    </style>
+}
+
+<div class="container">
+
+    <h2><b>Management of Questions</b></h2>
+    <div class="col-md-2"></div>
+    <div class="col-md-7">
+
+    </div>
+    <div class="col-md-3" style="margin-bottom: 40px">
+        <a href="@Url.Action("ExportExxcel","OnlineTraining")"><button type="button" class="btn btn-info btn-sm" id="SampleFile"><span class="glyphicon glyphicon-open"></span> Sample File</button></a>
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-open"></span> Upload Questions</button>
+</div>
+
+    <table class="table table-bordered">
+        <thead style="background-color: #c2d1f0">
+            <tr>
+                <th>STT</th>
+                <th>Content</th>
+                <th>Detail</th>
+                @*<th>Upload</th>*@
+
+            </tr>
+        </thead>
+        <tbody id="list">
+            @{ var n = 0; }
+            @foreach (var p in Model)
+            {
+                n = n + 1;
+                <tr>
+
+                    <td>@n</td>
+                    <td contenteditable="true">@p.Content</td>
+                    @*<td><button type="button" class="btn btn-warning" onclick="QuestionDetail(@p.Question_ID)"><span class="glyphicon glyphicon-eye-open"></span></button></td>*@
+                    @*<td><button type="button" class="btn btn-primary" onclick="getIDQuestion(@p.Question_ID)"><span class="glyphicon glyphicon-upload"></span></button></td>*@
+                    <td><a href="@Url.Action("GetOneDetails","OnlineTraining",new { id = @p.Question_ID })"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-eye-open"></span></button></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("UploadQuestion", "OnlineTraining", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<!-- End Modal -->
+
+<script>
+
+    function Edit(QuestionID) {
+        $("#moreModal").modal("show");
+
+    }
+    function QuestionDetail(id) {
+        $("#hienthi").html("");
+        $.get("/OnlineTraining/GetOneDetails", { id: id }, function (data) {
+            if (data[0]) {
+                $("#hienthi").append("<tr style='background-color: #b3e0ff'>\
+                      <td><b> Question "+ data[0].QuestionID + ": " + data[0].Content + "</b></td> \
+                       <td> <b>Key</b></td>\
+                </tr>");
+                $("#btnIDQuestion").val(data[0].QuestionID);
+                var i = 0;
+                var stt = 1;
+                $.each(data, function (i, val) {
+                    console.log(data);
+                    if (data[i].State == '1') {
+                        $("#hienthi").append("<tr>\
+                              <td>"+ stt++ + ". " + data[i].Content2 + "</td> \
+                             <td><input type='checkbox' checked /></td> \
+                        </tr>");
+                    }
+                    else {
+                        $("#hienthi").append("<tr>\
+                                  <td>"+ stt++ + ". " + data[i].Content2 + "</td> \
+                                <td><input type='checkbox' /></td> \
+                            </tr>");
+                    }
+                });
+            }
+            else {
+
+                $.get("/OnlineTraining/getOneQuestion", { id: id }, function (data) {
+                    $("#hienthi").append("<tr>\
+                      <td><b> Question "+ data[0].Question_ID + ": " + data[0].Content + "</b></td> \
+                </tr>");
+                });
+            }
+            $("#moreModal").modal("show");
+        });
+    }
+
+    function getIDQuestion(id) {
+        $.ajax({
+            url: "/OnlineTraining/getOneQuestion/" + id,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+   </script>

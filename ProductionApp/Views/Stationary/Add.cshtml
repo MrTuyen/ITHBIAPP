@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "Add Stationary";
+    var dept = (TBL_DEPARTMENT_MST) ViewBag.dept;
+}
+@using ProductionApp.Models;
+@Html.Raw(TempData["msg"])
+<h3 style="text-align: center;margin-bottom: 30px;">PHIẾU ĐỀ NGHỊ VĂN PHÒNG PHẨM/STATIONERY REQUEST</h3>
+<a class="btn btn-primary btn-sm" href="#" style="margin-bottom: 10px" data-toggle="modal" data-target="#myModal">Chọn Văn Phòng Phẩm</a>
+<form action="@Url.Action("Submit", "Stationary")" method="post">
+    <div class="panel panel-default" id="panel-oddcase" style="max-width: 1336px">
+        <div class="panel-heading">Chi tiết / Details</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">Description:<br /><input type="text" name="description" class="form-control" /> </div>
+                <div class="col-md-2">FeedBack:<br /><input type="text" name="feeback" class="form-control" /></div>
+                <div class="col-md-2">Phòng ban/Department:<br /><input type="text" name="dept" value="@dept.NAME" id="dept" readonly class="form-control" /></div>
+                <div class="col-md-2">Ngân sách/Budget:<br />@string.Format("{0:#,##0}", ViewBag.ngansach) VNĐ </div>
+                <div class="col-md-2">Tổng tiền/Total Amount:<br /><span class="tongtien">0.00 VNĐ</span> </div>
+                <div class="col-md-2"><br /><input type="submit" name="" class="btn btn-primary" value="Submit"> </div>
+            </div>
+        </div>
+    </div>
+</form>
+<table class="table table-bordered">
+    <tr style="background-color:#f5f5f5">
+        <th>#</th>
+        <th>Tên Văn phòng phẩm/Stationery item</th>
+        <th>Đơn Giá/Unit Price</th>
+        <th>Số lượng/Quantity</th>
+        <th>Đơn vị tính/UOM</th>
+        <th>Thành tiền/Amount</th>
+        <th>Chú thích/Notes</th>
+        <th></th>
+    </tr>
+    <tbody id="list_vpp"></tbody>
+</table>
+
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chọn văn phòng phẩm/Select Item</h4>
+            </div>
+
+            <div class="modal-body" id="body">
+                <div class="form-group">
+                    <label>Văn phòng phẩm/Item</label>
+                    <select name="statiID" id="statiID" class="form-control">
+                        <option value="-1" selected="selected" disabled="disabled" class="Italic">Chọn VPP</option>
+                        @foreach (STA_Item item in ViewBag.stationary)
+                        {
+                            <option value="@item.StaId">@item.StaName</option>
+                        } 
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Giá tiền/Unit Price</label>
+                    <input name="price" class="form-control" id="price" readonly />
+                </div>
+                <div class="form-group">
+                    <label>Đơn vị tính/UOM</label>
+                    <input name="unit" class="form-control" id="unit" readonly />
+                </div>
+                <div class="form-group">
+                    <label>Số lượng/Quantity</label>
+                    <input name="qty" class="form-control" id="qty" type="number" />
+                </div>
+                <div class="form-group">
+                    <label>Chú thích/Notes</label>
+                    <input name="note" class="form-control" id="note" />
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-6">Ngân sách/Budget: @string.Format("{0:#,##0}", ViewBag.ngansach) VNĐ </div>
+                    <div class="col-md-6">Tổng tiền/Total Amount: <span class="tongtien">0.00 VNĐ</span> </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-info" onclick="add_supply()" id="button">Add item</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#statiID').select2({ width: '100%', dropdownParent: $("#myModal") });
+            $(document).on('click',
+                '.xoa',
+                function () {
+                    var id = $(this).attr('data-id');
+                    $.ajax({
+                        url: '@(Url.Action("Delete"))',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            id: id
+                        }),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function (data) {
+                            load_supply();
+                        }
+                    });
+                });
+
+
+
+            load_supply();
+            $("#statiID").change(function () {
+                var tea = $(this).val();
+
+                $.ajax({
+                    url: '@(Url.Action("Price_Unit"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: tea
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if ( data != null) {
+                            $("#price").val(data.price);
+                            $("#unit").val(data.unit);
+
+                        }
+
+                    }
+                });
+            });
+        });
+        function add_supply() {
+
+            var statiID = $("#statiID").val();
+            var qty = $("#qty").val();
+            var unit = $("#unit").val();
+            var price = $("#price").val();
+            var note = $("#note").val();
+            $.get("/Stationary/Add_Stat", { statiID: statiID, qty: qty, unit: unit, note: note, price: price },
+                function (data) {
+
+                    load_supply();
+                })
+
+            $("#qty").val("");
+            $("#unit").val("");
+            $("#price").val("");
+            $("#note").val("");
+        }
+        function clear() {
+            $('#body').html("");
+        }
+        function load_supply() {
+            $('#list_vpp').html("");
+            $.get("/Stationary/Load",
+               function (data) {
+                   if (data.ds != null) {
+                       $.each(data.ds, function (i, val) {
+                           $("#list_vpp").append(" <tr>\
+                    <td>"+ (i + 1) + "</td>\
+                    <td>" + val.name + "</td>\
+                    <td>" + currencyFormat(val.Price) + " VNĐ</td>\
+                    <td>" + val.Qty + "</td>\
+                    <td>" + val.Unit + "</td>\
+                    <td>" + currencyFormat(val.Total) + " VNĐ</td>\
+                    <td>" + val.Note + "</td>" +
+                               "<td><a class=\"xoa\" style=\"cursor:pointer\" data-id=" + val.statiID + ">xóa</a></td>" +
+                               "                 </tr>"
+                          )
+                       });
+                       $(".tongtien").html(currencyFormat(data.tongtien) + " VNĐ");
+                   }
+               })
+        }
+        function currencyFormat(num) {
+            return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
+    </script>
+}
+

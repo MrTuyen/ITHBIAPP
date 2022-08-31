@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<style>
+    ol {
+        list-style: none;
+        padding-left: 0px;
+        width: 540px;
+        border: 1px solid #000
+    }
+
+    .mainleft {
+        width: 500px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #57544A;
+        line-height: 40px;
+        padding-left: 5px;
+    }
+
+    .mainleft ol li {
+        font-size: 17px;
+        width: 100%;
+        padding-left: 20px;
+        line-height: 40px;
+        border-bottom: 1px dashed grey;
+    }
+
+        .mainleft ol li:hover {
+            background-color: #D8B6EE;
+            cursor: pointer;
+        }
+
+    ol li a:hover {
+        text-decoration: none;
+    }
+
+    .mainleft div {
+        border: 1px solid grey;
+        padding-bottom: 20px;
+    }
+
+    .ttl {
+        margin-top: 0px;
+    }
+
+    .icchontep {
+        color: #E8CF6D;
+    }
+
+    input {
+        background: #fff;
+        color: #fff;
+        border: 0px;
+    }
+
+        input[readonly] {
+            cursor: pointer;
+            background-color: #fff !important;
+        }
+
+            input[readonly]:hover {
+                background-color: #D8B6EE !important;
+                cursor: pointer;
+            }
+
+    p {
+        text-align: right;
+    }
+</style>
+
+<div class="container">
+    <h3 class="ttl">QUẢN LÝ TÀI LIỆU ĐÀO TẠO</h3>
+   
+    <div class="mainleft">
+
+        <ol>
+            @{ var s = 0;}
+            @foreach (HR_Materials p in Model)
+                {
+                    s = s + 1;
+            <li data-clipboard-text="@p.LINK" class="btnClipboard">
+                @*<button type="button" class="btn btn-danger btnClipboard" data-clipboard-text="@p.LINK">copy</button>*@
+                <span class=" glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp @s . @p.NAME
+            </li>
+            }
+
+        </ol>
+    </div>
+</div>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script>
+    
+    (function () {
+        var clipboard = new ClipboardJS('.btnClipboard');
+        clipboard.on('success', function (e) {
+            //alert("Copied");
+            setTooltip(e.trigger, 'Copied!');
+            hideTooltip(e.trigger);
+        });
+
+        clipboard.on('error', function (e) {
+            setTooltip(e.trigger, 'Failed!');
+            hideTooltip(e.trigger);
+        });
+        //$('.btnClipboard').tooltip({
+        //    trigger: 'click',
+        //    placement: 'bottom'
+        //});
+    })();
+    
+
+    function setTooltip(btn, message) {
+        $(btn).tooltip('hide')
+            .attr('data-original-title', message)
+            .tooltip('show');
+    }
+
+    function hideTooltip(btn) {
+        setTimeout(function () {
+          //  $(btn).tooltip('hide');
+        }, 1000);
+    }
+
+
+</script>

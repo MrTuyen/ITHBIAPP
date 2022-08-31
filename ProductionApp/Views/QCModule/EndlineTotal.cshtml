@@ -1,0 +1,240 @@
+﻿@using ProductionApp.Models
+@using ProductionApp.Helpers
+@model List<EndlineTotalView>
+@{
+    //List<PROC_ACTUAL_SCAN_OUTPUT_BY_RANGE_DATE_GROUP_Result> ScanOutput = ViewBag.WSOutput;
+    DateTime FromDate = Convert.ToDateTime(ViewBag.FromDate);
+    DateTime ToDate = Convert.ToDateTime(ViewBag.ToDate);
+    ViewBag.Title = "ENLINE OVERVIEW";
+    PostbackValue PostBack = ViewBag.PostBack;
+    List<EndlineTOP5GroupView> Top5Group = ViewBag.Top5Group;
+    List<EndlineWarningDefectBiz> Warning = ViewBag.Warning;
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>Endline Total</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("EndlineTotal", "QCModule", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <div class="portlet box gray">
+        <div class="portlet-title">
+
+        </div>
+        <div class="portlet-body ">
+            <div class="row margin-bottom-10">
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    From
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name="txtFrom" id="txtFrom" class="form-control isdate" autocomplete="off" />
+                </div>
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    To
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name="txtTo" id="txtTo" class="form-control isdate" autocomplete="off" />
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit">
+                </div>
+            </div>
+            <div class="row margin-bottom-0 margin-top-20" id="DivShowData">
+                <div class="row">
+                    <div class="table-responsive" style="align-items: center; width: 95%; margin-left:40px">
+                        @* TABLE SHOW TOTAL DEFECT BY BUSSINESS*@
+                        <table class="table table-striped table-bordered table-hover align-center" id="example">
+                            <thead>
+                                <tr>
+                                    <th colspan="6" style="font:bold 13px arial; text-align:center;">PLANT TOTAL</th>
+                                </tr>
+                                <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                    <th style="text-align:center">Business</th>
+                                    <th style="text-align:center">Total Sample</th>
+                                    <th style="text-align:center">Total Defect</th>
+                                    <th style="text-align:center">OTFQ</th>
+                                    <th style="text-align:center">DPM</th>
+                                    <th style="text-align:center">DPM Target</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr style="">
+                                            <td style="height:15px;"><b>@Model[i].Business </b></td>
+                                            <td style="height:15px;">@Model[i].Total_Sample</td>
+                                            <td style="height:15px;">@Model[i].Total_Defect</td>
+                                            <td style="height:15px;">@Model[i].OTFQ</td>
+                                            <td style="height:15px;">@((Model[i].Total_Sample != 0 ? (Convert.ToDouble(Model[i].Total_Defect) / Convert.ToDouble(Model[i].Total_Sample) * 1000000).ToString("#,#") : "0"))</td>
+                                            <td style="height:15px;">@((Model[i].target).ToString("#,#")) </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <p></p>
+
+                        @* TABLE SHOW TOP 5 BY GOURP*@
+                        <table class="table table-striped table-bordered table-hover" style="width:45%; float:left" id="example1">
+                            <thead>
+                                <tr>
+                                    <th colspan="6" style="font:bold 13px arial; text-align:center;">TOP 5 BY GROUP</th>
+                                </tr>
+                                <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                    <th style="text-align:center">NO.</th>
+                                    <th style="text-align:center">Group</th>
+                                    <th style="text-align:center">DPM</th>
+                                    <th style="text-align:center">Audit(AVG)</th>
+                                    <th style="text-align:center">TOP 5 Defects</th>
+                                    <th style="text-align:center">TOP 5 Process</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Top5Group != null)
+                                {
+                                    for (int i = 0; i < Top5Group.Count; i++)
+                                    {
+                                        <tr>
+                                            <td style="height:15px;"><b>@(i + 1)</b></td>
+                                            <td style="height:15px;">@Top5Group[i].Line_Name </td>
+                                            <td style="height:15px;">@( (Top5Group[i].Rate * 100).ToString("#.##"))</td>
+                                            <td style="height:15px;">@Top5Group[i].Audit_Score </td>
+                                            <td style="height:15px;">@Top5Group[i].Top5_Defect </td>
+                                            <td style="height:15px;">@Top5Group[i].Top5_Process </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <p></p>
+
+                        @* TABLE SHOW WARNING TOP 5*@
+                        <table class="table table-striped table-bordered table-hover" style="width:30%; float:left;" id="example2">
+                            <thead>
+                                <tr>
+                                    <th colspan="3" style="font:bold 13px arial; text-align:center;">WARNING TOP 5 BY BUSINESS</th>
+                                </tr>
+                                <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                    <th style="text-align:center">Business</th>
+                                    <th style="text-align:center">Defect</th>
+                                    <th style="text-align:center"> Rate(%)/Biz</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Warning != null)
+                                {
+                                    for (int i = 0; i < Warning.Count; i++)
+                                    {
+                                        <tr style="">
+                                            @*<td style="height:15px;">@Model[i].Total_Sample</td>*@
+                                            <td style="height:15px;">@Warning[i].Business</td>
+                                            <td style="height:15px;">@Warning[i].Defect_Name</td>
+                                            <td style="height:15px;">@(Warning[i].Rate.ToString("#.##"))</td>
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        //$('#DivShowData').hide();
+        $("#Submit").click(function (e) {
+            var From = $('#txtFrom').val();
+            var To = $('#txtTo').val();
+            if (From == "") {
+                alert('Please select date!');
+                $('#txtFrom').focus();
+                e.preventDefault();
+                return 0;
+            }
+            if (To == "") {
+                alert('Please select date!');
+                $('#txtTo').focus();
+                e.preventDefault();
+                return 0;
+            }
+        });
+    </script>
+    <script src="~/Scripts/DataTables/datatables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+
+                ordering: false,
+                searching: false,
+                paging: false,
+                info: false,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        title: 'PLANT TOTAL'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: 'PLANT TOTAL'
+                    }
+                ]
+            })
+            $('#example1').DataTable({
+                ordering: false,
+                searching: false,
+                paging: false,
+                info: false,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        title: 'TOP 5 BY GROUP'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: 'TOP 5 BY GROUP'
+                    }
+                ]
+            })
+            $('#example2').DataTable({
+                ordering: false,
+                searching: false,
+                paging: false,
+                info: false,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        title: 'WARNING TOP 5 BY BUSINESS'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: 'WARNING TOP 5 BY BUSINESS'
+                    }
+                ]
+            })
+        });
+    </script>
+}

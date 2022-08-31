@@ -1,0 +1,183 @@
+﻿@using ProductionApp.Models
+@model List<DailyLocReport>
+@{
+    List<PROC_ACTUAL_SCAN_OUTPUT_BY_RANGE_DATE_Result> ScanOutput = ViewBag.WSOutput;
+    ViewBag.Title = "Location";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+             <small>Location Report</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("Location","Report", FormMethod.Post))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+
+    </div>
+    <div class="portlet-body ">
+        <div class="row margin-bottom-10">
+            <div class="col-md-2 bold" style="line-height: 32px; text-align: right">
+                From
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="txtFrom" id="txtFrom" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-2 bold" style="line-height: 32px; text-align: right">
+                To
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="txtTo" id="txtTo" class="form-control isdate" />
+            </div>
+            <div class="col-md-2">
+                <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit" >
+            </div>
+        </div>
+        <div class="row margin-bottom-10 margin-top-20" id="DivShowData">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:70%;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">No.</th>
+                                <th style="text-align:center">Plant</th>
+                                <th style="text-align:center">Work Shop</th>
+                                <th style="text-align:center">Group</th>
+                                <th style="text-align:center">Target</th>
+                                <th style="text-align:center">Actual</th>
+                                <th style="text-align:center">Efficiency</th>
+                                @*<th style="text-align:center">Scanner Qty</th>*@
+                                @*<th style="text-align:center">Detail</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.Count > 0)
+                            {
+                                int firt = 0; int last = 0;
+                                for (var i = 0; i < Model.Count; i++)
+                                {
+                                    last = i;
+                                    if (Model[firt].WorkShop != Model[last].WorkShop )
+                                    {
+                                        double total = 0;
+                                        for (int x = firt; x < last; x++)
+                                        {
+                                            total += Model[x].Output;
+                                        }
+
+                                        double total_Scan = 0;
+                                        for (int y = 0; y < ScanOutput.Count; y++)
+                                        {
+                                            if(Model[firt].WorkShop == ScanOutput[y].WS_NAME)
+                                            {
+                                                total_Scan = Convert.ToDouble(ScanOutput[y].TOTAL_QTY);
+                                            }
+                                        }
+                                        <tr>
+                                            <td colspan="5"></td>
+                                            <td colspan="1" style="background-color:darkseagreen; font:bold 12px arial;">
+                                                Total: @total
+                                            </td>
+                                            <td colspan="1" style="background-color:darkseagreen; font:bold 12px arial;">
+                                                WS Scan: @total_Scan
+                                            </td>
+                                        </tr>
+                                        firt = last;
+                                    }
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td>@Model[i].PlantName</td>
+                                        <td class="WS">@Model[i].WorkShop </td>
+                                        <td>@Model[i].GroupName  </td>
+                                        <td>@Model[i].Target </td>
+                                        <td>@Model[i].Output</td>
+                                        <td>@(Model[i].TotalSAH/Model[i].TotalHour) </td>
+                                    </tr>
+                                    if (last == Model.Count - 1)
+                                    {
+                                        double total = 0;
+                                        for (int x = firt; x < last; x++)
+                                        {
+                                            total += Model[x].Output;
+                                        }
+                                        double total_Scan = 0;
+                                        for (int y = 0; y < ScanOutput.Count; y++)
+                                        {
+                                            if (Model[firt].WorkShop == ScanOutput[y].WS_NAME)
+                                            {
+                                                total_Scan = Convert.ToDouble(ScanOutput[y].TOTAL_QTY);
+                                            }
+                                        }
+                                        <tr>
+                                            <td colspan="5"></td>
+                                            <td colspan="1" style="background-color:darkseagreen; font:bold 12px arial;">
+                                                Total: @total
+                                            </td>
+                                            <td colspan="1" style="background-color:darkseagreen; font:bold 12px arial;">
+                                                WS Scan: @total_Scan
+                                            </td>
+                                        </tr>
+
+                                    }
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        //$('#DivShowData').hide();
+        $("#Submit").click(function (e) {
+            var From = $('#txtFrom').val();
+            var To = $('#txtTo').val();
+            if (From == "") {
+                    alert('Please select date!');
+                    $('#txtFrom').focus();
+                    e.preventDefault();
+                    return 0;
+            }
+            if (To == "") {
+                alert('Please select date!');
+                $('#txtTo').focus();
+                e.preventDefault();
+                return 0;
+            }
+           
+   });
+
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿@using ProductionApp.Models
+<ul class="nav navbar-nav" style="margin-left:70px">
+
+
+
+    @{if(ViewBag.PagesParent != null) {
+          foreach(var item in (List<TBL_CATEGORIES>)ViewBag.PagesParent) {
+              var subs = ((List<TBL_CATEGORIES>)ViewBag.Pages).Where(f => f.CA_PARENT == item.CA_ID).ToList();
+              if(subs.Any()) {
+                <li>
+                    <a data-hover="dropdown" data-close-others="true" class="dropdown-toggle aclick" href="javascript:;">
+                        @item.CA_NAME
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+
+
+                        @foreach(var sub in subs) {
+                                    <li>
+                                        <a href="@sub.CA_URL" target="_self">@sub.CA_NAME</a>
+                                    </li>
+                                        if(sub.CA_SPLIT == true) {
+                                    <li>
+                                        <hr class="hr-menu" />
+                                    </li>
+                                        }
+                                    }
+
+
+
+
+                    </ul>
+                </li>
+              }
+          }
+      }}
+
+
+    @*<li>
+            <a data-hover="dropdown" data-close-others="true" class="dropdown-toggle" href="javascript:;" style="text-transform: uppercase">
+                Maintenance
+                <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+
+
+            </ul>
+        </li>*@
+
+
+</ul>
+
+
+<style>
+    .navbar-nav .show {
+        display: block;
+    }
+
+    .navbar-nav .hide {
+        display: none;
+    }
+</style>
+@section scripts
+{
+    <script>
+
+
+
+
+    </script>
+}

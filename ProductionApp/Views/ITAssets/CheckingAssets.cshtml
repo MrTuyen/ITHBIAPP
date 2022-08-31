@@ -1,0 +1,474 @@
+﻿@{
+    ViewBag.Title = "IT Assets";
+}
+@model List<ProductionApp.Models.IT_Fixed_Asset>
+
+@{
+    var listDept = ViewData["ListDepartment"] != null ? (List<ProductionApp.Models.TBL_DEPARTMENT_MST>)ViewData["ListDepartment"] ?? new List<ProductionApp.Models.TBL_DEPARTMENT_MST>() : new List<ProductionApp.Models.TBL_DEPARTMENT_MST>();
+    var listDivision = ViewData["ListDivision"] != null ? (List<ProductionApp.Models.TBL_DIVISION_MST>)ViewData["ListDivision"] ?? new List<ProductionApp.Models.TBL_DIVISION_MST>() : new List<ProductionApp.Models.TBL_DIVISION_MST>();
+    var listModel = ViewData["ListModel"] != null ? (List<ProductionApp.Models.IT_PC_Model_MST>)ViewData["ListModel"] ?? new List<ProductionApp.Models.IT_PC_Model_MST>() : new List<ProductionApp.Models.IT_PC_Model_MST>();
+}
+
+@section styles{
+
+    <style>
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .btn {
+            /*border: 2px solid gray !important;*/
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .IT-assets-area .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .IT-assets-area .fileUploadName {
+            color: black;
+        }
+
+        .IT-assets-area .header-right {
+            text-align: -webkit-right;
+        }
+
+        .IT-assets-area .modal-footer {
+            border-top: 0;
+        }
+
+        /*#modalITAssetsAddNewPC{
+         top: 50px;
+         text-align: -webkit-center;
+
+     }
+
+     .IT-assets-area .modal-lg {
+         width: 80%;
+         height: 80%;
+         margin: 0;
+         padding: 0;
+     }
+
+         .IT-assets-area .modal-lg .modal-content {
+             min-height: 100%;
+             border-radius: 0;
+         }*/
+        #modalITAssetsAddNewPC .select2-container {
+            width: 89.8% !important;
+            padding: 0;
+        }
+
+        #frmAssetFilter .select2-container {
+            width: 100% !important;
+            padding: 0;
+        }
+
+        .select2-container--open {
+            z-index: 9999999;
+        }
+        .IT-assets-area #frmAssetFilter{
+            width: 250px;
+        }
+        .IT-assets-area #txtITAssetsSearch{
+            /*height: 28.5px;*/
+            height: calc(1.5em + .5rem + 2px);
+        }
+        .page-content{
+            padding-top: 0!important;
+        }
+    </style>
+
+}
+
+<div class="IT-assets-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title text-center">
+                <small><strong>IT Assests Management</strong></small>
+            </h3>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="d-none d-sm-block">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 float-left">
+                            <div class="btn-group btn-filter">
+                                <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    <span class="fa fa-filter"></span> Filter
+                                </button>
+                                <div class="dropdown-menu p-3">
+                                    <form id="frmAssetFilter" action="/ITAssets/FilterByDivAndDept" method="POST">
+                                        <div class="form-row">
+                                            <div class="">
+                                                <p class="mb-1">Year</p>
+                                                <select class="form-control w-100" name="formSearch.YEAR">
+                                                    <option value="">Chưa kiểm kê</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2020">2020</option>
+                                                    <option value="2019">2019</option>
+                                                </select>
+                                            </div>
+                                            <div class="">
+                                                <p class="mb-1">Division</p>
+                                                <select id="select-div-filter" class="form-control w-100" name="formSearch.DIVISION">
+                                                    <option value="" selected disabled>Select item...</option>
+                                                    @foreach (var item in listDivision)
+                                                    {
+                                                        <option value="@item.ID">@item.NAME</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="">
+                                                <p class="mb-1">Department</p>
+                                                <select id="select-dept-filter" class="form-control w-100" name="formSearch.DEPT">
+                                                    <option value="" selected disabled>Select item...</option>
+                                                    @foreach (var item in listDept)
+                                                    {
+                                                        <option value="@item.DEPT_ID">@item.NAME</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="">
+                                                <p class="mb-1">Tag</p>
+                                                <input type="text" name="formSearch.TAG" class="form-control w-100" />
+                                            </div>
+                                            <div class="">
+                                                <p class="mb-1">Serial</p>
+                                                <input type="text" name="formSearch.SERIAL" class="form-control w-100" />
+                                            </div>
+                                            <div class="">
+                                                <p class="mb-1">User</p>
+                                                <input type="text" name="formSearch.USER" class="form-control w-100" />
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-4 text-right">
+                                            <input type="submit" class="btn btn-success btn-sm pl-5 pr-5" name="name" value="Submit" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modalITAssetsUpload"><i class="fa fa-upload"></i> &nbsp;Upload</button>
+                            <button type="button" class="btn btn-success btn-sm" onclick="OpenAddModal()"><i class="fa fa-plus"></i>&nbsp;Add</button>
+                            <button type="button" class="btn btn-light btn-sm" onclick="OpenScanModal()"><i class="fa fa-barcode"></i>&nbsp;Scan</button>
+                            <button type="submit" class="btn btn-light btn-sm" onclick="Print()"><i class="fa fa-print"></i>&nbsp;Print</button>
+                            <button type="button" class="btn btn-light btn-sm" onclick="ITAssetBackup()"><i class="fa fa-archive"></i>&nbsp;Backup</button>
+                            <button type="button" class="btn btn-light btn-sm" onclick="ITAssetRefresh()"><i class="fa fa-refresh"></i>&nbsp;Refresh</button>
+                            @if (ViewData["ExportFlag"] != null && (bool)ViewData["ExportFlag"] == true)
+                            {
+                                <form action="/ITAssets/ExportExcel" method="GET" class="inline">
+                                    <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-download"></i>&nbsp;Export</button>
+                                </form>
+                            }
+                        </div>
+                        <div class="col-sm-12 col-md-4 float-right form-inline header-right">
+                            <form action="/ITAssets/CheckingAssets" method="GET">
+                                <label>Total: &nbsp;</label> <span class="label label-info lbTotal">@Model.Count</span> record(s)
+                                <input type="text" id="txtITAssetsSearch" name="strSearch" class="form-control w-50" placeholder="Search by Serial, Tag, Division, Dept, User" />
+                                <button type="submit" class="btn btn-success btn-sm btnITAssetsSearch"> <i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body overflow-auto pt-0">
+                    <table class="table table-responsive table-hover table-bordered table-scrollable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tag</th>
+                                <th>Serial</th>
+                                <th>Model</th>
+                                <th>Pur Date</th>
+                                <th>Warranty</th>
+                                <th>Division</th>
+                                <th>Dept</th>
+                                <th>User</th>
+                                <th>Notes</th>
+                                <th>Status</th>
+                                <th>CountSheet</th>
+                            </tr>
+                        </thead>
+                        <tbody id="it-asset-content">
+                            @if (Model != null && Model.Count > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr id="it-asset-id-@item.ID" ondblclick="OpenUpdateModal(@item.ID)">
+                                        <td>@item.ID</td>
+                                        <td>@item.TAG</td>
+                                        <td>@item.SERIAL</td>
+                                        <td>@item.IT_PC_Model_MST.NAME</td>
+                                        <td>@item.PUR_DATE</td>
+                                        <td>@item.WARRANTY</td>
+                                        <td>@item.TBL_DIVISION_MST.NAME</td>
+                                        <td>@item.TBL_DEPARTMENT_MST.NAME</td>
+                                        <td>@item.USER</td>
+                                        <td>@item.NOTES</td>
+                                        <td>@item.STATUS</td>
+                                        <td>@item.COUNTSHEET</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal upload excel -->
+    <div id="modalITAssetsUpload" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Upload assets</b></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="w-100">
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>File: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <button class="btn btn-light">Upload a file</button>
+                                                <input type="file" name="UploadedFile" id="fileITAssetsUpload" onchange="UploadExcel()" accept=".xlsx, .xls" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sheet: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <select class="form-control selected-sheet" style="width: 116px;"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Header: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <input type="text" name="name" class="form-control selected-header" value="1" style="width: 116px" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Your selected file: </td>
+                                        <td><span class="label label-warning ml-3 fileUploadName"></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" id="btnUploadITAsset" onclick="UploadAsset()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Model add new PC -->
+    <div id="modalITAssetsAddNewPC" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b class="add-pc-title">Add new PC</b></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="txtID" placeholder="ID">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtTag">Tag</label>
+                            <input type="text" class="form-control" id="txtTag" placeholder="Tag" onkeydown="ScanTag()" autofocus>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtSerial">Serial</label>
+                            <input type="text" class="form-control" id="txtSerial" placeholder="Serial">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="txtModel">Model</label>
+                            <div class="form-inline">
+                                <select id="txtModel" class="form-control">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in listModel)
+                                    {
+                                        <option value="@item.ID">@item.NAME</option>
+                                    }
+                                </select>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddModel"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtPurDate">Pur Date</label>
+                            <input type="text" class="form-control isDate" id="txtPurDate" placeholder="Pur Date" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtWarrantyDate">Warranty Date</label>
+                            <input type="text" class="form-control isDate" id="txtWarrantyDate" placeholder="Warranty Date" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtUser">User</label>
+                            <input type="text" class="form-control" id="txtUser" placeholder="User">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="select-department">Department</label>
+                            <div class="form-inline">
+                                <select id="select-department" class="form-control">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in listDept)
+                                    {
+                                        <option value="@item.DEPT_ID">@item.NAME</option>
+                                    }
+                                </select>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddDept"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4">Division</label>
+                            <div class="form-inline">
+                                <select id="select-division" class="form-control">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in listDivision)
+                                    {
+                                        <option value="@item.ID">@item.NAME</option>
+                                    }
+                                </select>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddDiv"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtNote">Note</label>
+                            <input type="text" class="form-control" id="txtNote" placeholder="Note">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtStatus">Status</label>
+                            <input type="text" class="form-control isDate" id="txtStatus" placeholder="Status" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtCountsheet">Countsheet</label>
+                            <input type="text" class="form-control" id="txtCountsheet" placeholder="Countsheet" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe display-hide" id="btnAddAsset" onclick="AddAsset()">Submit</button>
+                    <button class="btn green purple-stripe display-hide" id="btnUpdateAsset" onclick="UpdateAsset()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal add model -->
+    <div id="modalAddModel" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Add new Model</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtNewModel">Name</label>
+                            <input type="text" class="form-control" id="txtNewModel" placeholder="Name" autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" id="btnAddNewModel" onclick="AddNewModel()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal add department -->
+    <div id="modalAddDept" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Add new Department</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtNewDept">Name</label>
+                            <input type="text" class="form-control" id="txtNewDept" autofocus placeholder="Name">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" id="btnAddNewDept" onclick="AddNewDept()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal add division -->
+    <div id="modalAddDiv" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Add new Division</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtNewDiv">Name</label>
+                            <input type="text" class="form-control" id="txtNewDiv" placeholder="Name" autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" id="btnAddNewDiv" onclick="AddNewDiv()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/HBI/Controller/ITAssetsController.js"></script>
+}

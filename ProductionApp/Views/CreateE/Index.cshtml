@@ -1,0 +1,359 @@
+﻿@*@model ECN.Models.ECNDetails*@
+
+@model ECN.Models.ViewECNModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+
+@using (Html.BeginForm())
+{
+    <!-- BEGIN PAGE HEADER-->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+            <h3 class="page-title">
+                ECN <small>create</small>
+            </h3>
+            <!-- END PAGE TITLE & BREADCRUMB-->
+        </div>
+    </div>
+    <!-- END PAGE HEADER-->
+
+    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+    <div class="portlet box gray">
+        <div class="portlet-title">
+            <div class="caption">
+            </div>
+            <div class="actions">
+                <button class="btn purple margin-bottom-10" type="submit" id="btnSave" name="Command" value="Save"><i class="fa fa-save"></i> Save</button>
+                <a href="/PE1/Index" class="btn red margin-bottom-10" style="margin-left: 20px"><i class="fa fa-trash-o"></i> Cancel</a>
+            </div>
+        </div>
+
+        <div class="portlet-body">
+            <div class="row margin-bottom-10">
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    ECN No
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(m =>m.ECNInforModel.ecnNo, new { @class = "form-control", @id = "txtEcnNO"})
+                </div>
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    PDM No
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(m => m.ECNInforModel.ecn.PDM_NO, new { @class = "form-control", @id = "txtPDMNO" })
+                </div>
+                <div class="col-md-1 bold" style="text-align: right; line-height: 32px">
+                    IN No
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(m => m.ECNInforModel.ecn.IN_NO, new { @class = "form-control", @id = "txtINNO" })
+                </div>
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    ECN Type
+                </div>
+                <div class="col-md-2">
+                    @Html.DropDownList("ecntypes",null , new { @class = "form-control bs-select", @data_width = "100%" , @id = "dlEcnTypes" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Title
+                </div>
+                <div class="col-md-5 margin-bottom-10">
+                    @Html.TextBoxFor(m => m.ECNInforModel.ecn.TITLE, new { @class = "form-control", @id = "txtTitle" })
+                </div>
+
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Period
+                </div>
+                <div class="col-md-2 margin-bottom-10" style="line-height: 32px; text-align: right">
+                    <input type="radio" name="period" value="p" /> Permanent
+                    <input type="radio" name="period" value="t" style="margin-left: 20px" /> Temporary
+                </div>
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Pl imp. date
+                </div>
+                <div class="col-md-2 margin-bottom-10">
+                    @Html.TextBoxFor(m => m.ECNInforModel.ecn.PLAN_IMP, new { @class = "isADate", @id = "dtPlanImp" })
+                </div>
+            </div>
+
+            <div class="row">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">Description</label>
+                    @Html.TextBoxFor(m => m.ECNInforModel.ecn.DESC, new { @class = "form-control margin-bottom-10", @style = "min-height: 200px", @id = "txtDesc" })
+                </div>
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">Affected products</label>
+                    @Html.ListBox("AffectedProducts", null, new { @class = "multi-select margin-bottom-10", @multiple = "multiple" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">Approvers</label>
+                    @Html.ListBox("lsApprovers", null, new { @class = "multi-select margin-bottom-10", @multiple = "multiple" })
+                </div>
+            </div>
+
+            <div class="row margin-top-10 margin-bottom-10">
+                <div class="col-md-4" style="text-align: center">
+                    <div class="col-md-12 bold" style="margin-bottom: 10px">Affected phases</div>
+                    <div class="col-md-12">
+                        @for (var i = 0; i < Model.ECNInforModel.lsPhases.Count; i++)
+                        {
+                            <div class="col-md-4" style="text-align: left; line-height: 36px; white-space: nowrap">
+                            <input type="checkbox" value="@Model.ECNInforModel.lsPhases[i].ID" name="phases" style="margin-left: 20px" /> @Model.ECNInforModel.lsPhases[i].PHASE_NAME </div>
+                            
+                        }
+                    </div>
+                </div>
+                <div class="col-md-4" style="text-align: center">
+                    <div class="col-md-12 bold" style="margin-bottom: 10px">Affected documents</div>
+                    <div class="col-md-12">
+                        @for (var i = 0; i < Model.ECNInforModel.lsDocs.Count; i++)
+                        {
+                            <div class="col-md-4" style="text-align: left; line-height: 36px; white-space: nowrap">
+                                <input type="checkbox" name="docs" value="@Model.ECNInforModel.lsDocs[i].ID" style="margin-left: 20px" /> @Model.ECNInforModel.lsDocs[i].DOC_NAME
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-4" style="text-align: center">
+                    <div class="col-md-12 bold" style="margin-bottom: 10px">SP Level</div>
+                    <div class="col-md-12">
+                        @for (var i = 0; i < Model.ECNInforModel.lsSP.Count; i++)
+                        {
+                            <div class="col-md-4" style="text-align: left; line-height: 36px; white-space: nowrap">
+                                <input type="checkbox" name="SPs" value="@Model.ECNInforModel.lsSP[i].ID" style="margin-left: 20px" /> @Model.ECNInforModel.lsSP[i].DESC
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-1 bold" style="line-height: 32px; text-align: right">@Html.Label(" ", " ", new { @id = "lblMessage" })</div>
+                </div>
+            </div>
+
+            <div class="row form-section" style="padding-bottom: 0; margin-top: 10px">
+                <h3>Material information</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Semi-product code file
+                </div>
+                <div class="col-md-11">
+                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                        <div class="input-group">
+                            <span class="input-group-btn" style="width: 83%">
+                                <span class="uneditable-input" style="width: 100%">
+                                    <i class="icon-file fileupload-exists"></i>
+                                    <span class="fileupload-preview"></span>
+                                </span>
+                            </span>
+                            <span class="btn default btn-file">
+                                <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select file</span>
+                                <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+                                <input type="file" class="default" id="fileUpload" name="MyFile" value="@*@Model.MaterialInforModel.materialInfor.MyFile*@" />
+                                @*@Html.TextBoxFor(m => Model.materialInfor.MAT_INFOR_FILE, new { @class = "default", @id = "txtMatInforFile" })*@
+                            </span>
+                            <a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px">
+                <div class="col-md-2" style="line-height: 32px">
+                    <label class="bold">Change type</label>
+                    @Html.DropDownList("MaterialChangeType", null, new { @class = "form-control", @id = "dlMaterialChangeType" })
+                </div>
+                <div class="col-md-2" style="line-height: 32px">
+                    <label class="bold">Material code</label>
+                    @Html.TextBox("txtMatCode", " ", new { @class = "form-control", @id = "txtMatCode" })
+                </div>
+                <div class="col-md-2" style="line-height: 32px">
+                    <label class="bold">Material name</label>
+                    @Html.TextBox("txtMatName", " ", new { @class = "form-control", @id = "txtMatName" })
+                </div>
+                <div class="col-md-2" style="line-height: 32px">
+                    <label class="bold">Current amount</label>
+                    @Html.TextBox("txtCurrAmount", " ", new { @class = "form-control", @id = "txtCurrAmount" })
+                </div>
+                <div class="col-md-2" style="line-height: 32px">
+                    <label class="bold">Change amount</label>
+                    @Html.TextBox("txtChangedAmount", "", new { @class = "form-control", @id = "txtChangedAmount" })
+                </div>
+                <div class="col-md-2" style="line-height: 32px">
+                    <button type="button" id="btnAdd" class="btn blue" style="margin-top: 34px"><i class="fa fa-plus"></i> Add</button>
+                </div>
+            </div>
+
+            <div id="materialchange">
+                @Html.Action("ShowMaterialChange", "CreateECN")
+            </div>            
+        </div>
+    </div>
+    <!-- END EXAMPLE TABLE PORTLET-->
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        jQuery(document).ready(function () {
+            $('.multi-select').multiSelect();
+            $('.isADate').datepicker({ dateFormat: "mm/dd/yy" });
+
+            //event of clicking on btnSave
+            $('#btnSave').click(function (e) {
+                var ecnNumber = $('#txtEcnNO').val();
+                var pdmNumber = $('#txtPDMNO').val();
+                var inNumber = $('#txtINNO').val();
+                var ecnTypes = $('#dlEcnTypes').val();
+                var parTitle = $('#txtTitle').val();
+                var parPeriod = $("input:radio[name = 'period']:checked").val();
+                var parPlanImpl = $('#dtPlanImp').val();
+                var parDesc = $('#txtDesc').val();
+
+                //get list products chosen
+                var parAffProducts = [];
+                $('#AffectedProducts').each(function () {
+                    parAffProducts = $.map($(':selected', this), function (n) {
+                        return $(n).val();
+                    }).join(',');
+                });
+                    
+
+
+                //get list persons chosen for approvers
+                var parApprovers = [];
+                $('#lsApprovers').each(function () {
+                    parApprovers = $.map($(':selected', this), function (n) {
+                        return $(n).val();
+                    }).join(',');
+                });
+                //alert("ecnNumber: " + ecnNumber + ", pdmNumber: " + pdmNumber + ", inNumber: " + inNumber + ", ecnTypes: " + ecnTypes + ", title: " + title + ", period: " + period + ", planImpl: " + planImpl + ", desc" + desc + ", affProducts: " + affProducts);
+
+                //event check boxes of Phases
+                //add checked item into an array
+                //all items will be stored in string phases
+                var arrPhases = []
+                $.each($("input[name='phases']:checked"), function () {
+                    arrPhases.push($(this).val());
+                });
+                var parPhases = arrPhases.join(",");
+
+                //similar things will be done for Documents and Salepack levels
+                var arrDocs = []
+                $.each($("input[name='docs']:checked"), function () {
+                    arrDocs.push($(this).val());
+                });
+                var parDocs = arrDocs.join(",");
+
+
+                //similar things will be done for Salepack levels
+                var arrSPs = []
+                $.each($("input[name='SPs']:checked"), function () {
+                    arrSPs.push($(this).val());
+                });
+                var parSP = arrSPs.join(",");
+
+
+                //alert("phases: " + phases);
+                //alert("docs:" + docs);
+                //alert("sps: " + SPs);
+                //alert("approvers: " + parApprovers);
+
+                if ((ecnNumber != "") && (pdmNumber != "") && (inNumber != "") && (parTitle != "") && (parDesc != "") && (parPeriod != "") && (parPlanImpl != "") && (parAffProducts != "") && (parApprovers != "") && (parDocs != "") && (parPhases != "") && (parSP != "")) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Content("~/CreateECN/AddNew/")',
+                        data: { ecn: ecnNumber, pdm: pdmNumber, inNO: inNumber, types: ecnTypes, title: parTitle, period: parPeriod, planImp: parPlanImpl, desc: parDesc, affProd: parAffProducts, phases: parPhases, docs: parDocs, sp: parSP, persons: parApprovers },
+                        success: function (response, status, XHR) {
+                            $("#lblMessage").text(response);
+                        },
+
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            $("#lblMessage").text(thrownError);
+                        }
+                    });
+                } else {
+                    e.preventDefault();
+                    alert("Some required information has not yet been entered. ");
+                }               
+
+            });
+
+
+            //event when click Add button to add Material Change
+            $('#btnAdd').click(function (e) {
+                var ecnNumber = $('#txtEcnNO').val();
+                var parMatChangeType = $('#dlMaterialChangeType').val();
+                var parMatCode = $('#txtMatCode').val();
+                var parMatName = $('#txtMatName').val();
+                var parCurrAmount = $('#txtCurrAmount').val();
+                var parChangedAmount = $('#txtChangedAmount').val();
+                var parFile = $('#fileUpload').val();
+
+                e.preventDefault();
+
+                if ((parMatCode != "") && (parMatName != "") && (parChangedAmount != "") && (parCurrAmount != "") && (parFile != "")) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Content("~/CreateECN/AddMatChangeType/")',
+                        data: { ecn: ecnNumber, type: parMatChangeType, matCode: parMatCode, matName: parMatName, currAmount: parCurrAmount, changedAmount: parChangedAmount, filePath: parFile },
+                        success: function (response, status, XHR) {
+                            //clear entered data
+                            $('#txtMatCode').val("");
+                            $('#txtMatName').val("");
+                            $('#txtCurrAmount').val("");
+                            $('#txtChangedAmount').val("");
+                            $('#fileUpload').val("");
+
+                            $.ajax({
+                                url: '@Url.Content("~/CreateECN/ShowMaterialChange?ecn=")' + ecnNumber,
+                                success: function (data, status, XHR) {
+                                    $('#materialchange').html(data);
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert('Cannot show updated material');
+                                }
+                            });
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Cannot update material');
+                        }
+                    });
+                } else {
+                    alert("Some required information has not yet been entered. ");
+                }                
+            });
+
+        });
+
+
+    </script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+}

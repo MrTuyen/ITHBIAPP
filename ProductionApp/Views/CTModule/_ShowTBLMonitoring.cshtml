@@ -1,0 +1,87 @@
+﻿@using ProductionApp.Models
+@model List<ViewCTTableMonitoringModel>
+@{
+    List<PROC_GET_CT_ACTIVATE_TBL_Result> ActTBL = ViewBag.ActTBL;
+    List<PROC_GET_CT_LAST_STT_BY_TBLNO_DATE_Result> AllTBLStt = ViewBag.AllTBLStt;
+}
+
+<table class="table-hover table"  style="width:100%; border:0px none; float: left; margin-top:15px;" cellpadding="0" cellspacing="0">
+    <thead style="border:1px solid black;">
+        <tr>
+            <td style="width:2%;">
+                <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:#d3d3d3; border-width:1px;"></div>
+            </td>
+            <td style="width:10%;">
+                WIP
+            </td>
+            <td style="width:2%;">
+                <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:#fff; border-width:1px;"></div>
+            </td>
+            <td style="width:10%;">
+                Cut Done
+            </td>
+            <td style="width:2%;">
+                <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:yellow; border-width:1px"></div>
+            </td>
+            <td style="width:10%;">
+                OVER DUE(4h)
+            </td>
+            <td style="width:2%;">
+                <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:orange; border-width:1px"></div>
+            </td>
+            <td style="width:10%;">
+                ENDLINE CHECKING
+            </td>
+
+            <td style="width:2%;">
+                <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:orangered; border-width:1px"></div>
+            </td>
+            <td style="width:10%;">
+                ENDLINE REJECT
+            </td>
+            <td style="width:2%;">
+                <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:greenyellow; border-width:1px"></div>
+            </td>
+            <td style="width:10%;">
+                ENDLINE PASS
+            </td>
+            <td style="width:40%;">
+                
+            </td>
+        </tr>
+    </thead>
+
+</table>
+@if (ActTBL != null)
+{ 
+for(int i = 0; i< ActTBL.Count; i++)
+{
+    <table class="table-hover table" style="width:16.66%; border:1px solid black; float:left" >
+        <thead>
+            <tr>
+                <td style="text-align:center; background-color:beige; font:bold 16px arial" colspan="3">@ActTBL[i].NAME</td>
+            </tr>
+            <tr style="text-align:center; font:bold 13px arial">
+                @*<td>Shift</td>*@
+                <td>WO#</td>
+                <td>Qty</td>
+                <td>Type</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                if(item.TableNo == ActTBL[i].TABLE_ID)
+                {
+                    <tr style="background-color:@item.color " >
+                        @*<td >@item.Shift</td>*@
+                        <td style="background-color:@item.color;">@item.WO</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.type</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    }
+}

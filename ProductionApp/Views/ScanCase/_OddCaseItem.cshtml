@@ -1,0 +1,17 @@
+﻿@using ProductionApp.Helpers
+@model ProductionApp.Models.TBL_CASE_LABEL
+@if (Model != null)
+{
+    <tr>
+        <td class="text-center">@(Utilities.GetMMDDYYYY(Model.TS_1.ToString()))</td>
+        <td class="text-center">@(Utilities.GetTT(Model.TS_1.ToString()))</td>
+        <td class="text-center">@Model.TBL_GROUP_MST.GROUP_NAME</td>
+        <td class="text-center">@Model.PkgStyle</td>
+        <td class="text-center">@Model.COLOR</td>
+        <td class="text-center">@Model.SIZE</td>
+        <td class="text-center">@Model.QUANTITY</td>
+        <td class="text-center">@Model.TS_1_USER</td>
+        @*<td class="text-center">@(Utilities.GetDDMMYYYY(Model.TS_1.ToString()))</td>*@
+    </tr>
+
+}

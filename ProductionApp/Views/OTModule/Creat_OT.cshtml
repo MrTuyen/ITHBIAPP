@@ -1,0 +1,877 @@
+﻿@{ ViewBag.Title = "Creat_OT"; }
+
+@using ProductionApp.Models
+@{
+    var user = (TBL_USERS_MST)ViewData["user"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var app = (OL_User_Approver)ViewData["app"];
+    var month = (OL_OT_Record_M)ViewData["month"];
+}
+@Html.Raw(TempData["msg"])
+<div style="">
+    <div class="row">
+        <div class="col-md-5">
+            <input type="radio" id="text" name="Register" value="1" onclick="my_check()" checked="checked" />
+            <label>Register for 1 person</label>
+            <input type="radio" id="halfday" name="Register" value="2" onclick="my_check()" />
+            <label>Register for more than 1</label>
+            <input type="radio" id="upload" name="Register" value="3" onclick="my_check()" />
+            <label>Upload</label>
+            <br />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row" id="one">
+                <div class="col-md-12">
+                    <div class="row">
+
+                        <div class="col-md-2 text-right ">
+
+                            <label style="">Select OT Code:</label><br />
+
+                            <select name="OTCD" id="OTCD" class="form-control">
+                                @foreach(OL_OTCode code in ViewBag.leave_code)
+                                {
+                                    <option value="@code.OTCD">@code.OTName</option>
+                                }
+                            </select><br />
+                            <label>Used OT hours/week:</label>
+                            <input type="text" name="text" id="week_one" readonly class="form-control text-right" />
+                            <br />
+                            <label>Used OT hours/month:</label>
+
+                            <input type="text" name="text" id="month_one" readonly class="form-control  text-right" />
+
+                        </div>
+                        <div class="col-md-10" style="border-left: 1px solid #e3e3e3;border-right: 1px solid #e3e3e3;">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Date:</label><br />
+                                    <input type="text" id="date" name="date" class="form-control isdate" autocomplete="off" onchange="Date1()" />
+                                </div>
+                                @*<div class="col-md-1">
+                                        <label>Week:</label><br />
+                                        <input type="text" id="week" name="week" class="form-control" value="@ViewBag.week" onchange="Week()" />
+                                    </div>*@
+                                <input type="hidden" id="week" name="week" class="form-control" value="@ViewBag.week" onchange="Week()" />
+                                <div class="col-md-2">
+                                    <label>From:</label><br />
+                                    <select class="form-control" style="display: inline-block; max-width: 65px" id="HoursFrom">
+                                        @foreach(OL_OT_Hours h in ViewBag.hours)
+                                        {
+                                            <option>@h.Hour</option>
+                                        }
+                                    </select>
+                                    <select class="form-control" style="display: inline-block;  max-width: 65px" id="MinFrom">
+                                        @foreach(OL_OT_Mins h in ViewBag.min)
+                                        {
+                                            <option>@h.Min</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>To:</label><br />
+                                    <select class="form-control" style="display: inline-block;  max-width: 65px" id="HoursTo">
+                                        @foreach(OL_OT_Hours h in ViewBag.hours)
+                                        {
+                                            <option>@h.Hour</option>
+                                        }
+                                    </select>
+                                    <select class="form-control" style="display: inline-block; max-width: 65px" id="MinTo">
+                                        @foreach(OL_OT_Mins h in ViewBag.min)
+                                        {
+                                            <option>@h.Min</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label>Van To Address:</label>
+
+                                    <input type="text" name="address" id="address" class="form-control" />
+                                </div>
+
+
+
+                                <div class="col-md-1">
+                                    <br />
+                                    <input type="submit" name="Add new" class="btn btn-info" value="Add" onclick="add_one()" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="table1">
+                                        <tr>
+                                            <td>No</td>
+                                            <td>OT Code</td>
+                                            <td>Week</td>
+                                            <td>Date</td>
+                                            <td>From</td>
+                                            <td>To</td>
+                                            <td>Total</td>
+                                            <td>Van to address</td>
+                                            <td></td>
+                                        </tr>
+                                        <tbody id="list_supply"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="more1">
+                        <br />
+                        <br />
+                        <hr />
+                        <div class="row bot-5 ">
+                            <div class="col-md-2 text-right"><span>Used OT hours/month:</span></div>
+                            <div class="col-md-10">
+                                <label>1:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C1" id="mone1" readonly class="form-control" />
+                                <label>2:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C2" id="mone2" readonly class="form-control" />
+                                <label>3:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C3" id="mone3" readonly class="form-control" />
+                                <label>4:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C4" id="mone4" readonly class="form-control" />
+                                <label>5:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C5" id="mone5" readonly class="form-control" />
+                                <label>6:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C6" id="mone6" readonly class="form-control" />
+                                <label>7:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C7" id="mone7" readonly class="form-control" />
+                                <label>8:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C8" id="mone8" readonly class="form-control" />
+                                <label>9:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C9" id="mone9" readonly class="form-control" />
+                                <label>10:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C10" id="mone10" readonly class="form-control" />
+                                <label>11:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C11" id="mone11" readonly class="form-control" />
+                                <label>12:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" value="@month.C12" id="mone12" readonly class="form-control" />
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-right">Total used OT hours/year:</div>
+                            <div class="col-md-10"><input type="text" name="text" value="@month.C12" id="total_one" readonly style="width: 60px; display: inline-block;" class="form-control" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row" id="more2">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2 text-right">
+                            <label>Employee:</label>
+                            <br />
+                            <select name="empid" id="empid" onchange="Month_more()" class="form-control bot-5">
+                                <option value="-1" selected="selected" disabled="disabled" class="Italic">select employee...</option>
+
+                                @foreach(OL_User_Approver code in ViewBag.user_list)
+                                {
+                                    <option value="@code.EmpID">@(code.EmpID + "-" + code.EmpName)</option>
+                                }
+                            </select>
+                            <br />
+                            <br />
+                            <label>OT Code:</label>
+                            <br />
+                            <select name="OTCD1" id="OTCD1" class="form-control  bot-5">
+                                @foreach(OL_OTCode code in ViewBag.leave_code)
+                                {
+                                    <option value="@code.OTCD">@code.OTName</option>
+                                }
+                            </select><br />
+
+                            <div style="text-align: right;">
+                                <label>Used OT hours/week:</label>
+                                <input type="text" name="text" id="week_more" readonly class="form-control text-right" />
+                                <br />
+                                <label>Used OT hours/month:</label>
+                                <input type="text" name="text" id="month_more" readonly="" class="form-control text-right" />
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-10" style="border-left: 1px solid #e3e3e3;border-right: 1px solid #e3e3e3;">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Date:</label><br />
+                                    <input type="text" id="date1" name="date1" class="form-control isdate" autocomplete="off" onchange="Date2()" />
+                                </div>
+                                @*<div class="col-md-1">
+                                        <label>Week:</label><br />
+                                        <input type="text" id="week_01" name="week_01" class="form-control" value="@ViewBag.week" />
+                                        <input type="text" id="week_01" name="week_01" class="form-control" value="@ViewBag.week" />
+                                    </div>*@
+                                <input type="hidden" id="week_01" name="week_01" class="form-control" value="@ViewBag.week" />
+                                <div class="col-md-2">
+                                    <label>From:</label><br />
+                                    <select style="display: inline-block; max-width: 65px" class="form-control" id="HoursFrom1">
+                                        @foreach(OL_OT_Hours h in ViewBag.hours)
+                                        {
+                                            <option>@h.Hour</option>
+                                        }
+                                    </select>
+                                    <select style="display: inline-block;  max-width: 65px" class="form-control" id="MinFrom1">
+                                        @foreach(OL_OT_Mins h in ViewBag.min)
+                                        {
+                                            <option>@h.Min</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>To:</label><br />
+                                    <select style="display: inline-block; max-width: 65px" class="form-control" id="HoursTo1">
+                                        @foreach(OL_OT_Hours h in ViewBag.hours)
+                                        {
+                                            <option>@h.Hour</option>
+                                        }
+                                    </select>
+                                    <select style="display: inline-block; max-width: 65px" class="form-control" id="MinTo1">
+                                        @foreach(OL_OT_Mins h in ViewBag.min)
+                                        {
+                                            <option>@h.Min</option>
+                                        }
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-5">
+                                    <label>Van To Address:</label>
+
+                                    <input type="text" name="address1" id="address1" class="form-control" />
+                                </div>
+
+                                <div class="col-md-1">
+                                    <br />
+                                    <input type="submit" name="Add new " class="btn btn-info" value="Add" onclick="add_more()" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="table2">
+                                        <tr style="">
+                                            <td>No</td>
+                                            <td>OT Code</td>
+                                            <td>Emp Name</td>
+                                            <td>Week</td>
+                                            <td>Date</td>
+                                            <td>From</td>
+                                            <td>To</td>
+                                            <td>Total</td>
+                                            <td>Van to address</td>
+                                            <td></td>
+                                        </tr>
+                                        <tbody id="list_supply1"></tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="more3">
+                        <br />
+                        <br />
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-2 text-right"><span>Used OT hours/month:</span></div>
+                            <div class="col-md-10">
+                                <label>1:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month1" readonly class="form-control" />
+                                <label>2:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month2" readonly class="form-control" />
+                                <label>3:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month3" readonly class="form-control" />
+                                <label>4:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month4" readonly class="form-control" />
+                                <label>5:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month5" readonly class="form-control" />
+                                <label>6:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month6" readonly class="form-control" />
+                                <label>7:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month7" readonly class="form-control" />
+                                <label>8:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month8" readonly class="form-control" />
+                                <label>9:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month9" readonly class="form-control" />
+                                <label>10:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month10" readonly class="form-control" />
+                                <label>11:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month11" readonly class="form-control" />
+                                <label>12:</label>
+                                <input type="text" name="text" style="width: 45px; display: inline-block;" id="month12" readonly class="form-control" />
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-right">Total used OT hours/year:</div>
+                            <div class="col-md-10"><input type="text" name="text" id="total_more" readonly style="width: 60px; display: inline-block;" class="form-control" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-2" id="info1">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label>Requester Name</label>
+                        <br />
+                        <input type="text" name="name" value="@user.FULLNAME" readonly class="form-control" />
+                        <input type="text" name="mail" value="@user.EMAIL" readonly class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <br />
+                        <select name="dept" id="dept" readonly class="form-control">
+                            <option value="@dept.DEPT_ID">@dept.NAME</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Approver</label>
+                        <br />
+                        <input type="text" name="approver" value="@app.ApproverName" id="approver" readonly class="form-control" />
+                        <input type="text" name="approverMail" value="@app.ApproverEmail" id="approverMail" readonly class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>HR PIC</label>
+                        <br />
+                        <select name="nameHR" id="nameHR" onchange="HR()" class="form-control">
+                            @foreach(TBL_SYSTEM item in ViewBag.hr)
+                            {
+                                <option value="@item.id">@item.fullname</option>
+                            }
+                        </select>
+                        <input type="text" name="mailHR" value="" id="mailHR" readonly class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Reason:</label>
+                        <br />
+                        <input type="text" name="note" id="note" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" name="" class="btn btn-info" onclick="Submit()">Submit</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    @using(Html.BeginForm("Upload_More" ,"OTModule" ,FormMethod.Post ,new
+    {
+        enctype = "multipart/form-data"
+    }))
+    {
+
+
+        <div id="info3">
+            <div class="row">
+                <div class="col-md-5">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" id="UploadedFile" /></p>
+                </div>
+                <div class="col-md-3" style="margin-top: 20px;">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-2">
+
+                    <div class="form-group">
+                        <label>Department</label>
+                        <br />
+                        <select name="dept" id="dept1" readonly class="form-control">
+                            <option value="@dept.DEPT_ID">@dept.NAME</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+
+                    <div class="form-group">
+                        <label>Requester Name</label>
+                        <br />
+                        <input type="text" name="name" value="@user.FULLNAME" readonly class="form-control" />
+                        <input type="text" name="mail" value="@user.EMAIL" readonly class="form-control" />
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Approver</label>
+                        <br />
+                        <input type="text" name="approver" value="@app.ApproverName" id="approver1" readonly class="form-control" />
+                        <input type="text" name="approverMail" value="@app.ApproverEmail" id="approverMail1" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>HR PIC</label>
+                        <br />
+                        <select name="nameHR" id="nameHR1" onchange="HR1()" class="form-control">
+                            @foreach(TBL_SYSTEM item in ViewBag.hr)
+                            {
+                                <option value="@item.id">@item.fullname</option>
+                            }
+                        </select>
+                        <input type="text" name="mailHR" value="" id="mailHR1" readonly class="form-control" />
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    }
+</div>
+@section styles
+{
+    <style>
+        #more3, #more2, #info2, #info3 {
+            display: none;
+        }
+    </style>
+
+
+}
+
+
+@section scripts
+{
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+    </script>
+    <script>
+
+        $(window).on("load", function () {
+            $('#empid').select2({ width: '100%' });
+            load();
+            total_month_one();
+
+            var id = $("#nameHR").val();
+            $.get("/OTModule/load_cb/", { id: id }, function (data) {
+                $("#mailHR").val(data.value);
+            });
+            var id1 = $("#nameHR1").val();
+            $.get("/OTModule/load_cb/", { id: id1 }, function (data) {
+                $("#mailHR1").val(data.value);
+            });
+
+            if ($("input[name='Register']:checked").val() == "1") {
+                var week = $("#week").val();
+                $.get("/OTModule/Week_one/", { week: week }, function (data) {
+                    $("#week_one").val(data);
+                });
+                var date = $("#date").val();
+                if (date != null)
+                    $.get("/OTModule/Month_one/", { date: date }, function (data) {
+                        $("#month_one").val(data);
+                    });
+            } else {
+                var date = $("#date1").val();
+                var empid = $("#empid").val();
+                var week = $("#week_01").val();
+                if ($("input[name='Register']:checked").val() == "2") {
+                    var week = $("#week_01").val();
+                    $.get("/OTModule/Week_one1/", { week: week, empid: empid }, function (data) {
+                        $("#week_more").val(data);
+                    });
+                    if (date != null)
+                        $.get("/OTModule/Month_one1/", { date: date, empid: empid }, function (data) {
+                            $("#month_more").val(data);
+                        });
+                }
+                $.get("/OTModule/Month_more/", { empid: empid }, function (data) {
+                    $("#month1").val(data.C1);
+                    $("#month2").val(data.C2);
+                    $("#month3").val(data.C3);
+                    $("#month4").val(data.C4);
+                    $("#month5").val(data.C5);
+                    $("#month6").val(data.C6);
+                    $("#month7").val(data.C7);
+                    $("#month8").val(data.C8);
+                    $("#month9").val(data.C9);
+                    $("#month10").val(data.C10);
+                    $("#month11").val(data.C11);
+                    $("#month12").val(data.C12);
+                    total_month_more();
+                });
+            }
+        });
+        function total_month_more() {
+            var m1 = $("#month1").val();
+            var m2 = $("#month2").val();
+            var m3 = $("#month3").val();
+            var m4 = $("#month4").val();
+            var m5 = $("#month5").val();
+            var m6 = $("#month6").val();
+            var m7 = $("#month7").val();
+            var m8 = $("#month8").val();
+            var m9 = $("#month9").val();
+            var m10 = $("#month10").val();
+            var m11 = $("#month11").val();
+            var m12 = $("#month12").val();
+            var total_more = parseFloat(m1) + parseFloat(m2) + parseFloat(m3) + parseFloat(m4) + parseFloat(m5) + parseFloat(m6) + parseFloat(m7) + parseFloat(m8) + parseFloat(m9) + parseFloat(m10) + parseFloat(m11) + parseFloat(m2);
+            $("#total_more").val(total_more);
+        }
+        function total_month_one() {
+            var m1 = $("#mone1").val();
+            var m2 = $("#mone2").val();
+            var m3 = $("#mone3").val();
+            var m4 = $("#mone4").val();
+            var m5 = $("#mone5").val();
+            var m6 = $("#mone6").val();
+            var m7 = $("#mone7").val();
+            var m8 = $("#mone8").val();
+            var m9 = $("#mone9").val();
+            var m10 = $("#mone10").val();
+            var m11 = $("#mone11").val();
+            var m12 = $("#mone12").val();
+            var total_more = parseFloat(m1) + parseFloat(m2) + parseFloat(m3) + parseFloat(m4) + parseFloat(m5) + parseFloat(m6) + parseFloat(m7) + parseFloat(m8) + parseFloat(m9) + parseFloat(m10) + parseFloat(m11) + parseFloat(m2);
+            $("#total_one").val(total_more);
+        }
+        function HR() {
+            var id = $("#nameHR").val();
+            $.get("/OTModule/load_cb/", { id: id }, function (data) {
+                $("#mailHR").val(data.value);
+            });
+        }
+        function HR1() {
+            var id = $("#nameHR1").val();
+            $.get("/OTModule/load_cb/", { id: id }, function (data) {
+                $("#mailHR1").val(data.value);
+            });
+        }
+
+        function my_check() {
+            if ($("input[name='Register']:checked").val() == "1") {
+                $("#one").show();
+                $("#more1").show();
+                $("#more2").hide();
+                $("#more3").hide();
+                $("#info1").show();
+                $("#info2").hide();
+                $("#info3").hide();
+                load();
+            } else {
+                if ($("input[name='Register']:checked").val() == "2") {
+                    $("#one").hide();
+                    $("#more1").hide();
+                    $("#more2").show();
+                    $("#info1").show();
+                    $("#more3").show();
+                    $("#table3").hide();
+                    $("#table2").show();
+                    $("#info3").hide();
+                    load1();
+                }
+                else {
+                    if ($("input[name='Register']:checked").val() == "3") {
+                        $("#info1").hide();
+                        $("#one").hide();
+                        $("#more1").hide();
+                        $("#more2").hide();
+                        $("#more3").hide();
+                        $("#info3").show();
+                        $("#table3").hide();
+                        $("#table2").hide();
+                    }
+                }
+            }
+        }
+        function Date1() {
+            var date = $("#date").val();
+            $.get("/OTModule/Date/", { date: date }, function (data) {
+                $("#week").val(data);
+                var week = $("#week").val();
+                $.get("/OTModule/Week_one/", { week: week }, function (data) {
+                    $("#week_one").val(data);
+                });
+                $.get("/OTModule/Month_one/", { date: date }, function (data) {
+                    $("#month_one").val(data);
+                });
+            });
+        }
+        function Month_more() {
+            var empid = $("#empid").val();
+            $.get("/OTModule/Month_more/", { empid: empid }, function (data) {
+                $("#month1").val(data.C1);
+                $("#month2").val(data.C2);
+                $("#month3").val(data.C3);
+                $("#month4").val(data.C4);
+                $("#month5").val(data.C5);
+                $("#month6").val(data.C6);
+                $("#month7").val(data.C7);
+                $("#month8").val(data.C8);
+                $("#month9").val(data.C9);
+                $("#month10").val(data.C10);
+                $("#month11").val(data.C11);
+                $("#month12").val(data.C12);
+                total_month_more();
+            });
+            var week = $("#week_01").val();
+            $.get("/OTModule/Week_one1/", { week: week, empid: empid }, function (data) {
+                $("#week_more").val(data);
+            });
+            var date = $("#date1").val();
+            $.get("/OTModule/Month_one1/", { date: date, empid: empid }, function (data) {
+                $("#month_more").val(data);
+            });
+            $("#address1").val("");
+
+        }
+        function Date2() {
+            var date = $("#date1").val();
+            var empid = $("#empid").val();
+            var week = $("#week_01").val();
+            $.get("/OTModule/Date/", { date: date }, function (data) {
+                $("#week_01").val(data);
+                var week = $("#week_01").val();
+                $.get("/OTModule/Week_one1/", { week: week, empid: empid }, function (data) {
+                    $("#week_more").val(data);
+                });
+                $.get("/OTModule/Month_one1/", { date: date, empid: empid }, function (data) {
+                    $("#month_more").val(data);
+                });
+            });
+        }
+        function add_one() {
+            var OTCD = $("#OTCD").val();
+            var date = $("#date").val();
+            var week = $("#week").val();
+            var HoursFrom = $("#HoursFrom").val();
+            var HoursTo = $("#HoursTo").val();
+            var MinFrom = $("#MinFrom").val();
+            var MinTo = $("#MinTo").val();
+            var total_one = $("#total_one").val();
+            var address = $("#address").val();
+            var van = 0;
+            if ($("#van").is(":checked")) {
+                van = 1;
+            }
+            else {
+                van = 0;
+            }
+            $.get("/OTModule/Add_OT_One", { OTCD: OTCD, date: date, week: week, HoursFrom: HoursFrom, HoursTo: HoursTo, MinFrom: MinFrom, MinTo: MinTo, total_one: total_one, van: van, address: address }, function (data) {
+                if (data !== "OK")
+                    PushAlert('Digitalization', data, 'lime');
+                load();
+            });
+
+
+        }
+        function add_more() {
+            var OTCD = $("#OTCD1").val();
+            var date = $("#date1").val();
+            var week = $("#week_01").val();
+            var HoursFrom = $("#HoursFrom1").val();
+            var HoursTo = $("#HoursTo1").val();
+            var MinFrom = $("#MinFrom1").val();
+            var MinTo = $("#MinTo1").val();
+            var empid = $("#empid").val();
+            var total_more = $("#total_more").val();
+            var address1 = $("#address1").val();
+            var van1 = 0;
+            if ($("#van1").is(":checked")) {
+                van1 = 1;
+            }
+            else {
+                van1 = 0;
+            }
+            $.get("/OTModule/Add_Morefull", {
+                OTCD: OTCD, date: date, week: week, HoursFrom: HoursFrom, HoursTo: HoursTo, MinFrom: MinFrom,
+                MinTo: MinTo, empid: empid, total_more: total_more, van: van1, address1: address1
+            }, function (data) {
+                if (data !== "OK")
+                    PushAlert('Digitalization', data, 'lime');
+                load1();
+            });
+        }
+
+        function load() {
+            $("#list_supply").html("");
+            $.get("/OTModule/Load", function (data) {
+                if (data != null)
+                    $.each(data, function (i, val) {
+
+                        $("#list_supply").append(
+                        " <tr>\
+                   <td>" +
+                            (i + 1) +
+                            "</td>\
+                   <td>" +
+                            val.OT_Name +
+                            "</td>\
+                   <td>" +
+                            val.WWork +
+                            "</td>\
+                   <td>" +
+                            val.OTDate +
+                            "</td>\
+                   <td>" +
+                        (val.HoursFrom < 10 ? "0" : "") + val.HoursFrom + ":" + (val.MinFrom < 10 ? "0" : "") + val.MinFrom +
+                            "</td>\
+                   <td>" +
+                        (val.HoursTo < 10 ? "0" : "") + val.HoursTo + ":" + (val.MinTo < 10 ? "0" : "") + val.MinTo +
+                            "</td>\
+                   <td>" +
+                            val.total +
+                            "</td>\
+                        <td>" +
+                            val.address +
+                            "</td>\
+                   <td><a class='test' data-id=" + val.OTCD + ">Delete</a></td>\
+               </tr>"
+                    );
+
+
+                    });
+            });
+        }
+        $(document).on('click', '.test', function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: '@(Url.Action("Delete"))',
+                type: 'POST',
+                data: JSON.stringify({
+                    id: id
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    load();
+                }
+            });
+        });
+        function load1() {
+            $("#list_supply1").html("");
+            $.get("/OTModule/Load1", function (data) {
+                if (data != null)
+                    $.each(data, function (i, val) {
+
+                        $("#list_supply1").append(
+                        " <tr>\
+                   <td>" +
+                            (i + 1) +
+                            "</td>\
+                   <td>" +
+                            val.OT_Name +
+                            "</td>\
+                   <td>" +
+                            val.EmpName +
+                            "</td>\
+                    <td>" +
+                           val.WWork +
+                           "</td>\
+                        <td>" +
+                            val.OTDate +
+                            "</td>\
+                    <td>" +
+                        (val.HoursFrom < 10 ? "0" : "") + val.HoursFrom + ":" + (val.MinFrom < 10 ? "0" : "") + val.MinFrom +
+                        "</td>\
+                   <td>" +
+                        (val.HoursTo < 10 ? "0" : "") + val.HoursTo + ":" + (val.MinTo < 10 ? "0" : "") + val.MinTo +
+                        "</td>\<td>" +
+                            val.total +
+                            "</td>\
+                        <td>" +
+                            val.Address +
+                            "</td>\
+                   <td><a class='test1' data-id=" + val.id + ">Delete</a></td>\
+               </tr>"
+                    );
+
+                    });
+            });
+        }
+        $(document).on('click', '.test1', function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: '@(Url.Action("Delete1"))',
+                type: 'POST',
+                data: JSON.stringify({
+                    id: id
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    load1();
+                }
+            });
+        });
+        function Submit() {
+            var section = "";
+            var dept = $("#dept").val();
+            var approver = $("#approver").val();
+            var approverMail = $("#approverMail").val();
+            var nameHR = $("#nameHR").val();
+            var mailHR = $("#mailHR").val();
+            var note = $("#note").val();
+
+            if ($("#text").is(":checked")) {
+                var week_one = $("#week_one").val();
+                var month_one = $("#month_one").val();
+                $.get(
+                    "/OTModule/OT_One",
+                    {
+
+                        section: section,
+                        dept: dept,
+                        approver: approver,
+                        approverMail: approverMail,
+                        nameHR: nameHR,
+                        mailHR: mailHR,
+                        note: note,
+                        week_one: week_one,
+                        month_one: month_one,
+                    },
+                    function (data) {
+                        window.location = "/OTModule/List_OT";
+                        PushAlert('Digitalization', data, 'lime');
+                    }
+                );
+            }
+            else {
+                var week_more = $("#week_01").val();
+                var date_more = $("#date1").val();
+                if ($("#halfday").is(":checked")) {
+                    $.get(
+                        "/OTModule/App_OT_More",
+                        {
+                            section: section,
+                            dept: dept,
+                            approver: approver,
+                            approverMail: approverMail,
+                            nameHR: nameHR,
+                            mailHR: mailHR,
+                            note: note,
+                            week_more: week_more,
+                            date_more: date_more,
+                        },
+                        function (data) {
+                            window.location = "/OTModule/List_OT";
+                            PushAlert('Digitalization', data, 'lime');
+                        }
+                    );
+                }
+            }
+        }
+
+
+    </script>
+}

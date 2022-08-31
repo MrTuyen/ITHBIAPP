@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Stationary Detail";
+}
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+    var order = (STA_Orders)ViewData["order"];
+    var list = (List<STA_Order_Item>)ViewData["list"];
+
+    decimal tongtien = 0;
+    ViewBag.total = 0;
+    foreach(STA_Order_Item tb in db.STA_Order_Item.Where(s => s.OrderID == order.OrderId).ToList()) {
+        tongtien = tongtien + decimal.Parse((tb.Qty * tb.Price).ToString());
+    }
+    ViewBag.total = tongtien;
+
+
+}
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .table > tbody > tr > td {
+            border: 1px solid #ddd;
+        }
+
+        #table > tbody > tr > td {
+            border: none;
+        }
+         #table1 > tbody > tr > td {
+            border: none;
+            text-align:left
+        }
+    </style>*@
+
+<h3 style="text-align: center;margin-bottom: 30px;">PHIẾU ĐỀ NGHỊ VĂN PHÒNG PHẨM / STATIONERY REQUEST APPROVAL</h3>
+
+
+<div class="panel panel-default" id="panel-oddcase">
+    <div class="panel-heading">Approval process</div>
+    <div class="panel-body">
+
+        <div class="row">
+            <div class="col-md-3">Description:<br /><input type="text" name="description" class="form-control" value="@order.Description" /></div>
+            <div class="col-md-3">FeedBack:<br /><input name="feeback" class="form-control" value="@order.FeedBack" /></div>
+            <div class="col-md-2">Tổng tiền/Total Amount: <br /><span id="tongtien" style="text-align: right; font-weight: bold">@string.Format("{0:#,##0}" ,ViewBag.total) VNĐ</span></div>
+            <div class="col-md-3">
+                <br />
+                @using(Html.BeginForm("Approve" ,"Stationary" ,FormMethod.Post ,new { id = order.OrderId ,@class = "form-horizontal" ,role = "form" })) {
+                    if(order.Status == 1) {
+                        <input type="hidden" id="id" name="id" value="@order.OrderId" />
+                        <input type="submit" name="" class="btn btn-primary" value="Approve" style="width: 80px">
+                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_theme_primary" style="width: 80px">Reject</a>
+                    }
+                }
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<table class="table table-bordered" style="width: 100%;margin: auto;">
+    <tr style="background-color:#f5f5f5">
+        <th>#</th>
+        <th>Item</th>
+        <th>Giá tiền/Unit Price</th>
+        <th>Số lượng/Quantity</th>
+        <th>Đơn vị tính/UOM</th>
+        <th>Thành tiền/Total Amount</th>
+        <th>Chú thích/Notes</th>
+    </tr>
+    @{ int i = 0;}
+    @foreach(STA_Order_Item item in list) {
+        i++;
+        var sta = db.STA_Item.Find(item.StaId);
+        <tr>
+            <td class="text-center">@i</td>
+            <td>@sta.StaName</td>
+            <td class="text-right">@string.Format("{0:#,##0}" ,item.Price)</td>
+            <td class="text-right">@item.Qty</td>
+            <td class="text-center">@sta.Unit</td>
+            <td class="text-right">@string.Format("{0:#,##0}" ,item.Price * item.Qty)</td>
+            <td>@item.Note</td>
+        </tr>
+    }
+</table>
+
+
+
+<div id="modal_theme_primary" class="modal fade in" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Lý do không phê duyệt</h5>
+            </div>
+            @using(Html.BeginForm("Manager_Reject" ,"Stationary" ,FormMethod.Post ,new { id = order.OrderId ,@class = "form-horizontal" ,role = "form" })) {       <input type="hidden" id="id" name="id" value="@order.OrderId" />
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+                    <fieldset>
+
+
+
+                        <textarea class="form-control" name="body"></textarea>
+
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                </div>
+            }
+        </div>
+    </div>
+</div>

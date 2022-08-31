@@ -1,0 +1,460 @@
+﻿@{
+    ViewBag.Title = "Index";
+
+    var user = (ProductionApp.Models.UserModels)ViewData["user"];
+    var planning = user.DeptID == 6 ? "display-block" : "display-none";
+    
+    var listPlants = (List<ProductionApp.Models.TBL_PLANT_MST>)ViewData["Plant"];
+    var listWC = (List<string>)ViewData["WC"];
+}
+
+@section styles{
+    <style>
+    .upload-btn-wrapper {
+         position: relative;
+         overflow: hidden;
+         display: inline-block;
+     }
+
+    .btn {
+         /*border: 2px solid gray !important;*/
+         padding: 8px 20px;
+         border-radius: 8px;
+         font-size: 20px;
+         font-weight: bold;
+         cursor: pointer;
+     }
+     .page-content {
+         padding-top: 0 !important;
+     }
+
+     .muv-cutting-area input[type=checkbox]{
+         transform: scale(1.5);
+         cursor: pointer;                                                                                                           
+     }
+
+     .muv-cutting-area .upload-btn-wrapper input[type=file] {
+         width: 115px;
+         height: 35px;
+         position: absolute;
+         left: 0;
+         top: 0;
+         opacity: 0;
+     }
+
+     .muv-cutting-area .fileUploadName {
+         color: black;
+     }
+
+     .diamond-narrow {
+        width: 0;
+        height: 0;
+        border: 13px solid transparent;
+        border-bottom: 14px solid red;
+        position: relative;
+        top: -15px;
+    }
+    .diamond-narrow:after {
+        content: '';
+        position: absolute;
+        left: -13px;
+        top: 14px;
+        width: 0;
+        height: 0;
+        border: 13px solid transparent;
+        border-top: 13px solid red;
+    }
+  
+    .circle {
+      width: 25px;
+      height: 25px;
+      background: green;
+      border-radius: 50%
+    }
+
+    .triangle-up {
+        width: 0;
+        height: 0;
+        border-left: 13px solid transparent;
+        border-right: 13px solid transparent;
+        border-bottom: 20px solid orange;
+    }
+
+    #table1 td, #table2 td, #table3 td, #table4 td, #table1-var td, #table2-var td, #table3-var td, #table4-var td{
+        text-align: center;
+    }
+
+    .symbol {
+        display: flex;
+        border-top: none !important;
+        justify-content: space-between;
+    }
+    .sum{
+        display: flex;
+        justify-content: space-between;
+    }
+    </style>
+}
+
+<div class="muv-cutting-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title text-center">
+                <small><strong>MUV Cutting</strong></small>
+            </h3>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="d-sm-block">
+            @*Selection*@
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 float-left form-inline">
+                            <button type="button" class="btn btn-success btn-sm @planning" data-toggle="modal" data-target="#modalUploadSelling"><i class="fa fa-upload"></i>&nbsp;Upload WC</button>
+                            <button type="button" class="btn btn-success btn-sm @planning" data-toggle="modal" data-target="#modalUploadTarget"><i class="fa fa-upload"></i>&nbsp;Upload Target</button>
+                            <button type="button" class="btn btn-light btn-sm" onclick="Report()"><i class="fa fa-download"></i>&nbsp;Report</button>
+                            <button type="button" class="btn btn-light btn-sm" onclick="Refresh()"><i class="fa fa-refresh"></i>&nbsp;Refresh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body overflow-auto pt-3">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-2">
+                            <label for="txtPlant"><b>Plant</b></label>
+                            <select class="form-control" id="txtPlant">
+                                <option value="" selected>Select All</option>
+                                @foreach (var item in listPlants)
+                                {
+                                    <option value="@item.PLANT_ID">@item.PLANT_ID</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-3 col-md-2">
+                            <label for="txtFromDate"><b>From date</b></label>
+                            <input type="text" class="form-control isDate" id="txtFromDate" />
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-sm-12">
+                            <label for="txtWC"><b>WC</b></label>
+                            <div class="ml-1">
+                                <table>
+                                    @for (int i = 0; i < 3; i++)
+                                    {
+                                        <tr>
+                                            @for (int j = 0; j < 5; j++)
+                                            {
+                                                var index = i * 5 + j;
+                                                if (index < listWC.Count)
+                                                {
+                                                    var item = listWC[index];
+                                                    <td style="width: 180px">
+                                                        <label class="mr-4 mb-3">
+                                                            <input type="checkbox" name="wc" value="@item" />&nbsp; @item
+                                                        </label>
+                                                    </td>
+                                                }
+                                            }
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-3 col-md-2">
+                            <label for="txtView"><b>View</b></label>
+                            <select class="form-control" id="txtView" onchange="ViewChange()">
+                                <option value="1">By Weekly/ MTD</option>
+                                <option value="2">By Daily/ WTD</option>
+                                <option value="3">By Style</option>
+                                <option value="4">By Fabric</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3 col-md-2">
+                            <br />
+                            <button type="button" class="btn btn-light" onclick="Clear()">&nbsp;Clear</button>
+                            <button type="button" class="btn btn-success" onclick="Submit()">&nbsp;Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Kết quả*@
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <b>Kết quả</b>
+                </div>
+                <div class="panel-body overflow-auto pt-3">
+                    <div class="p-0 col-sm-12 col-md-7">
+                        @*Case 1*@
+                        <table class="table table-bordered" id="table1">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="3" id="table1-week">Week</td>
+                                    <td colspan="3">MTD</td>
+                                </tr>
+                                <tr>
+                                    <td>WC</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table1-body"></tbody>
+                        </table>
+
+                        @*Case 2*@
+                        <table class="table table-bordered" style="display: none" id="table2">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="3" id="table2-date"></td>
+                                    <td colspan="3">WTD <span id="table2-week"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>WC</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table2-body"></tbody>
+                        </table>
+
+                        @*Case 3*@
+                        <table class="table table-bordered" style="display: none" id="table3">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="3" id="table3-date"></td>
+                                    <td colspan="3">WTD <span id="table3-week"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Plant</td>
+                                    <td>Style</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table3-body"></tbody>
+                        </table>
+
+                        @*Case 4*@
+                        <table class="table table-bordered" id="table4" style="display: none">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="3" id="table4-date"></td>
+                                    <td colspan="3">WTD <span id="table4-week"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Plant</td>
+                                    <td>Fabric</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                    <td>Dz</td>
+                                    <td>Amount</td>
+                                    <td>Run Rate</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table4-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-sm-12 col-md-5">
+                        <table class="table table-bordered" id="table1-var">
+                            <thead>
+                                <tr class="text-center">
+                                    <td>OPC</td>
+                                    <td>OPC Var</td>
+                                    <td>Stretch</td>
+                                    <td>Stretch Var</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table1-var-body"></tbody>
+                        </table>
+
+                        <table class="table table-bordered" style="display: none" id="table2-var">
+                            <thead>
+                                <tr class="text-center">
+                                    <td>OPC</td>
+                                    <td>OPC Var</td>
+                                    <td>Stretch</td>
+                                    <td>Stretch Var</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table2-var-body"></tbody>
+                        </table>
+
+                        <table class="table table-bordered" style="display: none" id="table3-var">
+                            <thead>
+                                <tr class="text-center">
+                                    <td>OPC</td>
+                                    <td>OPC Var</td>
+                                    <td>Stretch</td>
+                                    <td>Stretch Var</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table3-var-body"></tbody>
+                        </table>
+
+                        <table class="table table-bordered" style="display: none" id="table4-var">
+                            <thead>
+                                <tr class="text-center">
+                                    <td>OPC</td>
+                                    <td>OPC Var</td>
+                                    <td>Stretch</td>
+                                    <td>Stretch Var</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table4-var-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal upload selling -->
+    <div id="modalUploadSelling" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Upload Selling</b></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="w-100">
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>File: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <button class="btn btn-light">Upload a file</button>
+                                                <input type="file" name="UploadedFile" id="fileSellingUpload" onchange="UploadExcel()" accept=".xlsx, .xls" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sheet: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <select class="form-control selected-sheet" style="width: 116px;"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Header: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <input type="text" name="name" class="form-control selected-header" value="1" style="width: 116px" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Your selected file: </td>
+                                        <td><span class="label label-warning ml-3 fileUploadName"></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" onclick="UploadSelling()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal upload target -->
+    <div id="modalUploadTarget" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Upload Target</b></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="w-100">
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>File: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <button class="btn btn-light">Upload a file</button>
+                                                <input type="file" name="UploadedFile" id="fileTargetUpload" onchange="UploadExcelTarget()" accept=".xlsx, .xls" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sheet: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <select class="form-control selected-sheet-target" style="width: 116px;"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Header: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <input type="text" name="name" class="form-control selected-header-target" value="1" style="width: 116px" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Your selected file: </td>
+                                        <td><span class="label label-warning ml-3 fileUploadName"></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" onclick="UploadTarget()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/HBI/Controller/MUVCuttingController.js"></script>
+}
+

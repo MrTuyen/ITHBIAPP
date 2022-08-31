@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "List_OT";
+}
+
+@using ProductionApp.Models;
+@{
+    MyContext db = new MyContext();
+}
+
+
+
+
+<h3 style="text-align: center;margin-bottom: 40px;">DANH SÁCH ĐĂNG KÝ LÀM THÊM GIỜ / OVER HOUR REGISTRATION LIST</h3>
+<a class="btn btn-primary btn-sm" href="@Url.Action("Creat_OT", "OTModule")" style="margin-bottom: 10px">Add new</a>
+@if (ViewBag.per > 1)
+{
+    <a href="#" class="btn btn-primary btn-sm" style="text-align: right; margin-bottom: 10px" data-toggle="modal" data-target="#myModal1">Export Request</a>
+    <a href="#" class="btn btn-primary btn-sm" style="text-align: right; margin-bottom: 10px" data-toggle="modal" data-target="#myModal2">Export Pending Request</a>
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal3" style="text-align: right; margin-bottom: 10px">Upload Week</button>
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal4" style="text-align: right; margin-bottom: 10px">Upload Month</button>
+}
+<div class="message" id="mss">@Html.Raw(TempData["msg"])</div>
+<table class="table paginated table-bordered" id="data">
+    <tr style="background-color:#f5f5f5">
+        <th>No#</th>
+        <th>Create Date</th>
+        <th>Dept</th>
+        <th>ReqName</th>
+        <th>Approver</th>
+        <th>HR</th>
+        <th>Detail</th>
+    </tr>
+    @{ int i = 0;}
+    @foreach (OL_OT_Details order in ViewBag.list)
+    {
+        i++;
+
+        <tr>
+            <td>@order.OT_ID</td>
+            <td>@string.Format("{0:MM/dd/yyyy}", order.EmpSubmit)</td>
+            <td>@(order.TBL_USERS_MST!=null ? order.TBL_USERS_MST.TBL_DEPARTMENT_MST.NAME : "")</td>
+
+            <td>@(order.TBL_USERS_MST!=null ? order.TBL_USERS_MST.FULLNAME:"")</td>
+
+            @if (order.AppStatus == -1)
+            {
+                <td>
+                    <span style="color:#ff0000;font-weight:bold">Pending</span>
+                </td>
+            }
+            else if(order.AppStatus == -3)
+            {
+                <td>
+                    <span style="color:#0000ff;font-weight:bold">Rejected</span>
+
+                </td>
+            }
+            else if(order.AppStatus == 1)
+            {
+                <td>
+                    <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                </td>
+            }
+            @if (order.HRStatus == -2)
+            {
+                <td>
+                    <span style="color:#ff0000;font-weight:bold">Pending</span>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <span style="color:#5b9b0a;font-weight:bold">Process</span>
+
+                </td>
+            }
+            <td><a href="@Url.Action("Edit_OT","OTModule", new { id = order.OT_ID })" class="btn btn-info btn-sm">Detail</a></td>
+        </tr>
+    }
+</table>
+<div id="choose"></div>
+
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h6 class="modal-title"><b>Xuất file Excel</b></h6>
+            </div>
+            @using (Html.BeginForm("Export", "OTModule", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+
+                    <label>Ngày bắt đầu</label>
+                    <input type="text" name="ngaybatdau" class="form-control isdate" autocomplete="off" />
+
+
+                    <label>Ngày kết thúc</label>
+                    <input type="text" name="ngayketthuc" class="form-control isdate" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info " value="Thực Hiện" />
+                </div>
+            }
+        </div>
+    </div>
+</div><div id="myModal2" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h6 class="modal-title"><b>Xuất file Excel</b></h6>
+            </div>
+            @using (Html.BeginForm("ExportPendingApprove", "OTModule", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+
+                    <label>Ngày bắt đầu</label>
+                    <input type="text" name="ngaybatdau" class="form-control isdate" autocomplete="off" />
+
+
+                    <label>Ngày kết thúc</label>
+                    <input type="text" name="ngayketthuc" class="form-control isdate" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info " value="Thực Hiện" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+
+        @using (Html.BeginForm("Upload_Week", "OTModule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {<!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><b>Upload Week</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary " value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog">
+
+        @using (Html.BeginForm("Upload_Month", "OTModule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {<!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><b>Upload Month</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile1" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary " value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+@section styles
+{
+    @* <link href="~/Content/simplePagination.css" rel="stylesheet" />*@
+}
+
+@section scripts
+{
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+    </script>
+
+    @*<script>
+            $(document).ready(function () {
+                $('#data').after('<div id="nav" style="" class="pagination"></div>');
+                var rowsShown = 10;
+                var rowsTotal = $('#data tbody tr').length;
+                var numPages = rowsTotal / rowsShown;
+                for (i = 0; i < numPages; i++) {
+                    var pageNum = i + 1;
+                    $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+                }
+                $('#data tbody tr').hide();
+                $('#data tbody tr').slice(0, rowsShown).show();
+                $('#nav a:first').addClass('active');
+                $('#nav a').bind('click', function () {
+
+                    $('#nav a').removeClass('active');
+                    $(this).addClass('active');
+                    var currPage = $(this).attr('rel');
+                    var startItem = currPage * rowsShown;
+                    var endItem = startItem + rowsShown;
+                    $('#data tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).
+                        css('display', 'table-row').animate({ opacity: 1 }, 300);
+                });
+            });
+        </script>*@
+}
+

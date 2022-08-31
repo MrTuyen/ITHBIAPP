@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@{
+    string department = (String)Session["Department"];
+    string title = "Nhận yêu cầu từ Cutting";
+    if (department.ToUpper().Trim() == "WH" || department.ToUpper().Trim() == "WAREHOUSE")
+    {
+        title = "SCAN nhận yêu cầu từ Cutting   ";
+    }
+    else
+    {
+        title = "SCAN nhận vải từ WH   ";
+    }
+}
+
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+
+<style>
+    /* Actions */
+    .actions11 {
+        float: left;
+        display: inline-block;
+    }
+
+    .actions .actCreate {
+    }
+
+    .actions .actProcess {
+    }
+
+    .actions .actReceived {
+    }
+
+    .actions .actNone {
+    }
+</style>
+
+<meta http-equiv="refresh" content="60">
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+           <small>Request To Get More Fabric</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="caption">
+            <span class="caption-subject text-uppercase"> @title </span>
+        </div>
+        <div class="actions11">
+            <input style="margin-left:10px; margin-right:10px" type="text" name="txtScanTicket" id="txtScanTicket" class="form-control" />
+        </div>
+        <div class="actions">
+            <table>
+                <tr>
+                    <td style="border:solid; margin-right:5px" class="actCreate"><p id="p1">Đã tạo phiếu</p></td>
+
+                    <td style="border:solid; margin-right:5px; background-color:yellow" class="actProcess"><p id="p1">Kho đang xử lý</p></td>
+
+                    <td style="border:solid; background-color:green" class="actReceived"><p id="p2">Đã nhận trong 7 ngày</p></td>
+                </tr>
+            </table>
+        </div>
+        @*<div class="bottom-left">
+                <input type="button" name="btnAddNewTicket" id="btnAddNewTicket" class="btn btn-info" value="Tạo phiếu mới" />
+            </div>*@
+    </div>
+    <div class="portlet-body ">
+        <div class="bottom-left">
+            <input type="button" name="btnAddNewTicket" onclick="GotoCreateTicketForm()" id="btnAddNewTicket" class="btn btn-info" value="Tạo phiếu mới" />
+        </div>
+        <div id="scanChange" class="margin-bottom-none">
+            @Html.Action("ConfirmReceive", "CTTicketOrderFabric")
+        </div>
+    </div>
+</div>
+@*<div class="container">
+        @using (Html.BeginForm("AddNewTicket", "CTTicketOrderFabric", FormMethod.Post))
+        {
+            <input type="button" name="btnAddNewTicket" id="btnAddNewTicket" class="btn btn-info" value="Tạo phiếu mới" />
+        }
+    </div>*@
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        jQuery(document).ready(function () {
+            $('#txtScanTicket').focus();
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    var ticketNumberUserScan = $('#txtScanTicket').val();
+                    if (ticketNumberUserScan.length != 11 && ticketNumberUserScan.length <= 0 && ticketNumberUserScan.length > 5) {
+                        $('#txtScanTicket').val('');
+                        $('#txtScanTicket').focus();
+                        alert('Invalid command!');
+                        return 0;
+                    }
+                    else {
+                        $("#scanChange").load("/CTTicketOrderFabric/ConfirmReceive", { ticketNumberScan: ticketNumberUserScan });
+                        $('#txtScanTicket').val('');
+                        $('#txtScanTicket').focus();
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function GotoCreateTicketForm() {
+            window.location.href = "/CTTicketOrderFabric/AddNewTicket/";
+        }
+    </script>
+}

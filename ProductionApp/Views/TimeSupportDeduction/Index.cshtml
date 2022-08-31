@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "Đăng ký thời gian hỗ trợ/ Support Time Request";
+}
+
+@using ProductionApp.Models
+
+@{string status = ViewBag.Status;}
+
+<h3 style="text-align: center;margin-bottom: 40px;">Đăng ký thời gian hỗ trợ/ Support Time Request</h3>
+<div class="message" id="mss">@Html.Raw(TempData["msg"])</div>
+<a class="btn btn-primary btn-sm" href="@Url.Action("Create", "TimeSupportDeduction")" style="margin-bottom: 10px">Create Request</a>
+
+
+<a href="#" class="btn btn-primary btn-sm" style="text-align: right; margin-bottom: 10px" data-toggle="modal" data-target="#myModal1">Export Request</a>
+
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Xuất file Excel</h5>
+            </div>
+            <form action="@Url.Action("ExportSupport" ,"TimeSupportDeduction")" method="post">
+                <div class="modal-body">
+                    <label>Ngày bắt đầu</label>
+                    <input type="text" name="date" class="form-control isdate" autocomplete="off" />
+                    <label>Ngày kết thúc</label>
+                    <input type="text" name="date1" class="form-control isdate" autocomplete="off" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info" value="Thực Hiện" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+
+    <table class="table table-bordered">
+        <tr style="background-color:#f5f5f5;border:1px solid #ddd">
+            <th>No#</th>
+            <th>Dept</th>
+            <th>Create Date(d/m/y)</th>
+            <th>ReqName</th>
+            <th>Superintendent</th>
+            <th>Line Manager</th>
+            <th>Operation Manager</th>
+            <th>HR C&B Team</th>
+            <th>Authorized by HR Manager</th>
+            <th>Payroll</th>
+            <th>Detail</th>
+        </tr>
+        <tr>
+
+            @foreach(TDS_SupportTimeRequest rq in ViewBag.list ?? new List<TDS_SupportTimeRequest>()) {
+
+            <tr style="border:1px solid #ddd">
+
+
+                <td>@rq.ID</td>
+                <td>@(rq.TBL_USERS_MST.TBL_DEPARTMENT_MST.NAME)</td>
+
+                <td>@string.Format("{0:MM/dd/yyyy}" ,rq.RequestDate)</td>
+                <td>@(rq.TBL_USERS_MST != null ? rq.TBL_USERS_MST.FULLNAME : "")</td>
+
+                @*Superintendent*@
+                @if(rq.Status == 1) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 2 || rq.Status < -2) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -2) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                @*manager*@
+                @if(rq.Status <= 2 && rq.Status >= -2) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 3 || rq.Status < -3) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -3) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                @* Ops Manager *@
+                @if(rq.Status <= 3 && rq.Status >= -3) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 4 || rq.Status < -4) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -4) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                @* HRCB *@
+                @if(rq.Status <= 4 && rq.Status >= -4) {
+                    <td>
+                        <span style="color: #ff0000; font-weight: bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 5 || rq.Status < -5) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -5) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                @* HRMgr *@
+                @if(rq.Status <= 5 && rq.Status >= -5) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 6 || rq.Status < -6) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -6) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                @* Pảyool *@
+                @if(rq.Status <= 6 && rq.Status >= -6) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 7 || rq.Status < -7) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Payment</span>
+
+                    </td>
+                } else if(rq.Status == -7) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                <td>
+                    <a href="@Url.Action("Edit", "TimeSupportDeduction", new { id = rq.ID })" class="btn btn-info">Detail</a>
+                    <form action="/TimeSupportDeduction/ExportSupportByID" style="display: inline" method="post">
+                        <input type="hidden" name="RequestID" value="@rq.ID" />
+                        <input type="submit" value="Download" class="btn btn-primary" />
+                    </form>
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+    @section scripts
+{
+        <script>
+            $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        </script>
+    }
+

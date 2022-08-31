@@ -1,0 +1,416 @@
+﻿@{ ViewBag.Title = "Edit Supply"; }
+@using ProductionApp.Models
+@{ MyContext db = new MyContext();
+
+ var supply = (WH_Supply_Request)ViewData["supply"];
+ var list = (List<WH_Supply_Request_Item>)ViewData["item"];
+
+
+ var manager = db.TBL_USERS_MST.FirstOrDefault(s => s.EMAIL == supply.ManagerMail);
+ var loc = db.WH_User_Approver.Single(s => s.value == supply.WarehouseLocMail & s.value3 == "WarehouseLoc");
+ var issue = db.WH_User_Approver.Single(s => s.value == supply.WarehouseIssueMail & s.value3 == "WarehouseIssue");
+
+
+}
+
+
+@{int i = 0; }
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            PHIẾU YÊU CẦU CẤP VẬT TƯ
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+@Html.Raw(TempData["msg"])
+<form action="@Url.Action("Submit","Supply")" method="post">
+    <div class="panel panel-default" id="panel1" style="max-width: 1336px">
+        <div class="panel-heading">Thông tin phiếu</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <span class="col-input">Tổ:</span>
+                    <select name="group_mst" id="group_mst" class="form-control" style="width: 200px">
+                        <option value="@supply.GroupID">@supply.TBL_GROUP_MST.GROUP_NAME</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <span class="col-input">Lô SX:</span>
+                    <input type="text" name="qty" id="qty" class="form-control" value="@supply.WL">
+                </div>
+                <div class="col-md-3">
+                    <span class="col-input">Ngày yêu cầu cấp:</span>
+                    <input type="text" name="date" id="date" class="form-control" value="@string.Format(" {0:MM/dd/yyyy} ", supply.RequestDate)">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<div class="panel panel-default" id="panel">
+    <div class="panel-heading">Danh sách vật tư</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table  table-bordered " id="table1">
+                    <tbody>
+                        <tr style="text-align: center;background-color:#f5f5f5">
+                            <td rowspan="2">STT</td>
+                            <td rowspan="2" >Mã vật tư /Material code</td>
+                            <td colspan="2">Số lượng yêu cầu</td>
+                            <td colspan="2">Số lượng cấp</td>
+                            <td rowspan="2">Vị trí(số lượng cấp)</td>
+                            <td rowspan="2">Ghi chú</td>
+
+                            @if(ViewBag.loc1 == 0)
+                            {
+
+                                <td rowspan="2"></td>
+                            }
+
+                        </tr>
+                        <tr style="text-align: center;background-color:#f5f5f5">
+                            <td>ĐVT</td>
+                            <td>Yêu cầu</td>
+                            <td>ĐVT</td>
+                            <td>Thực xuất</td>
+
+                        </tr>
+
+                        @foreach(var item in list)
+                        {
+                            i++;
+                            <tr>
+                                <td class="text-center">@i</td>
+                                <td class="text-center">@item.SupplyName</td>
+                                <td class="text-center">@item.Unit</td>
+                                <td class="text-center">@item.Quantity</td>
+                                <td class="text-center">@item.Unit</td>
+                                <td class="text-center">@item.WH_Item_location.Sum(a => a.QuantityOut)</td>
+                                <td class="text-left">
+                                    @{
+                            var ii = 0;
+                            foreach(var variable in item.WH_Item_location)
+                            {
+                                @Html.Raw((ii++ > 0 ? " | " : "") + variable.LocationName + "(" + variable.QuantityOut + ")")
+                            }
+                                    }
+                                </td>
+                                <td>@item.Note</td>
+                                @if(ViewBag.loc1 == 0)
+                                {
+                                    var locations = db.WH_Supply_Location.Where(a => a.WH_Supply_MST.Name == item.SupplyName).OrderBy(a => a.WH_Location_MST.LocationName).ToList();
+
+                                    <td>
+                                        <a class="btn btn-info btn-sm" href="#" style="width:90px" data-toggle="modal" data-target="#myModal-@item.ID" data-id="@item.RequestID" >Thực xuất</a>
+
+                                        <div id="myModal-@item.ID" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-info">
+                                                        <button type="button" class="close" data-dismiss="modal">×</button>
+                                                        <h4 class="modal-title">Số lượng, vị trí của vật tư</h4>
+                                                    </div>
+                                                    <form class="form-horizontal fr-location" method="post">
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="RequestId" id="id" value="@item.RequestID" class="form-control">
+                                                            <input type="hidden" name="ItemId" id="id" value="@item.ID" class="form-control">
+
+
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr><th>Vị trí</th><th>Số lượng cấp</th></tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach(var location in locations)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@(location.WH_Location_MST.LocationName)(@location.inventory @location.WH_Supply_MST.Unit)</td>
+                                                                            <td><input type="number" step="0.01" name="qty_tx_@location.ID" class="form-control" value="@(item.WH_Item_location.SingleOrDefault(a => a.LocationName == location.WH_Location_MST.LocationName) == null ? 0 : item.WH_Item_location.Single(a => a.LocationName == location.WH_Location_MST.LocationName).QuantityOut)"></td>
+                                                                        </tr>
+                                                                    }
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                                                            <input name="submit1" type="submit" class="btn btn-info" value="Cập nhật" />
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" id="panel">
+    <div class="panel-heading">Trạng thái phê duyệt</div>
+    <div class="panel-body">
+        <div class="row">
+            <style>
+                .tbl1 td {
+                    padding: 3px;
+                }
+            </style>
+            <div class="col-md-12">
+                <table class="tbl1" id="table" style="width: auto">
+                    <tr>
+                        <td width="200px">
+                            <h5>Người yêu cầu</h5>
+                        </td>
+                        <td>
+                            <select name="group_mst" id="group_mst" class="form-control" style="width: 200px">
+                                <option value="@supply.TBL_USERS_MST.USERNAME">@supply.TBL_USERS_MST.FULLNAME</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>SX phê duyệt</h5>
+                        </td>
+                        <td>
+                            <select name="group_mst" id="group_mst" class="form-control" style="width: 200px">
+                                <option value="@manager.USERNAME">@manager.FULLNAME</option>
+                            </select>
+                        </td>
+                        @if(supply.Status == 1)
+                        {
+                            <td>
+                                <form action="@Url.Action("Manager_Approve", "Supply", new {id = supply.ID})" method="post">
+                                    <input type="submit" name="" class="btn btn-info " value="Approve">
+                                </form>
+                            </td>
+
+                            <td><a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_theme_primary" style="width: 80px">Reject</a></td>
+
+                        }
+                        else if(supply.ManagerStatus == -2)
+                        {
+                            <td> <span style="color: red; font-weight: bold">@supply.Note</span></td>
+                        }
+                        else if(supply.Status >= 2 || supply.WarehouseLocStatus == -3)
+                        {
+                            <td> <span style="color: #5b9b0a; font-weight: bold"> Approved</span></td>
+                        }
+
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Kho kiểm tra vị trí</h5>
+                        </td>
+                        <form action="@Url.Action("Confirm", "Supply", new {id = supply.ID})" method="post">
+                            <td>
+                                <select name="loc" id="loc" class="form-control" style="width: 200px">
+                                    <option value="@loc.id">@loc.fullname</option>
+                                </select>
+                            </td>
+                            @if(supply.Status == 2)
+                            {
+                                <td>
+                                    <input type="submit" name="" class="btn btn-info " value="Confirm">
+                                </td>
+
+                                <td><a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_Kho" style="width: 80px">Reject</a></td>
+
+
+                            }
+                            else if(supply.WarehouseLocStatus == -3)
+                            {
+                                <td> <span style="color: red; font-weight: bold">@supply.Note</span></td>
+                            }
+                            else if(supply.Status >= 3)
+                            {
+                                <td> <span style="color: #5b9b0a; font-weight: bold"> Confirm</span></td>
+                                <td>
+                                    <a href="@Url.Action("Download_PDF", "Supply", new {id = supply.ID})" target="_blank" class="btn btn-info" style="width: 80px">Print</a>
+                                </td>
+                            }
+
+                        </form>
+
+
+                    </tr>
+                    <form action="@Url.Action("Send", "Supply", new {id = supply.ID})" method="post">
+                        <tr>
+                            <td>
+                                <h5>Kho issue cho SX</h5>
+                            </td>
+                            <td>
+                                <select name="issue" id="issue" class="form-control" style="width: 200px">
+                                    <option value="@issue.id">@issue.fullname</option>
+                                </select>
+                            </td>
+
+                            @if(supply.Status == 3)
+                            {
+                                <td>
+                                    <input type="submit" name="" class="btn btn-info " value="Send">
+                                </td>
+                            }
+                            else if(supply.Status >= 4)
+                            {
+                                <td> <span style="color: #5b9b0a; font-weight: bold"> Send</span></td>
+                            }
+
+
+
+                            <td></td>
+                        </tr>
+                    </form>
+                    <form action="@Url.Action("Receive", "Supply", new {id = supply.ID})" method="post">
+                        <tr>
+                            <td>
+                                <h5>SX Xác nhận</h5>
+                            </td>
+                            <td>
+
+                                <select name="Receive" id="Receive" class="form-control" style="width: 200px">
+                                    <option value="@supply.TBL_USERS_MST.USERNAME">@supply.TBL_USERS_MST.FULLNAME</option>
+                                </select>
+                            </td>
+
+                            @if((supply.Status == -3 && supply.WarehouseLocStatus == -3) || (supply.Status == -2 && supply.ManagerStatus == -2))
+                            {
+
+                                <td>
+                                    <input type="submit" name="" class="btn btn-info " value="Confirm Clear">
+                                </td>
+                            }
+                            else if(supply.Status == 4)
+                            {
+
+                                <td>
+                                    <input type="submit" name="" class="btn btn-info " value="Receive">
+                                </td>
+                            }
+                            else if(supply.Status >= 5)
+                            {
+                                <td> <span style="color: #5b9b0a; font-weight: bold"> Receive</span></td>
+                            }
+
+
+
+                        </tr>
+                    </form>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="modal_theme_primary" class="modal fade in" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Lý do không chấp nhận</h5>
+            </div>
+            @using(Html.BeginForm("Manager_Reject" ,"Supply" ,FormMethod.Post ,new
+            {
+                id = supply.ID ,
+                @class = "form-horizontal" ,
+                role = "form"
+            }))
+            {       <input type="hidden" id="id" name="id" value="@supply.ID" />
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+                    <fieldset>
+
+
+
+                        <textarea class="form-control" name="body"></textarea>
+
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="modal_Kho" class="modal fade in" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Lý do không chấp nhận</h5>
+            </div>
+            @using(Html.BeginForm("WarehouseLoc_Reject" ,"Supply" ,FormMethod.Post ,new
+            {
+                id = supply.ID ,
+                @class = "form-horizontal" ,
+                role = "form"
+            }))
+            {       <input type="hidden" id="id" name="id" value="@supply.ID" />
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+                    <fieldset>
+
+
+
+                        <textarea class="form-control" name="body"></textarea>
+
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('.fr-location').submit(function () {
+                App.blockUI(this);
+                $.ajax({
+                    url: "/Supply/Update_Loc",
+                    data: $(this).serialize(),
+                    method: "Post",
+                    success: function (data) {
+
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        App.unblockUI(this);
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+
+                return false;
+            });
+
+        })
+    </script>
+}

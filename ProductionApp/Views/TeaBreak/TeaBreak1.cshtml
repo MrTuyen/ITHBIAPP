@@ -1,0 +1,262 @@
+﻿@{ ViewBag.Title = "TeaBreak"; }
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+    var app=(TBL_USERS_MST)ViewBag.manager;
+    var d = (TBL_DEPARTMENT_MST)ViewBag.Dept;
+}
+
+@Html.Raw(TempData["msg"])
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            PHIẾU YÊU CẦU SUẤT ĂN ĐẶC BIỆT
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+@using(Html.BeginForm("AddRequest" ,"TeaBreak" ,FormMethod.Post ,new { @class = "form-horizontal" ,role = "form" })) {
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">Thông tin</div>
+        <div class="panel-body">
+
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <span class="col-input">Lý do:</span>
+                    <input type="text" name="content" class="form-control">
+                </div>
+            </div>
+            <hr />
+            <h5>Yêu cầu phê duyệt</h5>
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="hidden" id="id" name="id" />
+                    <span class="col-input">Phòng ban:</span>
+                    <select class="form-control" id="dept" name="dept">
+                        <option value="@d.DEPT_ID">@d.NAME</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <span class="col-input">Trưởng phòng:</span>
+                    <select class="form-control" id="manager" name="manager">
+                        <option value="@app.EMAIL">@app.FULLNAME</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <span class="col-input">Trưởng phòng nhân sự:</span>
+
+                    <select style="" class="form-control" name="hrmanager">
+                        @foreach(TBL_USERS_MST h in ViewBag.hrmanager) {
+                            <option value="@h.USERNAME">@h.FULLNAME</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <span class="col-input">HR Team:</span>
+                    <select style="width: 200px" class="form-control" name="hrteam">
+                        @foreach(TBL_SYSTEM h in ViewBag.hrteam) {
+                            <option value="@h.id">@h.fullname</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <span class="col-input"></span>
+                    <input type="submit" class="btn btn-info" />
+                </div>
+
+            </div>
+            <hr />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal" onclick="clear()" style=" margin-bottom: 10px">Chọn suất ăn</button>
+                    <table class="table  table-bordered " id="table1">
+
+                        <tr style=" background-color: #f5f5f5">
+                            <td colspan="6">Danh sách</td>
+
+                        </tr>
+                        <tr style="text-align: center; background-color: #f5f5f5">
+                            <td>STT</td>
+                            <td>Loại suất ăn</td>
+                            <td>Suất ăn</td>
+                            <td>Giá</td>
+                            <td>Số lượng</td>
+                            <td>Thành tiền</td>
+                        </tr>
+                        <tbody id="list_teabreak"></tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            Tổng tiền: <span id="tongtien">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+
+}
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chọn suất ăn</h4>
+            </div>
+
+            <div class="modal-body" id="body">
+                <div class="form-group">
+                    <label>Loại suất ăn</label>
+                    <select name="groupid" id="groupid" class="form-control" onchange="load(this.value)">
+                        <option value="-1" selected="selected" disabled="disabled" class="Italic">Chọn</option>
+                        @foreach(PR_TeaBreak_Group group in ViewBag.group) {
+                            <option value="@group.ID">@group.Name_Group</option>
+                        }
+
+                    </select>
+                </div>
+                <div class="form-group">
+
+
+                    <select name="id_teabreak" id="id_teabreak" class="form-control"></select>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label>Giá tiền</label>
+                    <input name="price" class="form-control" id="price" />
+                </div>
+                <div class="form-group">
+                    <label>Số lượng</label>
+                    <input name="qty" class="form-control" id="qty" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-info" onclick="add_teabreak()" id="button" data-dismiss="modal">Add item</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        //$("#dept").change(function () {
+        //    var id = $(this).val();
+        //    $('#manager').html("");
+        //    $.ajax({
+        //        url: '/TeaBreak/Dept1/' + id,
+        //        type: 'GET',
+        //        dataType: 'json',
+        //        contentType: 'application/json',
+        //        success: function (data) {
+        //            console.log(data);
+        //            $("#manager").append("<option value=" + data.USERNAME + ">" + data.FULLNAME + "</option>");
+
+        //        }
+        //    });
+        //});
+
+        function add_teabreak() {
+
+            var groupid = $("#groupid").val();
+            var id_teabreak = $("#id_teabreak").val();
+            var qty = $("#qty").val();
+
+            $.get("/TeaBreak/Modal_TeaBreak", { groupid: groupid, id_teabreak: id_teabreak, qty: qty },
+                function (data) {
+
+                    load_teabreak();
+                })
+
+            $("#qty").val("");
+            $("#price").val("");
+            $("#id_teabreak").val("");
+
+        }
+        $(document).ready(function () {
+
+            $("#id_teabreak").change(function () {
+                var tea = $(this).val();
+
+                $.ajax({
+                    url: '@(Url.Action("Tea"))',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id: tea
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data != null) {
+                            $("#price").val(data);
+
+                        }
+
+                    }
+                });
+            });
+        });
+        function clear() {
+            $('#body').html("");
+        }
+        function load_teabreak() {
+            $('#list_teabreak').html("");
+            $.get("/TeaBreak/Load_TeaBreak",
+               function (data) {
+                   console.log(data);
+                   $.each(data.ds, function (i, val) {
+                       $("#list_teabreak").append(" <tr>\
+                    <td>"+ (i + 1) + "</td>\
+                    <td>" + val.Name_Group + "</td>\
+                    <td>" + val.Name_TeaBreak + "</td>\
+                    <td>" + currencyFormat(val.Price) + " VNĐ</td>\
+                    <td>" + val.Qty + "</td>\
+                    <td>" + currencyFormat(val.Total) + " VNĐ</td></tr>"
+                      )
+                   });
+                   $("#tongtien").html(currencyFormat(data.tongtien) + " VNĐ");
+               })
+        }
+
+        function load(id) {
+
+            $('#id_teabreak').html("");
+            $.get("/TeaBreak/List_TeaBreak/" + id,
+               function (data) {
+                   //console.log(data);
+                   $("#id_teabreak").append(" <option value=\"-1\" selected=\"selected\" disabled=\"disabled\" class=\"Italic\">Chọn</option>");
+
+                   $.each(data, function (i, val) {
+                       $("#id_teabreak").append("<option value=" + val.ID + ">" + val.Name_teabreak + "</option>");
+
+                   });
+               })
+        }
+        function currencyFormat(num) {
+            return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
+    </script>
+}
+
+
+
+

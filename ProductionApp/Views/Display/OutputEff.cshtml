@@ -1,0 +1,152 @@
+﻿@using ProductionApp.Helpers
+
+@{
+    ViewBag.Tiltle = "Display Output And EFF";
+}
+<meta http-equiv="refresh" content="10;url=/display/OutputEff?grID=@ViewBag.grID&Index=@ViewBag.Index" />
+
+<div class="row text-center ">
+    <div class="col-md-5 col-xs-12">
+        <span class="title">Sản lượng/ Output</span>
+    </div>
+    <div class="col-md-2 col-xs-12">
+        <span class="title" style="font-weight: bold;padding: 0;color: red;   @(((string)ViewBag.GRIndex).Contains("-") ||((string)ViewBag.GRIndex).Length>2 ? " font-size:4vw;": "font-size:8vw;" )">@(((string)ViewBag.GRIndex).Replace("-" ," "))</span>
+    </div>
+    <div class="col-md-5 col-xs-12">
+        <span class="title">Hiệu suất/ Eff</span>
+    </div>
+</div>
+<div class="row display">
+    <div class="col-md-6 col-xs-12">
+        <ul>
+            <li class="li2">
+                <div class="row ">
+                    <div class="col-xs-5">
+                        Mục tiêu<br />
+                        Target
+                    </div>
+                    <div class="col-xs-7">
+                        @ViewBag.targetOutput
+                    </div>
+                </div>
+            </li>
+            @{
+                var colorIndex = (float)ViewBag.resultOutput * 100 / (float)ViewBag.targetOutput;
+            }
+            <li class="li3  @(colorIndex < 100 ? "changecolortored" : "changecolortogreen")">
+                <div class="row ">
+                    <div class="col-xs-5">
+                        Kết quả<br />
+                        Result
+                    </div>
+                    <div class="col-xs-7">
+                        @ViewBag.resultOutput
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <ul>
+
+            <li class="li2">
+                <div class="row ">
+                    <div class="col-xs-5">
+                        Mục tiêu<br />
+                        Target
+                    </div>
+                    <div class="col-xs-7">
+                        @ViewBag.targeteff
+                    </div>
+                </div>
+            </li>
+            @{
+                var colorIndex2 = (float)ViewBag.resulteff * 100 / (float)ViewBag.targeteff;
+            }
+            <li class="li3  @(colorIndex2 < 100 ? "changecolortored" : "changecolortogreen")">
+                <div class="row ">
+                    <div class="col-xs-5">
+                        Kết quả<br />
+                        Result
+                    </div>
+                    <div class="col-xs-7">
+                        @ViewBag.resulteff
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+@section styles{
+    <style>
+        /*Display*/
+        .display {
+            border: 3px solid #f4a460;
+            margin-top: 20px;
+        }
+
+            .display > div:first-child {
+                border-right: 3px solid #f4a460;
+            }
+
+        .title {
+            font-size: 4vw;
+            padding: 0 10px;
+            color: blue;
+            line-height: 1;
+            border: 3px solid #aaa;
+            vertical-align: middle;
+            display: block;
+            padding: 20px 0;
+        }
+
+        .display ul {
+            padding: 0px 0 25px 0;
+            margin: 0;
+        }
+
+        .display .li1 {
+            text-align: center;
+        }
+
+        .display .li2 .row div:first-child, .display .li3 .row div:first-child {
+            font-size: 3vw;
+            border-right: 3px solid #276009;
+        }
+
+        .display .li2 .row div:last-child, .display .li3 .row div:last-child {
+            font-size: 7vw;
+            text-align: center;
+        }
+
+        .display .li2 {
+            background: yellow;
+            font-weight: bold;
+            margin-top: 45px;
+            border: 3px solid #276009;
+            border-radius: 20px;
+        }
+
+        .display .li3 {
+            font-weight: bold;
+            margin-top: 30px;
+            border: 3px solid #276009;
+            border-radius: 20px;
+            color: #fff;
+        }
+
+        .display li {
+            list-style: none;
+            width: 100%;
+            padding: 20px;
+            padding: 0 20px;
+        }
+
+        /*End Display*/
+    </style>
+}

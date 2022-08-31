@@ -1,0 +1,253 @@
+﻿@{
+    ViewBag.Title = "Recut request detail";
+}
+@model ProductionApp.Models.TBL_RC_Request
+@{
+    var isIssue = (bool)ViewData["issue"];
+    var user = ((ProductionApp.Models.UserModels)ViewData["User"]);
+    var username = user.Username.ToLower();
+    var manager = user.Email.ToLower() == Model.RequestManager.ToLower() ? "" : "disabled";
+    var qasew = username == "qasew" ? "" : "disabled";
+    var khsx = username == "khsx" ? "" : "disabled";
+    var ccdfabric = username == "ccdfabric" ? "" : "disabled";
+    var whfabric = username == "whfabric" ? "" : "disabled";
+    var ccd = username == "ccd" ? "" : "disabled";
+    var qacut = username == "qacut" ? "" : "disabled";
+    var production = username == Model.RequestBy.ToLower() ? "" : "disabled";
+        
+}
+
+@section styles{
+    <style>
+     .page-content {
+         padding-top: 0 !important;
+     }
+
+     .select-checkbox {
+         transform: scale(1.5);
+     }
+
+     input[type=number] {
+     }
+
+     td, th {
+         text-align: center!important;
+     }
+
+     td input{
+         text-align: center;
+     }
+
+     .btn-process{
+         margin-right: 50px;
+     }
+
+    .dropdown-menu li>a{
+        padding: 10px 6px 10px 13px!important;
+    }
+
+     input[type=checkbox]{
+         cursor: pointer;
+     }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <div class="page-title form-row">
+            @if (isIssue)
+            {
+                <button class="btn btn-light btn-sm" onclick="RefreshWoIssue()"><i class="fa fa-arrow-left"></i> &nbsp;Back</button>
+            }
+            else
+            {
+                <button class="btn btn-light btn-sm" onclick="Refresh()"><i class="fa fa-arrow-left"></i> &nbsp;Back</button>
+            }
+        </div>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Thông tin phiếu</b></div>
+    <div class="panel-body">
+        <div class="form-row">
+            <input type="hidden" id="txtRequestId" value="@Model.ID" />
+            <input type="hidden" id="txtListDetailId" value="@string.Join(",", Model.TBL_RC_Request_Detail.Select(x => x.ID).ToList())" />
+            <div class="form-group col-md-2">
+                <label for="txtWO">Requester</label>
+                <input type="text" class="form-control" value="@Model.TBL_USERS_MST.FULLNAME" disabled>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="txtWO">WO</label>
+                <input type="text" class="form-control" id="txtWO" value="@Model.WO" disabled>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="txtWO">Manager</label>
+                <input type="text" class="form-control" id="txtWO" value="@Model.RequestManager" disabled>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="txtSellingStyle">Selling Style</label>
+                <input type="text" class="form-control" id="txtSellingStyle" value="@Model.SellingStyle" disabled>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="txtSize">Size</label>
+                <input type="text" class="form-control" id="txtSize" value="@Model.Size" disabled>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="txtMnfColor">Color</label>
+                <input type="text" class="form-control" id="txtMnfColor" value="@Model.MnfColor" disabled>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Quy trình</b></div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @qasew>
+                QC May <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="text-success" onclick="QCSewClick(Enum_Action.Approve)"><b>Approve</b></a></li>
+                <li><a href="#" class="text-danger" onclick="QCSewClick(Enum_Action.Reject)"><b>Reject</b></a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @manager>
+                SX duyệt <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="text-success" onclick="ManagerClick(Enum_Action.Approve)"><b>Approve</b></a></li>
+                <li><a href="#" class="text-danger" onclick="ManagerClick(Enum_Action.Reject)"><b>Reject</b></a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @khsx>
+                Kế hoạch <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                @if (!isIssue)
+                {
+                    <li><a href="#" class="text-success" onclick="PlanClick()"><b>Approve</b></a></li>
+                }
+                else
+                {
+                    <li><a href="#" class="text-success" onclick="PlanUpdate(Plan_Click.Request)"><b>Update</b></a></li>
+                }
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @ccdfabric>
+                CCD Request vải <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="text-success" onclick="CCDRequestClick()"><b>Approve</b></a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @whfabric>
+                Warehouse <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="text-success" onclick="WarehouseClick(Enum_Action.Approve)"><b>Approve</b></a></li>
+                <li><a href="#" class="text-danger" onclick="WarehouseClick(Enum_Action.Reject)"><b>Reject</b></a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @ccd>
+                CCD xác nhận <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="text-success" onclick="CCDApproveClick()"><b>Approve</b></a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @qacut>
+                QC cắt <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="text-success" onclick="QCCutClick(Enum_Action.Approve)"><b>Approve</b></a></li>
+                <li><a href="#" class="text-danger" onclick="QCCutClick(Enum_Action.Reject)"><b>Reject</b></a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @production>
+                SX xác nhận <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="text-success" onclick="ProductionClick()"><b>Approve</b></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Danh sách vật tư</b></div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th colspan="9" class="text-center">Sản xuất</th>
+                    <th colspan="2" class="text-center">Kế hoạch</th>
+                    <th class="text-center">CCD</th>
+                    <th class="text-center">Warehouse</th>
+                    <th class="text-center">CCD</th>
+                </tr>
+                <tr>
+                    <th>Mã vật tư/ Material code</th>
+                    <th>Tổng/ Total</th>
+                    <th>Lỗi may (dz)</th>
+                    <th>Lỗi cắt (dz)</th>
+                    <th>Thiếu may (dz)</th>
+                    <th>Thiếu cắt (dz)</th>
+                    <th>Lỗi vải (dz)</th>
+                    <th>May test (dz)</th>
+                    <th>Tên tổ trưởng</th>
+                    <th>Mã vật tư thay thế</th>
+                    <th>WO Recut</th>
+                    <th>Số lượng (Yard)</th>
+                    <th>Số lượng cấp</th>
+                    <th>Xác nhận chi tiết</th>
+                </tr>
+            </thead>
+            <tbody id="table-material-code">
+                @foreach (var item in Model.TBL_RC_Request_Detail)
+                {
+                    var total = (item.SewingError ?? 0) + (item.CuttingError ?? 0) + (item.FabricError ?? 0) + (item.SewingLack ?? 0) + (item.CuttingLack ?? 0) + (item.SewingTest ?? 0);
+                    <tr>
+                        <td>@item.MaterialCode</td>
+                        <td><input type='number' class='form-control' value='@total' disabled /></td>
+                        <td><input type='number' class='form-control' value='@item.SewingError' disabled /></td>
+                        <td><input type='number' class='form-control' value='@item.CuttingError' disabled /></td>
+                        <td><input type='number' class='form-control' value='@item.SewingLack' disabled /></td>
+                        <td><input type='number' class='form-control' value='@item.CuttingLack' disabled /></td>
+                        <td><input type='number' class='form-control' value='@item.FabricError' disabled /></td>
+                        <td><input type='number' class='form-control' value='@item.SewingTest' disabled /></td>
+                        <td><input type='text' class='form-control' value='@item.LeaderName' disabled /></td>
+                        <td><input type='text' class='form-control' value='@item.AltMaterialCode' id="txtAltMaterialCode-@item.ID" @khsx /></td>
+                        <td><input type='text' class='form-control' value='@item.WORecut' id="txtWORecut-@item.ID" @khsx /></td>
+                        <td><input type='number' class='form-control' oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" value='@item.CcdQty' id="txtCcdQty-@item.ID" @ccdfabric /></td>
+                        <td><input type='number' class='form-control' oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  value='@item.WHQty' id="txtWHQty-@item.ID" @whfabric /></td>
+                        
+                        @if (item.CcdConfirm == 1)
+                        {
+                            <td><input type='checkbox' class='select-checkbox' checked id="txtCcdConfirm-@item.ID" @ccd /></td>
+                        }
+                        else
+                        {
+                            <td><input type='checkbox' class='select-checkbox' id="txtCcdConfirm-@item.ID" @ccd /></td>
+                        }
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/HBI/Controller/RecutController.js"></script>
+}

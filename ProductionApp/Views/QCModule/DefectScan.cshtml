@@ -1,0 +1,434 @@
+﻿@{
+    ViewBag.Title = "DEFECT SCAN";
+}
+@using ProductionApp.Models;
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>Defect Scan</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("AddDefect", "QCModule", FormMethod.Post, new { name = "frmScanDefect", id = "frmScanDefect" }))
+{
+    <div class="portlet box gray">
+        <div class="portlet-title">
+
+        </div>
+        <div class="portlet-body ">
+            <div class="row margin-bottom-10">
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Mã NV QC:
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name="txtQCID" id="txtQCID" class="form-control isdate" autocomplete="off" value="" required />
+                </div>
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Tổ SX:
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name="txtGroup" id="txtGroup" class="form-control isdate" autocomplete="off" tabindex="1" value="" required />
+                </div>
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Business
+                </div>
+
+                <div class="col-md-2">
+                    <select class="form-control bs-select" data-width="100%" id="listBIZ" name="listBIZ">
+                        @foreach (var business in ViewBag.business as List<TBL_BUSINESS_MST>)
+                        {
+                            <option value="@business.ID">@business.BIZ_NAME</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Tổng Kiểm:
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name="txtTotalWLSample" id="txtTotalWLSample" class="form-control isdate" autocomplete="off" tabindex="3" value="" required />
+                </div>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-2">
+                    <label id="lblGr" style="color:red; font-style:italic; font:bold 12px; text-align:right; width:100% "></label>
+                </div>
+                <div class="col-md-2">
+                    <label id="lblWL" style="color:red; font-style:italic; font:bold 12px; text-align:right; width:100% "></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="table-responsive" style="align-items:center; margin-top:15px;">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:60%;">
+                        <thead class="portlet-body">
+                            <tr>
+                                <th style="text-align:center">No.</th>
+                                <th style="text-align:center">Mã CN</th>
+                                <th style="text-align:center">Mã CĐ</th>
+                                <th style="text-align:center">Mã Lỗi</th>
+                                <th style="text-align:center">Số Lỗi</th>
+                                <th style="text-align:center">OTFQ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td> <input type="text" name="txtEmpID1" id="txtEmpID1" class="form-control height-auto" tabindex="4" value="" /> </td>
+                                <td> <input type="text" name="txtProID1" id="txtProID1" class="form-control height-auto" tabindex="5" value="" /> </td>
+                                <td> <input type="text" name="txtDefID1" id="txtDefID1" class="form-control height-auto" tabindex="6" value="" /> </td>
+                                <td> <input type="text" name="txtQty1" id="txtQty1" class="form-control height-auto" tabindex="7" value="" /> </td>
+                                <td> <input type="checkbox" name="txtRwk1" id="txtRwk1" class="form-control height-auto" value="" /> </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td> <input type="text" name="txtEmpID2" id="txtEmpID2" class="form-control height-auto" tabindex="8" /> </td>
+                                <td> <input type="text" name="txtProID2" id="txtProID2" class="form-control height-auto" tabindex="9" /> </td>
+                                <td> <input type="text" name="txtDefID2" id="txtDefID2" class="form-control height-auto" tabindex="10" /> </td>
+                                <td> <input type="text" name="txtQty2" id="txtQty2" class="form-control height-auto" tabindex="11" /> </td>
+                                <td> <input type="checkbox" name="txtRwk2" id="txtRwk2" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td> <input type="text" name="txtEmpID3" id="txtEmpID3" class="form-control height-auto" tabindex="12" /> </td>
+                                <td> <input type="text" name="txtProID3" id="txtProID3" class="form-control height-auto" tabindex="13" /> </td>
+                                <td> <input type="text" name="txtDefID3" id="txtDefID3" class="form-control height-auto" tabindex="14" /> </td>
+                                <td> <input type="text" name="txtQty3" id="txtQty3" class="form-control height-auto" tabindex="15" /> </td>
+                                <td> <input type="checkbox" name="txtRwk3" id="txtRwk3" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td> <input type="text" name="txtEmpID4" id="txtEmpID4" class="form-control height-auto" tabindex="16" /> </td>
+                                <td> <input type="text" name="txtProID4" id="txtProID4" class="form-control height-auto" tabindex="17" /> </td>
+                                <td> <input type="text" name="txtDefID4" id="txtDefID4" class="form-control height-auto" tabindex="18" /> </td>
+                                <td> <input type="text" name="txtQty4" id="txtQty4" class="form-control height-auto" tabindex="19" /> </td>
+                                <td> <input type="checkbox" name="txtRwk4" id="txtRwk4" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td> <input type="text" name="txtEmpID5" id="txtEmpID5" class="form-control height-auto" tabindex="20" /> </td>
+                                <td> <input type="text" name="txtProID5" id="txtProID5" class="form-control height-auto" tabindex="21" /> </td>
+                                <td> <input type="text" name="txtDefID5" id="txtDefID5" class="form-control height-auto" tabindex="22" /> </td>
+                                <td> <input type="text" name="txtQty5" id="txtQty5" class="form-control height-auto" tabindex="23" /> </td>
+                                <td> <input type="checkbox" name="txtRwk5" id="txtRwk5" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td> <input type="text" name="txtEmpID6" id="txtEmpID6" class="form-control height-auto" tabindex="24" /> </td>
+                                <td> <input type="text" name="txtProID6" id="txtProID6" class="form-control height-auto" tabindex="25" /> </td>
+                                <td> <input type="text" name="txtDefID6" id="txtDefID6" class="form-control height-auto" tabindex="26" /> </td>
+                                <td> <input type="text" name="txtQty6" id="txtQty6" class="form-control height-auto" tabindex="27" /> </td>
+                                <td> <input type="checkbox" name="txtRwk6" id="txtRwk6" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td> <input type="text" name="txtEmpID7" id="txtEmpID7" class="form-control height-auto" tabindex="28" /> </td>
+                                <td> <input type="text" name="txtProID7" id="txtProID7" class="form-control height-auto" tabindex="29" /> </td>
+                                <td> <input type="text" name="txtDefID7" id="txtDefID7" class="form-control height-auto" tabindex="30" /> </td>
+                                <td> <input type="text" name="txtQty7" id="txtQty7" class="form-control height-auto" tabindex="31" /> </td>
+                                <td> <input type="checkbox" name="txtRwk7" id="txtRwk7" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td> <input type="text" name="txtEmpID8" id="txtEmpID8" class="form-control height-auto" tabindex="32" /> </td>
+                                <td> <input type="text" name="txtProID8" id="txtProID8" class="form-control height-auto" tabindex="33" /> </td>
+                                <td> <input type="text" name="txtDefID8" id="txtDefID8" class="form-control height-auto" tabindex="34" /> </td>
+                                <td> <input type="text" name="txtQty8" id="txtQty8" class="form-control height-auto" tabindex="35" /> </td>
+                                <td> <input type="checkbox" name="txtRwk8" id="txtRwk8" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td> <input type="text" name="txtEmpID9" id="txtEmpID9" class="form-control height-auto" tabindex="36" /> </td>
+                                <td> <input type="text" name="txtProID9" id="txtProID9" class="form-control height-auto" tabindex="37" /> </td>
+                                <td> <input type="text" name="txtDefID9" id="txtDefID9" class="form-control height-auto" tabindex="38" /> </td>
+                                <td> <input type="text" name="txtQty9" id="txtQty9" class="form-control height-auto" tabindex="39" /> </td>
+                                <td> <input type="checkbox" name="txtRwk9" id="txtRwk9" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td> <input type="text" name="txtEmpID10" id="txtEmpID10" class="form-control height-auto" tabindex="40" /> </td>
+                                <td> <input type="text" name="txtProID10" id="txtProID10" class="form-control height-auto" tabindex="41" /> </td>
+                                <td> <input type="text" name="txtDefID10" id="txtDefID10" class="form-control height-auto" tabindex="42" /> </td>
+                                <td> <input type="text" name="txtQty10" id="txtQty10" class="form-control height-auto" tabindex="43" /> </td>
+                                <td> <input type="checkbox" name="txtRwk10" id="txtRwk10" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td> <input type="text" name="txtEmpID11" id="txtEmpID11" class="form-control height-auto" tabindex="44" /> </td>
+                                <td> <input type="text" name="txtProID11" id="txtProID11" class="form-control height-auto" tabindex="45" /> </td>
+                                <td> <input type="text" name="txtDefID11" id="txtDefID11" class="form-control height-auto" tabindex="46" /> </td>
+                                <td> <input type="text" name="txtQty11" id="txtQty11" class="form-control height-auto" tabindex="47" /> </td>
+                                <td> <input type="checkbox" name="txtRwk11" id="txtRwk11" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td> <input type="text" name="txtEmpID12" id="txtEmpID12" class="form-control height-auto" tabindex="48" /> </td>
+                                <td> <input type="text" name="txtProID12" id="txtProID12" class="form-control height-auto" tabindex="49" /> </td>
+                                <td> <input type="text" name="txtDefID12" id="txtDefID12" class="form-control height-auto" tabindex="50" /> </td>
+                                <td> <input type="text" name="txtQty12" id="txtQty12" class="form-control height-auto" tabindex="51" /> </td>
+                                <td> <input type="checkbox" name="txtRwk12" id="txtRwk12" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td> <input type="text" name="txtEmpID13" id="txtEmpID13" class="form-control height-auto" tabindex="52" /> </td>
+                                <td> <input type="text" name="txtProID13" id="txtProID13" class="form-control height-auto" tabindex="53" /> </td>
+                                <td> <input type="text" name="txtDefID13" id="txtDefID13" class="form-control height-auto" tabindex="54" /> </td>
+                                <td> <input type="text" name="txtQty13" id="txtQty13" class="form-control height-auto" tabindex="55" /> </td>
+                                <td> <input type="checkbox" name="txtRwk13" id="txtRwk13" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td> <input type="text" name="txtEmpID14" id="txtEmpID14" class="form-control height-auto" tabindex="56" /> </td>
+                                <td> <input type="text" name="txtProID14" id="txtProID14" class="form-control height-auto" tabindex="57" /> </td>
+                                <td> <input type="text" name="txtDefID14" id="txtDefID14" class="form-control height-auto" tabindex="58" /> </td>
+                                <td> <input type="text" name="txtQty14" id="txtQty14" class="form-control height-auto" tabindex="59" /> </td>
+                                <td> <input type="checkbox" name="txtRwk14" id="txtRwk14" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td> <input type="text" name="txtEmpID15" id="txtEmpID15" class="form-control height-auto" tabindex="60" /> </td>
+                                <td> <input type="text" name="txtProID15" id="txtProID15" class="form-control height-auto" tabindex="61" /> </td>
+                                <td> <input type="text" name="txtDefID15" id="txtDefID15" class="form-control height-auto" tabindex="62" /> </td>
+                                <td> <input type="text" name="txtQty15" id="txtQty15" class="form-control height-auto" tabindex="63" /> </td>
+                                <td> <input type="checkbox" name="txtRwk15" id="txtRwk15" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td> <input type="text" name="txtEmpID16" id="txtEmpID16" class="form-control height-auto" tabindex="64" /> </td>
+                                <td> <input type="text" name="txtProID16" id="txtProID16" class="form-control height-auto" tabindex="65" /> </td>
+                                <td> <input type="text" name="txtDefID16" id="txtDefID16" class="form-control height-auto" tabindex="66" /> </td>
+                                <td> <input type="text" name="txtQty16" id="txtQty16" class="form-control height-auto" tabindex="67" /> </td>
+                                <td> <input type="checkbox" name="txtRwk16" id="txtRwk16" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td> <input type="text" name="txtEmpID17" id="txtEmpID17" class="form-control height-auto" tabindex="68" /> </td>
+                                <td> <input type="text" name="txtProID17" id="txtProID17" class="form-control height-auto" tabindex="69" /> </td>
+                                <td> <input type="text" name="txtDefID17" id="txtDefID17" class="form-control height-auto" tabindex="70" /> </td>
+                                <td> <input type="text" name="txtQty17" id="txtQty17" class="form-control height-auto" tabindex="71" /> </td>
+                                <td> <input type="checkbox" name="txtRwk17" id="txtRwk17" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td> <input type="text" name="txtEmpID18" id="txtEmpID18" class="form-control height-auto" tabindex="72" /> </td>
+                                <td> <input type="text" name="txtProID18" id="txtProID18" class="form-control height-auto" tabindex="73" /> </td>
+                                <td> <input type="text" name="txtDefID18" id="txtDefID18" class="form-control height-auto" tabindex="74" /> </td>
+                                <td> <input type="text" name="txtQty18" id="txtQty18" class="form-control height-auto" tabindex="75" /> </td>
+                                <td> <input type="checkbox" name="txtRwk18" id="txtRwk18" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td> <input type="text" name="txtEmpID19" id="txtEmpID19" class="form-control height-auto" tabindex="76" /> </td>
+                                <td> <input type="text" name="txtProID19" id="txtProID19" class="form-control height-auto" tabindex="77" /> </td>
+                                <td> <input type="text" name="txtDefID19" id="txtDefID19" class="form-control height-auto" tabindex="78" /> </td>
+                                <td> <input type="text" name="txtQty19" id="txtQty19" class="form-control height-auto" tabindex="79" /> </td>
+                                <td> <input type="checkbox" name="txtRwk19" id="txtRwk19" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td> <input type="text" name="txtEmpID20" id="txtEmpID20" class="form-control height-auto" tabindex="80" /> </td>
+                                <td> <input type="text" name="txtProID20" id="txtProID20" class="form-control height-auto" tabindex="81" /> </td>
+                                <td> <input type="text" name="txtDefID20" id="txtDefID20" class="form-control height-auto" tabindex="82" /> </td>
+                                <td> <input type="text" name="txtQty20" id="txtQty20" class="form-control height-auto" tabindex="83" /> </td>
+                                <td> <input type="checkbox" name="txtRwk20" id="txtRwk20" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td> <input type="text" name="txtEmpID21" id="txtEmpID21" class="form-control height-auto" tabindex="84" /> </td>
+                                <td> <input type="text" name="txtProID21" id="txtProID21" class="form-control height-auto" tabindex="85" /> </td>
+                                <td> <input type="text" name="txtDefID21" id="txtDefID21" class="form-control height-auto" tabindex="86" /> </td>
+                                <td> <input type="text" name="txtQty21" id="txtQty21" class="form-control height-auto" tabindex="87" /> </td>
+                                <td> <input type="checkbox" name="txtRwk21" id="txtRwk21" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td> <input type="text" name="txtEmpID22" id="txtEmpID22" class="form-control height-auto" tabindex="88" /> </td>
+                                <td> <input type="text" name="txtProID22" id="txtProID22" class="form-control height-auto" tabindex="89" /> </td>
+                                <td> <input type="text" name="txtDefID22" id="txtDefID22" class="form-control height-auto" tabindex="90" /> </td>
+                                <td> <input type="text" name="txtQty22" id="txtQty22" class="form-control height-auto" tabindex="91" /> </td>
+                                <td> <input type="checkbox" name="txtRwk22" id="txtRwk22" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td> <input type="text" name="txtEmpID23" id="txtEmpID23" class="form-control height-auto" tabindex="92" /> </td>
+                                <td> <input type="text" name="txtProID23" id="txtProID23" class="form-control height-auto" tabindex="93" /> </td>
+                                <td> <input type="text" name="txtDefID23" id="txtDefID23" class="form-control height-auto" tabindex="94" /> </td>
+                                <td> <input type="text" name="txtQty23" id="txtQty23" class="form-control height-auto" tabindex="95" /> </td>
+                                <td> <input type="checkbox" name="txtRwk23" id="txtRwk23" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>24</td>
+                                <td> <input type="text" name="txtEmpID24" id="txtEmpID24" class="form-control height-auto" tabindex="96" /> </td>
+                                <td> <input type="text" name="txtProID24" id="txtProID24" class="form-control height-auto" tabindex="97" /> </td>
+                                <td> <input type="text" name="txtDefID24" id="txtDefID24" class="form-control height-auto" tabindex="98" /> </td>
+                                <td> <input type="text" name="txtQty24" id="txtQty24" class="form-control height-auto" tabindex="99" /> </td>
+                                <td> <input type="checkbox" name="txtRwk24" id="txtRwk24" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td> <input type="text" name="txtEmpID25" id="txtEmpID25" class="form-control height-auto" tabindex="100" /> </td>
+                                <td> <input type="text" name="txtProID25" id="txtProID25" class="form-control height-auto" tabindex="101" /> </td>
+                                <td> <input type="text" name="txtDefID25" id="txtDefID25" class="form-control height-auto" tabindex="102" /> </td>
+                                <td> <input type="text" name="txtQty25" id="txtQty25" class="form-control height-auto" tabindex="103" /> </td>
+                                <td> <input type="checkbox" name="txtRwk25" id="txtRwk25" class="form-control height-auto" /> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" align="center"> <b>Comment: </b> </td>
+                                <td colspan="3"> <input type="text" name="txtCmt" id="txtCmt" class="form-control " tabindex="104" /> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" align="center"><input type="submit" name="Submit" id="Submit" width="40" value="Submit" class="btn green purple-stripe margin-bottom-10" tabindex="105" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $("#frmaddnew").validate();
+
+        $("#Submit").click(function (e) {
+            if ($('#lblGr').text() != "" || $('#lblWL').text() != "") {
+                e.preventDefault();
+                alert('Kiểm tra lại Nhóm tổ/ Worklot');
+            }
+        });
+
+        jQuery(document).ready(function () {
+            $(function () {
+                $(document).on('keypress', function (e) {
+                    var that = document.activeElement;
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        //alert("dd");
+                        $('[tabIndex=' + (+that.tabIndex + 1) + ']')[0].focus();
+                    }
+
+               
+                });
+            });
+            $('#txtQCID').focus();
+
+            // CHECK GROUP EXIST
+            //$('#txtGroup').blur(function () {
+            //    var Gr = $('#txtGroup').val();
+            //    if (Gr != "") {
+            //        $.ajax({
+            //            url: '/QCModule/GetGroupInformation/',
+            //            type: 'POST',
+            //            data: { Gr: Gr },
+            //            success: function (resultR) {
+            //                //alert(result.ASST_ID);
+            //                if (resultR == null) {
+            //                    $("#lblGr").empty();
+            //                    $("#lblGr").append("Group không tồn tại!");
+            //                }
+            //                else {
+            //                    $("#lblGr").empty();
+            //                }
+            //            }
+            //        });
+            //    }
+            //    else { $("#lblGr").empty(); }
+            //});
+
+            // CHECK WL EXIST
+            $('#txtWL').blur(function () {
+                var WL = $('#txtWL').val();
+                $.ajax({
+                    url: '/QCModule/GetWLInformation/',
+                    type: 'POST',
+                    data: { WL: WL },
+                    success: function (result) {
+                        //alert(result.ASST_ID);
+                        if (result == null) {
+                            $("#lblWL").empty();
+                            $("#lblWL").append("WL không tồn tại!");
+                        }
+                        else {
+                            $("#lblWL").empty();
+                        }
+                    }
+                });
+            });
+
+            // CHECK VALUE SCAN ON WORKER ID
+            $("input").blur(function () {
+                if ((this.name).substring(0, 8) == "txtEmpID") {
+                    var stra = $(this).val();
+                    var index = (this.name).substring(8, (this.name).length);
+                    if (stra == "+") {
+                        $("#txtRwk" + (index - 1)).attr('checked', true);
+                        $(this).val(null);
+                        $(this).focus();
+                    }
+                    else if (stra.length < 5 && index > 1 && stra != "") {
+                        //$("#txtDefID" + index).val(stra);
+                        $("#txtProID" + index).val(stra);
+
+                        $("#txtEmpID" + index).val($("#txtEmpID" + (index - 1)).val());
+                        //$("#txtProID" + index).val($("#txtProID" + (index - 1)).val());
+                        //$("#txtQty" + index).val(0);
+
+                        //$(this).val($("#txtEmpID" + (index - 1)).val());
+                        //$("#txtProID" + index).focus();
+                        $("#txtDefID" + index).focus();
+                    }
+                    //check employee exist
+                    var Emp = $("#txtEmpID" + index).val();
+                    $.ajax({
+                        url: '/QCModule/GetEmpInformation/',
+                        type: 'POST',
+                        data: { Emp: Emp },
+                        success: function (result) {
+                            //alert(result.ASST_ID);
+                            if (result == null) {
+                                alert('Mã NV ' + Emp + ' Không tồn tại, liên hệ QC Clerk');
+                                //$("#txtEmpID" + index).focus();
+                            }
+                            else {
+                                //$("#lblWL").empty();
+                            }
+                        }
+                    });
+                }
+            }); //dont forget this semicolon
+        });
+    </script>
+<script>
+  document.addEventListener('keydown', function(event) {
+    if(  event.keyCode == 17 || event.keyCode == 74 )
+        event.preventDefault();
+    else {
+        console.log(event.keyCode);
+    }
+  });
+</script>
+}

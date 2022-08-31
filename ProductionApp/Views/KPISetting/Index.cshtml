@@ -1,0 +1,643 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models;
+@model dynamic
+@{
+    UserModels user = (UserModels)Session["SignedInUser"];
+    
+}
+
+
+@section styles{
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="~/Content/themes/assets/css/KPI.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        #thongbao {
+            height: 100px;
+            line-height: 100px;
+            padding-left: 30px;
+            font-weight: bold;
+            border: 1px solid red;
+        }
+        .ttl {
+            background-color: red;
+            color: #fff;
+        }
+        #showErr, #showSucc {
+            display: none;
+        }
+        .tbTTL {
+            background-color: #0026ff;
+            color: #fff;
+        }
+
+        #tb {
+            height: 100px;
+            line-height: 100px;
+            padding-left: 30px;
+            font-weight: bold;
+            border: 1px solid #0026ff;
+        }
+        
+    </style>
+}
+<div class="container-fluid firstbox">
+    <div class="col-md-2 boxLeft">
+        <img src="~/img/HBI.jpg" /> 
+    </div>
+    <div class="col-md-8"><p class="titleKPI" >KPI SETTING</p></div>
+    <div class="col-md-2 boxRight">
+        <p>HYS-F-HR-019</p>
+        <p>Revision:  02</p>
+        <p>Date of revision:4/2/2020</p>
+        <p>Page: 1/1</p>
+
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <input type="hidden" id="username" value="@user.Username" />
+    <input type="hidden" id="EmpID" />
+    <input type="hidden" id="ManagerID" />
+    <input type="hidden" id="EvaluatorID" />
+    <input type="hidden" id="EvaluatorEmail" />
+    <input type="hidden" id="ManagerEmail" />
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>I. EMPLOYEE DATA</b></div>
+    <div class="panel-body">
+        <div class="row Firstpart">
+            <div class="col-md-1"></div>
+            <div class="col-md-1 name">
+                ID-FullName:
+            </div>
+            <div class="col-md-3"><span id="txtMa"></span> - <span id="txtIDName"></span></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2 name">
+                Superior/ Evaluator:
+            </div>
+            <div class="col-md-3"><span id="txtEvaluator"></span></div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="row Firstpart">
+            <div class="col-md-1"></div>
+            <div class="col-md-1 name">
+                Department:
+            </div> <div class="col-md-3"><span id="DepartmentID"></span></div>
+
+            <div class="col-md-1"></div>
+            <div class="col-md-2 name">
+                Manager:
+            </div>
+            <div class="col-md-3"><span id="txtManager"></span></div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="row Firstpart">
+            <div class="col-md-1"></div>
+            <div class="col-md-1 name">
+                Position:
+            </div>
+            <div class="col-md-3"><span id="txtPosition"></span></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2 name">
+                Evaluation period:
+            </div>
+            <div class="col-md-3">
+                <select id="showYear" onchange="loadYear(value)"></select>
+                <input type="hidden" id="txtTest" />
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>II. KPI</b></div>
+    <div class="panel-body">
+
+        <div class="row marginTable">
+
+            <table class="table  tblKPISetting" id="tableId" onkeyup="Sum()">
+                <thead>
+                    <tr>
+                        <td colspan="9"><b>1. Individual KPIs</b></td>
+                    </tr>
+
+                </thead>
+                <tbody id="list">
+                    <tr style="background-color:#ddd">
+                        <th rowspan="2">No.</th>
+                        <th rowspan="2">KPI Items</th>
+                        <th rowspan="2">Year KPI (%)</th>
+                        <th colspan="4">Quarter KPI (%)</th>
+                        <th rowspan="2">KPI Weight (%)</th>
+                        <th rowspan="2">Note</th>
+                    </tr>
+                    <tr style="background-color:#ddd">
+                        <th>Q1</th>
+                        <th>Q2</th>
+                        <th>Q3</th>
+                        <th>Q4</th>
+
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true" ></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="9"><b>2. Organizational Development (for team leading roles) </b></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI" contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7" align="center"><b>Sum</b></td>
+                        <td id="SumKPI_Weight" align="center"></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>III. CORE VALUES</b></div>
+    <div class="panel-body">
+
+        <div class="row Firstpart">
+            <div class="col-md-3"><input type="checkbox" name="checkValue" value="1" /> Team work</div>
+            <div class="col-md-3"><input type="checkbox" name="checkValue" value="2" /> Respect for indivisuals</div>
+            <div class="col-md-3"><input type="checkbox" name="checkValue" value="3" /> Commiment</div>
+            <div class="col-md-3"><input type="checkbox" name="checkValue" value="4" /> Continuous Improvement</div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>IV. SIGNATURE & COMPLETION</b></div>
+    <div class="panel-body">
+        <div class="row" style="margin-top: -15px">
+            <div class="row">
+                <div class="col-md-12 comment">
+                    <b>Comment Employee</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <textarea name="" id="cmtEmp" class="form-control" rows="7"></textarea>
+                </div>
+
+            </div>
+        </div>
+        <div class="row" id="showErr">
+            <div class="row">
+                <div class="col-md-12 comment ttl">
+                    <b>Submited Error!</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="thongbao"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row" id="showSucc">
+            <div class="row">
+                <div class="col-md-12 comment tbTTL">
+                    <b>Submited Successfully!</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="tb"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row marginTable">
+            <table class="table  tblKPISetting">
+                <tbody id="list">
+
+                    <tr>
+                        <td style="background-color:#ddd" colspan="2">Date, Signature Employee:</td>
+                        <td align="center"><button type="submit" class="btn btn-danger btn-sm" onclick="savedata()" id="btnSubmit"> Submit</button></td>
+                        <td colspan="2"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+    @section scripts
+{
+        @*  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>*@
+        <script src="~/Scripts/excelexportjs.js"></script>
+        @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+        <script>
+            var username = $("#username").val();
+            $.get("/KPISetting/getInforLogin", { username: username }, function (data) {
+                console.log(data);
+                $("#txtMa").html(data.Emp.EmpID);
+                $("#txtIDName").html(data.Emp.EmpName);
+                $("#txtEvaluator").html(data.Evaluator.FULLNAME);
+                $("#DepartmentID").html(data.Emp.DeptName);
+                $("#txtManager").html(data.Manager.FULLNAME);
+                $("#txtPosition").html(data.Emp.Position);
+                $("#EvaluatorID").val(data.Evaluator.USERNAME);
+                $("#ManagerID").val(data.Manager.USERNAME); 
+                $("#EvaluatorEmail").val(data.Evaluator.EMAIL);
+                $("#ManagerEmail").val(data.Manager.EMAIL);
+            });
+            function Sum() {
+                var SumKPI_Weight = 0;
+                var table = document.getElementById("tableId");
+                for (var i = 0; i < table.rows.length; i++) {
+                    var countCols = table.rows[i].cells.length;
+                    if (countCols == 9) {
+                        var KPI_Weight = table.rows[i].cells[7].innerHTML.trim();
+                        if (KPI_Weight == "" || KPI_Weight == null) {
+                           KPI_Weight = 0;
+                        }
+                        SumKPI_Weight = SumKPI_Weight + parseInt(KPI_Weight);
+                    }
+                }
+                document.getElementById('SumKPI_Weight').innerHTML = SumKPI_Weight;
+            }
+          
+            function getNowYear() {
+                var d = new Date();
+                $("#txtTest").val(d.getFullYear());
+            }
+            getNowYear();
+     
+            function getYear() {
+                var d = new Date();
+                var n = d.getFullYear();
+                var arr = [];
+                var text;
+                for (var i = n; i <= n + 1; i++) {
+                    arr.push(i);
+                }
+
+                for (var i = 0; i < arr.length; i++) {
+                    $("#showYear").append("<option value=" + arr[i] + ">" + arr[i] + "</option>");
+                };
+
+                document.getElementById("txtTest").value = n;
+            }
+            getYear();
+
+            function loadYear(value) {
+                var i = document.getElementById("txtTest").value;
+                $('#txtTest').val(value);
+            }
+            function savedata() {
+                var EmpID = username;
+                var EvaluatorID = $("#EvaluatorID").val();
+                var ManagerID = $("#ManagerID").val();
+                var Position = $("#txtPosition").html();
+                var Period = document.getElementById("showYear").value;
+                var DepartmentID = $("#DepartmentID").html();
+                var CmtEmployee = document.getElementById("cmtEmp").value;
+                var Level = "";
+               var checkbox = document.getElementsByName('checkValue');
+                var CoreValue = '';
+               
+                    $.get("/KPISetting/checkKPI", { EmpID: EmpID, Period: Period }, function (data) {
+                        console.log(data);
+                        if (data == 1) {
+                            var message = "Your KPI in this year existed. Please do not submit again!";
+                            showError(message);
+                        }
+                       
+                        else {
+                            for (var i = 0; i < checkbox.length; i++) {
+                                if (checkbox[i].checked === true) {
+                                    CoreValue = CoreValue + "#" + checkbox[i].value;
+                                }
+                            }
+                            
+                            var table = document.getElementById("tableId");
+                            if (loopTable() > 0) {
+                                var message = "Vui lòng nhập các cột  Q1, Q2, Q3, Q4, KPI Weight, Year KPI là ký tự số! / Please input Q1, Q2, Q3, Q4, KPI Weight, Year KPI columns are numbers!";
+                                showError(message);
+                            }
+                           
+                            else {
+                            for (var i = 0; i < table.rows.length; i++) {
+                                var countCols = table.rows[i].cells.length;
+                                if (countCols == 9) {
+                                    if (i > 2 && i < 18) {
+                                        Level ="1"
+                                    }
+
+                                    if (i > 18 && i < 24) {
+                                        Level = "2"
+                                    }
+                                    var KPIitems = table.rows[i].cells[1].innerHTML.trim();
+                                    var YearKPI = table.rows[i].cells[2].innerHTML.trim();
+                                    var Q1 = table.rows[i].cells[3].innerHTML.trim();
+                                    var Q2 = table.rows[i].cells[4].innerHTML.trim();
+                                    var Q3 = table.rows[i].cells[5].innerHTML.trim();
+                                    var Q4 = table.rows[i].cells[6].innerHTML.trim();
+                                    var KPI_Weight = table.rows[i].cells[7].innerHTML.trim();
+                                    var Note = table.rows[i].cells[8].innerHTML.trim();
+                                        $.ajax({
+                                            url: "/KPISetting/AddKpiSetting",
+                                            data: {
+                                                EmpID: EmpID, EvaluatorID: EvaluatorID, ManagerID: ManagerID, Position: Position, Period: Period,
+                                                DepartmentID: DepartmentID, CmtEmployee: CmtEmployee, CoreValue: CoreValue,
+                                                KPIitems: KPIitems, YearKPI: YearKPI, Q1: Q1, Q2: Q2, Q3: Q3, Q4: Q4, KPI_Weight: KPI_Weight, Note: Note, Level: Level
+                                            },
+                                            dataType: 'json',
+                                            method: "POST",
+                                            success: function (data) {
+                                               showSuccess(data.msg);
+                                            },
+                                            error: function (jqXHR, textStatus, errorThrown) {
+                                                console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                                            }
+                                        });
+                                    }
+                                }
+                                $.get("/KPISetting/SendMailToEvaluator", { EmpID: EmpID, EvaluatorID: EvaluatorID, Period: Period}, function (data) {
+                                    console.log(data);
+                                });
+                            }
+
+                        }
+                    });
+               }
+
+            function loopTable() {
+                var table = document.getElementById("tableId");
+                var count = 0;
+                for (var i = 0; i < table.rows.length; i++) {
+                    var countCols = table.rows[i].cells.length;
+                    if (countCols == 9) {
+                        var KPIitems = table.rows[i].cells[1].innerHTML.trim();
+                        var YearKPI = table.rows[i].cells[2].innerHTML.trim();
+                        var Q1 = table.rows[i].cells[3].innerHTML.trim();
+                        var Q2 = table.rows[i].cells[4].innerHTML.trim();
+                        var Q3 = table.rows[i].cells[5].innerHTML.trim();
+                        var Q4 = table.rows[i].cells[6].innerHTML.trim();
+                        var KPI_Weight = table.rows[i].cells[7].innerHTML.trim();
+                       
+                        if ((YearKPI != "" && isNaN(YearKPI)) || (Q1 != "" && isNaN(Q1)) || (Q2 != "" && isNaN(Q2)) || 
+                            (Q3 != "" && isNaN(Q3)) || (Q4 != "" && isNaN(Q4)) || (KPI_Weight != "" && isNaN(KPI_Weight))) {
+                            count++;
+                        }
+
+                    }
+                }
+                return count;
+            }
+            
+            function showError(message) {
+                document.getElementById("showSucc").style.display = "none";
+                $("#thongbao").html("");
+                document.getElementById("thongbao").style.backgroundColor = "yellow";
+                $("#thongbao").append(message);
+                document.getElementById("showErr").style.display = "block";
+            }
+
+            function showSuccess(message) {
+                document.getElementById("showErr").style.display = "none";
+                $("#tb").html("");
+                 $("#tb").append(message);
+                document.getElementById("showSucc").style.display = "block";
+            }
+
+        </script>
+
+
+    }
+
+

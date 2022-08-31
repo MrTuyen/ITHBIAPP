@@ -1,0 +1,201 @@
+﻿@using ProductionApp.Models
+@model List<ViewCTComponetInspModel>
+@{
+    List<PROC_GET_CT_GARMENT_CMPNT_MST_Result> CmpntMst = ViewBag.AllCmpntMst;
+    List<ViewLastSttComponentModel> CmpntStt = ViewBag.ComponentStt;
+}
+
+
+<table class="table-hover table"  style="width:100%; border:0px none; float: left; margin-top:15px;" cellpadding="0" cellspacing="0">
+    <thead style="border:1px solid black;">
+    <tr>
+        <td style="width:2%;">
+            <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:#d3d3d3; border-width:1px;"></div>
+        </td>
+        <td style="width:10%;">
+            CUT DONE
+        </td>
+        <td style="width:2%;">
+            <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:yellow; border-width:1px"></div>
+        </td>
+        <td style="width:10%;">
+            OVER DUE(4h)
+        </td>
+        <td style="width:2%;">
+            <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:orange; border-width:1px"></div>
+        </td>
+        <td style="width:10%;">
+            ENDLINE CHECKING
+        </td>
+
+        <td style="width:2%;">
+            <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:orangered; border-width:1px"></div>
+        </td>
+        <td style="width:10%;">
+            ENDLINE REJECT
+        </td>
+        <td style="width:2%;">
+            <div style="height:20px; width:20px; border-color:black; border-style:solid; background-color:greenyellow; border-width:1px"></div>
+        </td>
+        <td style="width:10%;">
+            ENDLINE PASS
+        </td>
+        <td style="width:40%;">
+        </td>
+    </tr>
+    </thead>
+</table>
+
+@using (Html.BeginForm("UpdateCmpntInsp", "CTModule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    if (Model != null)
+    {
+        int i = 0;
+            <table class="table-hover table" style=" border:1px solid black;">
+                <thead>
+                <tr>
+                    <td style="text-align: center; font: bold 16px arial" colspan="5"></td>
+                    <td style="text-align: center; background-color: beige; font: bold 16px arial; border-left: 1px solid black; border-right: 1px solid black;" colspan="6">Part</td>
+                    <td style="text-align: center; background-color: beige; font: bold 16px arial; border-right: 1px solid black;" colspan="2">F</td>
+                    <td style="text-align: center; background-color: beige; font: bold 16px arial; border-right: 1px solid black;" colspan="2">M</td>
+                    <td style="text-align: center; background-color: beige; font: bold 16px arial; border-right: 1px solid black;" colspan="2">L</td>
+                    <td style="text-align: center; font: bold 16px arial" colspan="2"></td>
+                </tr>
+                    <tr style="text-align:center; font:bold 13px arial; background-color:beige">
+                        @*<td width="4%">ID</td>
+                        <td width="4%">Process</td>*@
+                        <td>Marker#</td>
+                        <td>Qty</td>
+                        <td>Type</td>
+                        <td>Garment</td>
+                        <td>AQL/Max Def</td>
+                        <td>Front</td>
+                        <td>Back</td>
+                        <td>Front Panel</td>
+                        <td>Front Side</td>
+                        <td>Croth</td>
+                        <td>Croth Liner</td>
+                        <td width="4%" colspan="1" >Defect</td>
+                        <td width="4%" colspan="1">Qty</td>
+                        <td width="4%" colspan="1">Defect</td>
+                        <td width="4%" colspan="1">Qty</td>
+                        <td width="4%" colspan="1">Defect</td>
+                        <td width="4%" colspan="1">Qty</td>
+                        <td width="10%">Result</td>
+                        <td style="background-color:darkseagreen" width="5%">Part Fix</td>
+                        @*<td width="15%">Confirm</td>*@
+                    </tr>
+                </thead>
+                <tbody>
+                 
+                    @foreach (var item in Model)
+                    {
+                        i += 1;
+                            <tr>
+                                @*<td>@item.OrderTblID</td>
+                                <td>@item.Process</td>*@
+                                <td style="background-color:@item.color;">@item.MARKER</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.type</td>
+                                <td>@item.Garment</td>
+                              @*  <td>@item.AQL / @item.MaxDefect</td>*@
+                                <td></td>
+                                @if(CmpntMst != null)
+                                {
+                                    for(int j = 0; j< CmpntMst.Count; j++)
+                                    {
+                                        if (CmpntMst[j].TYPE <3)
+                                        {
+                                            var check = false;
+                                            <td style="border-bottom:                                             
+
+                                                  @foreach (var itemC in CmpntStt)
+                                                  {
+                                                      if (item.MARKER == itemC.Marker && CmpntMst[j].CMPNT_ID == itemC.ComponentID)
+                                                      {
+                                                          string a = "solid 5px " + itemC.Color;
+                                                              @a
+                                                        }
+                                                  }                                             
+
+                                             ">    
+                                                <input type="checkbox" style="background-color:rebeccapurple; border:2px solid red;" name="ChkCmpnt@(item.MARKER)-@(CmpntMst[j].CMPNT_ID)"
+                                                
+                                                       @for (int GCmpnt = 0; GCmpnt < item.Cmpnt.Count; GCmpnt++)
+                                                       {
+                                                           
+                                                           if(CmpntMst[j].CMPNT_ID == item.Cmpnt[GCmpnt].CMPNT_ID )
+                                                           {
+                                                               check = true;
+                                                               break;
+                                                           }
+
+                                                       }
+                                                       @(check==false? "hidden" : "")
+                                                       >
+                                                        @*@(item.OrderTblID)-@(CmpntMst[j].CMPNT_ID)*@
+                                            </td>
+                                        }
+                                    }
+                                }
+
+                                @{ 
+                                    string txtF = "TxtF" + item.MARKER.ToString();
+                                    string txtFQty = "TxtFQty" + item.MARKER.ToString();
+                                    string txtM = "TxtM" + item.MARKER.ToString();
+
+                                    string txtMQty = "TxtMQty" + item.MARKER.ToString();
+                                    string txtL = "TxtL" + item.MARKER.ToString();
+                                    string txtLQty = "TxtLQty" + item.MARKER.ToString();
+
+                                    string rdoResult = "RdoResult" + item.MARKER.ToString();
+
+                                    string chkFix = "ChkFix" + item.MARKER.ToString();
+                                    //string txtTblID = "TxtTblID" + item.OrderTblID.ToString();
+                                    //string txtStt = "TxtStt" + item.OrderTblID.ToString();
+                                    //string txtF = "TxtF" + i.ToString();
+                                    //string txtFQty = "TxtFQty" + i.ToString();
+                                    //string txtM = "TxtM" + i.ToString();
+
+                                    //string txtMQty = "TxtMQty" + i.ToString();
+                                    //string txtL = "TxtL" + i.ToString();
+                                    //string txtLQty = "TxtLQty" + i.ToString();
+
+                                    //string rdoResult = "RdoResult" + i.ToString();
+
+                                    //string chkFix = "ChkFix" + i.ToString();
+                                    string txtMARKER = "TxtMARKER" + i.ToString();
+                                    string txtStt = "TxtStt" + i.ToString();
+                                }
+                                
+
+                                <td><input type="text"  name=@txtF value="" id=@txtF class="form-control" width="4%" style="padding:4px 4px 4px 4px;" /> </td>
+                                <td style="border-right:1px solid bisque;"><input type="text" name=@txtFQty value="" id=@txtFQty class="form-control" width="4%" style="padding:4px 4px 4px 4px;" /> </td>
+                                <td><input type="text" name=@txtM value="" id=@txtM class="form-control" width="4%" style="padding:4px 4px 4px 4px;"/> </td>
+                                <td style="border-right:1px solid bisque; "><input type="text" name=@txtMQty value="" id=@txtMQty class="form-control" width="4%" style="padding:4px 4px 4px 4px;" /> </td>
+                                <td><input type="text" name=@txtL value="" id=@txtL class="form-control" width="4%" style="padding:4px 4px 4px 4px;" /> </td>
+                                <td><input type="text" name=@txtLQty value="" id=@txtLQty class="form-control" width="4%" style="padding:4px 4px 4px 4px;" /> </td>
+                                <td >
+                                    <input type="radio" name=@rdoResult value="1" id=@rdoResult />&nbsp; Pass &nbsp;
+                                    <input type="radio" name=@rdoResult value="0" id=@rdoResult />&nbsp;Reject &nbsp;
+                                </td>
+                                <td>
+                                    <input type="checkbox" name=@chkFix id=@chkFix />
+                                    <input type="text" name=@txtMARKER value="@item.MARKER" id=@txtMARKER hidden />
+                                    <input type="text" name=@txtStt value="@item.Status" hidden /> 
+                                </td>
+                                @*<td><input type="text" tabindex="@(3+i)" class="form-control" name="TxtConf@(item.OrderTblID)" id="TxtConf@(item.OrderTblID)" @(item.Process>20?"disabled":"")/>
+
+                                </td>*@
+                            </tr>
+                    }
+                    <tr>
+                        <td colspan="21" align="center" style="margin-top:2px;">
+                            <input type="text" name="TxtTotal" id="TxtTotal" value="@i" hidden /> 
+                            <input type="submit" name="Submit" id="Submit" value="Update" class="btn green purple-stripe margin-bottom-10" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    }
+}

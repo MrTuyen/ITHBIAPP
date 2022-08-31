@@ -1,0 +1,259 @@
+﻿
+<!DOCTYPE html>
+<html lang="en" class="no-js" style="background: #fff">
+
+@*@{
+        string domainName = Request.Url.Host;
+        var Uri = "http://hysweb01v" + Request.Url.AbsoluteUri;
+        if(domainName.Contains("localhost")) {
+            Response.Cookies["SignedInUser"].Value = "";
+            Response.Cookies["SignedInUser"].Expires = DateTime.Now.AddDays(-1);
+            @Html.Raw("<meta http-equiv=\"refresh\" content=\"0;url=" + Uri + "\" />")
+        }
+    }*@
+
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="~/Content/themes/assets/fonts/font.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-notific8/jquery.notific8.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" />
+    @RenderSection("styles" ,required :false)
+    <!-- BEGIN THEME STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <link href="~/Content/themes/assets/css/style-metronic.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/css/style-responsive.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="~/Content/themes/assets/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/assets/plugins/select2/select2.min.css?v=1.01" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- DataTables -->
+    <link href="~/Content/themes/assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- END THEME STYLES -->
+    <link href="~/Content/Site.css?ver=1.03" rel="stylesheet" type="text/css" />
+
+    <style>
+        .full-overlay {
+            /*display: none;*/
+            position: fixed;
+            background: rgba(0, 0, 0, 1);
+            opacity: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            -webkit-transition: opacity .3s ease;
+            -moz-transition: opacity .3s ease;
+            -o-transition: opacity .3s ease;
+            transition: opacity .3s ease;
+        }
+
+        #mainLoadingSVG {
+            position: fixed;
+            top: calc(50% - 20px);
+            left: calc(50% - 20px);
+            width: 40px;
+            height: 40px;
+            z-index: 1000000;
+            background: #fff;
+            padding: 3px;
+            border-radius: 50%;
+            display: none;
+        }
+    </style>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-full-width">
+    <!-- BEGIN HEADER -->
+    <div class="header navbar navbar-fixed-top mega-menu">
+        @{ Html.RenderAction("RenderHeader" ,"Shared"); }
+
+
+    </div>
+    <!-- END HEADER -->
+    <div class="clearfix">
+    </div>
+    <!-- BEGIN CONTAINER -->
+    <div class="full-overlay"></div>
+    <img id="mainLoadingSVG" src="~/img/oval.svg" />
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+                @Html.Partial("_Modal")
+                <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row margin-bottom-20">
+                    <div class="col-md-12">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <div class="footer">
+        <div class="footer-inner">
+            2019 &copy; Developed by HYC IT.
+        </div>
+
+        <div class="footer-tools">
+            <span class="go-top">
+                <i class="fa fa-angle-up"></i>
+            </span>
+        </div>
+    </div>
+    <!-- END FOOTER -->
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+    <!-- BEGIN CORE PLUGINS -->
+    <!--[if lt IE 9]>
+        <script src="~/Content/themes/assets/plugins/excanvas.min.js"></script>
+        <script src="~/Content/themes/assets/plugins/respond.min.js"></script>
+    <![endif]-->
+    <script src="~/Content/themes/assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-notific8/jquery.notific8.min.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/select2/select2.min.js?v=2" type="text/javascript"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/select2/select2.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/moment.min.js"></script>
+    <!-- data tables -->
+    <script src="~/Content/themes/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/jszip.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/pdfmake.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/buttons.print.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="~/Content/themes/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+<script src="~/Scripts/HBI/jquery.fileDownload.min.js"></script>
+<script src="~/Scripts/block/app.js?v=1.08"></script>
+    <script src="~/Scripts/app.js?v=1.07"></script>
+
+    <script src="~/Scripts/HBI/Common.js"></script>
+    <script src="~/Scripts/HBI/CommonFactory.js"></script>
+
+    <script src="~/Scripts/HBI/jquery.signalR-2.4.1.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script>
+        $(document).ready(function () {
+            //    $('.search-select').select2();
+
+            sessionStorage.setItem("userNameSS", "signalR")
+            //CheckUpdate();
+
+        });
+        checkSS = false;
+
+        function CheckUpdate() {
+
+            if (checkSS)
+                $.ajax({
+                    url: "/Account/CheckUpdate",
+                    method: "Get",
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data == "relogin") {
+                            window.location.href = "/Account/Login";
+                        } else if (data == "update") {
+                            App.releaseKRM($("body"));
+                        } else if ($('body').data()["blockUI.isBlocked"] == 1) {
+                            location.reload(true);
+
+                        }
+                        checkSS = true;
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                       // App.releaseKRM($("body"));
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        checkSS = true;
+                    }
+                });
+
+
+        }
+
+
+    </script>
+
+    <script>
+        var checkSS = true;
+        $(document).ready(function () {
+            // CheckUpdate();
+            setInterval(function () {
+                if (checkSS) {
+                    checkSS = false;
+                    CheckUpdate();
+                    //check update
+
+                }
+            },
+                20 * 1000);
+        });
+
+        $(document).ready(function () {
+
+            $('.nav .aclick').click(function () {
+                active = $(this).parent().children('ul').hasClass("show");
+                $(".dropdown-menu").removeClass("show");
+                if (active) {
+                    $(this).parent().children('ul').removeClass("show");
+                } else
+                    $(this).parent().children('ul').addClass("show");
+            });
+
+        });
+    </script>
+    @RenderSection("scripts" ,required :false)
+
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

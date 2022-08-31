@@ -1,0 +1,204 @@
+﻿
+
+@{
+    ViewBag.Title = "getAll_Quarterly";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models;
+@model dynamic
+@{
+    UserModels user = (UserModels)Session["SignedInUser"];
+
+}
+
+
+@section styles{
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        .tieudeKPI {
+            font-size: 22px;
+        }
+
+        .btnCreate {
+            margin-left: 800px;
+            margin-top: -30px;
+        }
+
+        #txtIDName {
+            margin-left: -30px;
+        }
+    </style>
+}
+
+<div class="container">
+    <div class="row partInfor">
+        <div class="col-md-2 tieudeKPI"><b>LIST KPIs</b></div>
+        @*<div class="col-md-10 btnCreate">
+                @if (user.Role == "5")
+                {
+                    <input type="hidden" id="txtTest" />
+                    <a href="@Url.Action("Index", "KPISetting")"><button type="button" class="btn btn-info btn-sm">Create KPI</button></a>
+                }
+            </div>*@
+    </div><br />
+    <input type="hidden" id="txtIDName" class="form-control" width="150" />
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>Search KPI and input the information</b></div>
+        <div class="panel-body" style="height: 100px">
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    ID & Name:
+                </div>
+                <div class="col-md-3">
+                    <select id="userName" onchange="load(value)"></select>
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Evaluation period:
+                </div>
+                <div class="col-md-3">
+                    <select id="showYear" onchange="loadYear(value)"></select>
+                    <input type="hidden" id="txtTest" onchange="Search()" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+
+        <div class="panel panel-default" style="margin-bottom: -50px">
+            <div class="panel-heading" style="background-color:  #c2c2d6"><b>The KPI Setting list</b></div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead style="background-color: #c2d1f0">
+                        <tr>
+                            <th>STT</th>
+                            <th>KPI</th>
+                            <th>EmployeeID</th>
+                            <th>Period</th>
+                            <th>View Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+   function load(value) {
+        $("#txtIDName").val(value);
+        Search();
+    }
+    var username = '@user.Username';
+    $.get("/KPISetting/getKPIByUsername", { role: @user.Role, userid: username }, function (data) {
+        console.log(data);
+
+            array = []; arrYear = [];
+            for (var i = 0; i < data.length; i++) {
+                array.push(data[i].EmpID);
+                arrYear.push(data[i].Period);
+            }
+            var arrReduce = array.reduce(
+                function (accumulator, currentItem) {
+                    if (accumulator.includes(currentItem)) {
+                        return accumulator;
+                    }
+
+                    return [...accumulator, currentItem];
+                },
+                []
+            );
+            $("#txtIDName").val(arrReduce[0]);
+            for (var i = 0; i < arrReduce.length; i++) {
+                $("#userName").append("<option>" + arrReduce[i] + "</option>");
+            }
+            var arrReduceYear = arrYear.reduce(
+                function (accumulator, currentItem) {
+                    if (accumulator.includes(currentItem)) {
+                        return accumulator;
+                    }
+
+                    return [...accumulator, currentItem];
+                },
+                []
+            );
+            console.log(arrReduceYear);
+        $("#txtTest").val(arrReduceYear[0]);
+            for (var i = 0; i < arrReduceYear.length; i++) {
+                $("#showYear").append("<option>" + arrReduceYear[i] + "</option>");
+            }
+            Search();
+
+    });
+
+    function loadYear(value) {
+        var i = document.getElementById("txtTest").value;
+        $('#txtTest').val(value);
+        Search();
+    }
+
+    function Search() {
+        var EmpID = $("#txtIDName").val();
+       var Period = $("#txtTest").val();
+        $.get("/KPISetting/SearchKPI", { EmpID: EmpID, Period: Period }, function (data) {
+            console.log(data)
+            $("#list").html("");
+            if (data == 2) {
+                $("#list").append("<tr align='center'>\
+                    <td colspan='5'>KPI DOES NOT EXIST</td>\
+                     </tr > ");
+            }
+            else {
+                $("#list").append("<tr>\
+                    <td>1</td>\
+                    <td>KPI</td>\
+                    <td>"+ EmpID + "</td>\
+                     <td>"+ Period + "</td>\
+                     <td>\
+                    @if (user.Role == "5") {
+<button  type='button' id='create' class='btn btn-warning' onclick=getKPISettingByEmp(1,"+ Period + "," +@user.Role+") ><span class='glyphicon glyphicon-plus'></span> Create</button> }\
+                    <button type='button' id='detail' class='btn btn-primary' onclick=getKPISettingByEmp(2,"+ Period +","+@user.Role+") ><span class='glyphicon glyphicon-eye-open'></span> Detail</button></td>\
+                   </tr > ");
+
+            }
+        });
+     //    kiemTraData(EmpID, Period, @user.Role);
+    }
+
+
+    function getKPISettingByEmp(type, Period, role) {
+        var Type = type;
+        var EmpID = $("#txtIDName").val();
+        if (role == "5" && Type == 1) {
+            window.location.assign("/KPISetting/getOneForQuarter/?Type=" + Type + "&EmpID=" + EmpID + "&Period=" + Period + "");
+        }
+        if (role == "5" && Type == 2) {
+            window.location.assign("/KPISetting/OneQuarterByMgrSup/?Type=" + Type + "&EmpID=" + EmpID + "&Period=" + Period + "");
+        }
+
+        if (role == "3" || role == "1002") {
+            window.location.assign("/KPISetting/OneQuarterByMgrSup/?Type=" + Type + "&EmpID=" + EmpID + "&Period=" + Period + "");
+        }
+      }
+
+    function kiemTraData(EmpID, Period, Role) {
+
+        $.get("/KPISetting/checkQuarterlyKPI", { EmpID: EmpID, Period: Period, Role: Role }, function (data) {
+            alert(data)
+            if (data != 0) {
+                    $("#create").removeClass("hide");
+                }
+                else  {
+                $("#detail").removeClass("hide");
+                }
+        })
+            }
+</script>
+
+
+

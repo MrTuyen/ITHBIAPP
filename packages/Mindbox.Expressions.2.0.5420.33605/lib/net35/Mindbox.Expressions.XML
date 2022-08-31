@@ -1,0 +1,930 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Mindbox.Expressions</name>
+    </assembly>
+    <members>
+        <member name="T:Mindbox.Expressions.BooleanExpressions">
+            <summary>
+            Combines boolean expressions.
+            </summary>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{System.Boolean}}})">
+            <summary>
+            Combines boolean expressions without parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions without parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``1(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``3(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``4(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{System.Boolean}}})">
+            <summary>
+            Combines boolean expressions without parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions without parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``1(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``3(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``4(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="T:Mindbox.Expressions.ExpressionVisitor">
+            <summary>
+            Represents a visitor or rewriter for expression trees.
+            Not present in .NET 4.0 and higher versions of the library
+            (use System.Linq.Expressions.ExpressionVisitor from System.Core.dll).
+            </summary>
+            <remarks>
+            From MSDN: http://msdn.microsoft.com/en-us/library/bb882521(v=vs.90).aspx
+            </remarks>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.Visit(System.Linq.Expressions.Expression)">
+            <summary>
+            Dispatches the expression to one of the more specialized visit methods in this class.
+            </summary>
+            <param name="exp">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitBinding(System.Linq.Expressions.MemberBinding)">
+            <summary>
+            Visits the children of the MemberBinding.
+            </summary>
+            <param name="binding">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitElementInitializer(System.Linq.Expressions.ElementInit)">
+            <summary>
+            Visits the children of the <c>ElementInit</c>.
+            </summary>
+            <param name="initializer">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitUnary(System.Linq.Expressions.UnaryExpression)">
+            <summary>
+            Visits the children of the <c>UnaryExpression</c>.
+            </summary>
+            <param name="u">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression)">
+            <summary>
+            Visits the children of the <c>BinaryExpression</c>.
+            </summary>
+            <param name="b">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitTypeIs(System.Linq.Expressions.TypeBinaryExpression)">
+            <summary>
+            Visits the children of the <c>TypeBinaryExpression</c>.
+            </summary>
+            <param name="b">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)">
+            <summary>
+            Visits the <c>ConstantExpression</c>.
+            </summary>
+            <param name="c">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitConditional(System.Linq.Expressions.ConditionalExpression)">
+            <summary>
+            Visits the children of the <c>ConditionalExpression</c>.
+            </summary>
+            <param name="c">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            Visits the <c>ParameterExpression</c>.
+            </summary>
+            <param name="p">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitMemberAccess(System.Linq.Expressions.MemberExpression)">
+            <summary>
+            Visits the children of the <c>MemberExpression</c>.
+            </summary>
+            <param name="m">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)">
+            <summary>
+            Visits the children of the <c>MethodCallExpression</c>.
+            </summary>
+            <param name="m">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitExpressionList(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.Expression})">
+            <summary>
+            Dispatches the list of expressions to one of the more specialized visit methods in this class.
+            </summary>
+            <param name="original">The expressions to visit.</param>
+            <returns>The modified expression list, if any one of the elements were modified; 
+            otherwise, returns the original expression list.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitMemberAssignment(System.Linq.Expressions.MemberAssignment)">
+            <summary>
+            Visits the children of the <c>MemberAssignment</c>.
+            </summary>
+            <param name="assignment">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitMemberMemberBinding(System.Linq.Expressions.MemberMemberBinding)">
+            <summary>
+            Visits the children of the <c>MemberMemberBinding</c>.
+            </summary>
+            <param name="binding">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitMemberListBinding(System.Linq.Expressions.MemberListBinding)">
+            <summary>
+            Visits the children of the <c>MemberListBinding</c>.
+            </summary>
+            <param name="binding">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitBindingList(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.MemberBinding})">
+            <summary>
+            Visits all <c>MemberBinding</c> nodes in the collection using <c>VisitBinding</c> method.
+            </summary>
+            <param name="original">The nodes to visit.</param>
+            <returns>The modified node list, if any of the elements were modified; 
+            otherwise, returns the original node list.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitElementInitializerList(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.ElementInit})">
+            <summary>
+            Visits all <c>ElementInit</c> nodes in the collection using <c>VisitElementInitializer</c> method.
+            </summary>
+            <param name="original">The nodes to visit.</param>
+            <returns>The modified node list, if any of the elements were modified; 
+            otherwise, returns the original node list.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitLambda(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Visits the children of the <c>LambdaExpression</c>.
+            </summary>
+            <param name="lambda">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitNew(System.Linq.Expressions.NewExpression)">
+            <summary>
+            Visits the children of the <c>NewExpression</c>.
+            </summary>
+            <param name="nex">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitMemberInit(System.Linq.Expressions.MemberInitExpression)">
+            <summary>
+            Visits the children of the <c>MemberInitExpression</c>.
+            </summary>
+            <param name="init">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitListInit(System.Linq.Expressions.ListInitExpression)">
+            <summary>
+            Visits the children of the <c>ListInitExpression</c>.
+            </summary>
+            <param name="init">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitNewArray(System.Linq.Expressions.NewArrayExpression)">
+            <summary>
+            Visits the children of the <c>NewArrayExpression</c>.
+            </summary>
+            <param name="na">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ExpressionVisitor.VisitInvocation(System.Linq.Expressions.InvocationExpression)">
+            <summary>
+            Visits the children of the <c>InvocationExpression</c>.
+            </summary>
+            <param name="iv">The expression to visit.</param>
+            <returns>The modified expression, if it or any subexpression was modified; 
+            otherwise, returns the original expression.</returns>
+        </member>
+        <member name="T:Mindbox.Expressions.Extensions">
+            <summary>
+            Contains extension methods.
+            </summary>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.ExpandExpressions(System.Linq.Expressions.Expression)">
+            <summary>
+            Finds nested expression evaluations in the expression and, 
+            if possible, expands their bodies and substitutes the parameters with the argument values.
+            Nested expression evaluation can be either <c>Evaluate</c> method call or <c>Expression{}.Compile</c>
+            method call producing a delegate that is then invoked.
+            </summary>
+            <param name="expression">Expression that can contain nested expression evaluations. Cannot be null.</param>
+            <returns>Expression with replaced nested expression evaluations.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.ExpandExpressions``1(System.Linq.Expressions.Expression{``0})">
+            <summary>
+            Finds nested expression evaluations in the expression and, 
+            if possible, expands their bodies and substitutes the parameters with the argument values.
+            Nested expression evaluation can be either <c>Evaluate</c> method call or <c>Expression{}.Compile</c>
+            method call producing a delegate that is then invoked.
+            </summary>
+            <param name="expression">Expression that can contain nested expression evaluations. Cannot be null.</param>
+            <returns>Expression with replaced nested expression evaluations.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.ExpandExpressions``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Finds nested expression evaluations in the expressions used to build the query and, 
+            if possible, expands their bodies and substitutes the parameters with the argument values.
+            Nested expression evaluation can be either <c>Evaluate</c> method call or <c>Expression{}.Compile</c>
+            method call producing a delegate that is then invoked.
+            </summary>
+            <param name="query">Query build using expressions that can contain nested expression evaluations.
+            Cannot be null.</param>
+            <returns>Query rebuilt using expressions with replaced nested expression evaluations.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},``0)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``3(System.Linq.Expressions.Expression{System.Func{``0,``1,``2}},``0,``1)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``4(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3}},``0,``1,``2)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``5(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4}},``0,``1,``2,``3)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso(System.Linq.Expressions.Expression{System.Func{System.Boolean}},System.Linq.Expressions.Expression{System.Func{System.Boolean}})">
+            <summary>
+            Combines two boolean expressions without parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``2(System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``3(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``4(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse(System.Linq.Expressions.Expression{System.Func{System.Boolean}},System.Linq.Expressions.Expression{System.Func{System.Boolean}})">
+            <summary>
+            Combines two boolean expressions without parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``2(System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``3(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``4(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="T:Mindbox.Expressions.ReflectionExpressions">
+            <summary>
+            Allows acquiring MemberInfo objects and member names in a refactoring friendly way via expressions.
+            </summary>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find <c>PropertyInfo</c> via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns><c>PropertyInfo</c> or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find <c>PropertyInfo</c> via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns><c>PropertyInfo</c> or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find <c>PropertyInfo</c> via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns><c>PropertyInfo</c> or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds <c>PropertyInfo</c> via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds <c>PropertyInfo</c> via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds <c>PropertyInfo</c> via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find property name via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns>Property name or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find property name via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns>Property name or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find property name via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns>Property name or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds property name via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds property name via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds property name via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find <c>FieldInfo</c> via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns><c>FieldInfo</c> or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find <c>FieldInfo</c> via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns><c>FieldInfo</c> or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find <c>FieldInfo</c> via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns><c>FieldInfo</c> or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds <c>FieldInfo</c> via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds <c>FieldInfo</c> via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds <c>FieldInfo</c> via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find field name via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns>Field name or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find field name via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns>Field name or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find field name via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns>Field name or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds field name via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds field name via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds field name via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+    </members>
+</doc>

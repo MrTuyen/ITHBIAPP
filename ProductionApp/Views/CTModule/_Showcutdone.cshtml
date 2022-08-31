@@ -1,0 +1,79 @@
+﻿@using ProductionApp.Models
+@model List<FabricSpreadModel>
+
+@{
+    int CountCutDone = Convert.ToInt16((Session["count_CutDone"]));
+    string status = ViewBag.Status;
+    string tableId = Session["tableID"].ToString();
+    string employeeId = Session["TS_2_USER"] != null ? Session["TS_2_USER"].ToString() : "";
+    string color = null;
+    if(status == "Duplicate/ Trùng lặp!") {
+        color = "deepskyblue";
+    } else if(status == "Not in Plan/ Không có trong Kế Hoạch!") {
+        color = "red";
+    }
+}
+
+<table class="table-hover table" style="width:50%; border:0px none; float: left; margin-top:15px;" cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <td colspan="2" class="bold"> Table NO:<span style="font-size: 16px" id="TblNo">@tableId</span></td>
+            <td colspan="3" class="bold"> EmployeeID:<span style="font-size: 16px">@employeeId</span></td>
+        </tr>
+        <tr>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td style="width:15%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Marker#</div>
+            </td>
+            <td style="width:15%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Scanned WO#</div>
+            </td>
+            <td style="width:10%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Qty</div>
+            </td>
+            <td style="width:10%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Type</div>
+            </td>
+            <td style="width:35%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Status</div>
+            </td>
+        </tr>
+    </thead>
+    @if(Model != null) {
+        for(int i = 0; i < Model.Count; i++) {
+            <tr>
+                <td>
+                    @Model[i].MARKER
+                </td>
+                <td>
+                    @Model[i].WO
+                </td>
+                <td>
+                    @Model[i].Qty
+                </td>
+                <td>
+                    @Model[i].Type
+                </td>
+                <td>
+                    @Model[i].Status
+                </td>
+            </tr>
+        }
+    }
+</table>
+<table class="tablecut" style="width:50%; border:1px; float:left" cellpadding="0" cellspacing="0">
+
+    <tr>
+
+        <td style=" text-align:center; font-size:400px; color:@(color != null ? color: null)">
+            <div class="d-c" style="border:1px solid #008080;">
+                <div style="text-align:center; color: #008080; font-size:20px;">CUT DONE</div>
+                @CountCutDone
+            </div>
+        </td>
+
+    </tr>
+</table>
+

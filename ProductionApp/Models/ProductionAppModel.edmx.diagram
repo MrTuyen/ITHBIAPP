@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4831fab0458446389905a2b7f6b48c71" Name="Diagram1" ZoomLevel="67">
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_PL_PLAN" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_PLANT_MST" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LABEL_FAILURE" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CASE_MULTI_WLOT" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_WC_MST" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_NON_RECONC_WIP" PointX="4.75" PointY="9.75" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LINE_SHIFT" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_UPDATE_TIMEFRAME_MST" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_OUTPUT_UPDATE" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_PROD_PLAN" Width="1.5" PointX="6.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_WH_CASE" Width="1.5" PointX="2.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LABOR_ABSENTEEISM" Width="1.5" PointX="12.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_SELLING_WC" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_ASST_WL" Width="1.5" PointX="11.375" PointY="14.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_WL" Width="1.5" PointX="0.75" PointY="13" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_DEPARTMENT_MST" Width="1.5" PointX="13.5" PointY="0.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_EMPLOYEE" Width="1.5" PointX="15.375" PointY="6.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_INCENTIVE" Width="1.5" PointX="13.375" PointY="13.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_DEFECT_MST" Width="1.5" PointX="20.75" PointY="8.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_PROCESS_CAT_MST" Width="2.5" PointX="17.625" PointY="11" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_PROCESS_MST" Width="2.625" PointX="17.625" PointY="12.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_PAUDIT_REWORK" Width="2.625" PointX="17.625" PointY="14.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_GROUP_SHIFT" Width="1.5" PointX="20.875" PointY="1" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_INCENTIVE_BIZ_MST" Width="2.375" PointX="16.25" PointY="0.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_BUSINESS_MST" Width="1.5" PointX="18.75" PointY="2.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_PAUDIT_SCORE" Width="1.5" PointX="20.875" PointY="13.25" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_CUTTING_PROCESS_MST" Width="2" PointX="26.75" PointY="1.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_GARMENT_CMPNT" Width="1.5" PointX="29.5" PointY="4.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_GARMENT_CMPNT_MST" Width="2" PointX="26.5" PointY="3.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_ORDER_ST_MST" Width="2" PointX="29.5" PointY="6.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_PLAN" Width="2" PointX="26.75" PointY="9.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_SAH" Width="1.5" PointX="31.875" PointY="5.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_TABLE_MST" Width="1.75" PointX="31.75" PointY="3.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_TTS_ORDER_UPD_HST" Width="2.625" PointX="36.75" PointY="10.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_WORK_LOT" Width="1.5" PointX="6.625" PointY="16.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_CUTTING_PROCESS_ST" Width="1.5" PointX="29.375" PointY="1.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_FINAL_CONF_STT" Width="2.625" PointX="36.625" PointY="4.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_FINAL_CONF_DEFECT" Width="3.125" PointX="36.625" PointY="1.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_TRANSFER_WH" Width="2.625" PointX="36.625" PointY="7.25" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_DEFECT_MST" Width="1.5" PointX="17.375" PointY="6.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_BUSINESS_TARGET" Width="1.5" PointX="19.5" PointY="5.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_TICKET_ORDER_FABRIC" Width="3.375" PointX="13.375" PointY="18.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_TICKET_ORDER_FABRIC_DETAIL" Width="1.5" PointX="9.375" PointY="18.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_MODULE_MST" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_PERMISSION" Width="1.5" PointX="20" PointY="20.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_ORDER_ST_LOG" Width="1.5" PointX="22.375" PointY="3.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_SYSTEM" Width="1.5" PointX="9.375" PointY="22.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LINE_MST" Width="1.5" PointX="22.375" PointY="19.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_SELLING_WC_LOG" Width="1.5" PointX="0.75" PointY="24.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_RAW_DATA" Width="1.5" PointX="3.375" PointY="19.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CASE_LABEL" Width="1.5" PointX="10.625" PointY="0.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_SHIFT_MST" Width="1.5" PointX="10.875" PointY="35.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_WLOT_LOC" Width="1.5" PointX="11.875" PointY="31.5" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_CASE_LABEL_TBL_SHIFT_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_PLAN_LOG" Width="1.5" PointX="5.75" PointY="23.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_FINAL_CONF" Width="1.5" PointX="23.75" PointY="15.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_FINAL_CONF_STT_LOG" Width="1.5" PointX="24.75" PointY="19.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_TRANSFER_WH_LOG" Width="1.5" PointX="24.75" PointY="23.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_Positions_MST" Width="1.5" PointX="0.75" PointY="0.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.Tbl_PPack_Data" Width="1.5" PointX="15.75" PointY="3.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_ROLE_MST" Width="1.5" PointX="25.75" PointY="14.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_Eff_Target" Width="1.5" PointX="13.125" PointY="35.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.Tbl_Working_Hour" Width="1.5" PointX="13.125" PointY="40" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_ENDLINE" Width="1.5" PointX="10.375" PointY="25.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_ENDLINE_WL_SAMPLE" Width="1.5" PointX="3.375" PointY="16.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Answer" Width="1.5" PointX="23" PointY="32.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Employee_Course" Width="1.5" PointX="18.375" PointY="41.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Exam" Width="1.5" PointX="20.75" PointY="33.25" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Exam_Detail" Width="1.5" PointX="23" PointY="29.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Materials" Width="1.5" PointX="20.75" PointY="26.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Question" Width="1.5" PointX="20.75" PointY="29.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Result" Width="1.5" PointX="27.75" PointY="22.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Training_Emp" Width="1.5" PointX="16.125" PointY="41.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Training_Plan" Width="1.5" PointX="16.125" PointY="59.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_TRAINING_REG" Width="1.5" PointX="16.125" PointY="35.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.KPI_Core_Values" Width="1.5" PointX="16.75" PointY="28.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.KPI_Emp_List" Width="1.5" PointX="27.75" PointY="25.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.KPI_Q_Review" Width="1.5" PointX="25.75" PointY="29.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.KPI_Setting" Width="1.5" PointX="27.75" PointY="29.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.KPI_Y_Review" Width="1.5" PointX="3.75" PointY="30.125" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Answer_HR_Question" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Employee_Course_HR_Training_Emp" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Employee_Course_HR_Training_Plan" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Exam_Detail_HR_Exam" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Exam_HR_Training_Plan" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Exam_Detail_HR_Question" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Training_Emp_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_TRAINING_REG_TBL_DEPARTMENT_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_Actual" Width="1.5" PointX="40.25" PointY="14.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_BOM" Width="1.5" PointX="40.25" PointY="17.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_GROUP_ITEM" Width="1.5" PointX="35.75" PointY="16.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_ITEMS" Width="1.5" PointX="38" PointY="16.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_HR_Team" Width="1.5" PointX="3.75" PointY="6.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_LeaveBalance" Width="1.5" PointX="33.75" PointY="32.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_LeaveCode" Width="1.5" PointX="33.75" PointY="43.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_OT_Hours" Width="1.5" PointX="12.75" PointY="27.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_OT_Mins" Width="1.5" PointX="27.75" PointY="17.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_OTCode" Width="1.5" PointX="33.75" PointY="35.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.PR_TeaBreak_Group" Width="1.5" PointX="13.875" PointY="68.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.PR_TeaBreak_Items" Width="1.5" PointX="18.375" PointY="50.25" />
+        <EntityTypeShape EntityType="ProductionAppModel.PR_TeaBreak_Mst" Width="1.5" PointX="16.125" PointY="68.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.PR_TeaBreak_Request" Width="1.5" PointX="16.125" PointY="49.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.STA_AllowDate" Width="1.5" PointX="0.75" PointY="28.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.STA_Item" Width="1.5" PointX="6.75" PointY="29.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.STA_Order_Item" Width="1.5" PointX="29.75" PointY="17.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.STA_Orders" Width="1.5" PointX="8.75" PointY="30.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_WSHOP_MST" Width="1.5" PointX="13.875" PointY="3.625" />
+        <AssociationConnector Association="ProductionAppModel.FK_MUV_Actual_MUV_ITEMS" />
+        <AssociationConnector Association="ProductionAppModel.FK_MUV_BOM_MUV_ITEMS" />
+        <AssociationConnector Association="ProductionAppModel.FK_MUV_ITEMS_MUV_GROUP_ITEM" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_TeaBreak_Mst_TBL_TeaBreak_Group" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_TeaBreak_Items_TBL_TeaBreak_Mst" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_TeaBreak_Items_TBL_TeaBreak_Request" />
+        <AssociationConnector Association="ProductionAppModel.FK_PR_TeaBreak_Request_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_STA_Order_Item_STA_Item" />
+        <AssociationConnector Association="ProductionAppModel.FK_STA_Order_Item_STA_Orders" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_OT_Record_M" Width="1.5" PointX="33" PointY="38.25" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_OT_Record_W" Width="1.5" PointX="33" PointY="47" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_LeaveDetails" Width="1.5" PointX="18" PointY="0.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_OT_Details" Width="1.5" PointX="18" PointY="77.5" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_LeaveDetails_TBL_DEPARTMENT_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_User_Approver" Width="1.5" PointX="30.75" PointY="43.5" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_OT_Record_M_OL_User_Approver" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_OT_Record_W_OL_User_Approver" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CATEGORIES" Width="1.5" PointX="16.375" PointY="24.625" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_PERMISSION_TBL_CATEGORIES" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_QC_AQL" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_Leave_Item" Width="1.5" PointX="36" PointY="22.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.OL_OT_Item" Width="1.5" PointX="36" PointY="57.75" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_Leave_Item_OL_LeaveBalance" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_Leave_Item_OL_LeaveCode" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_Leave_Item_OL_LeaveDetails" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_Leave_Item_OL_User_Approver" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_OT_Item_OL_OT_Details" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_OT_Item_OL_OTCode" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_OT_Item_OL_User_Approver" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_USERS_MST" Width="1.5" PointX="16.125" PointY="0.75" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_LeaveDetails_TBL_USERS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_OL_OT_Details_TBL_USERS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_STA_Orders_TBL_USERS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_STA_Orders_TBL_USERS_MST1" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_USERS_MST_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_PERMISSION_TBL_USERS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_USERS_MST_TBL_Positions_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_USERS_MST_TBL_WSHOP_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.WH_Item_location" Width="1.5" PointX="22.875" PointY="44.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.WH_Location_MST" Width="1.5" PointX="14.375" PointY="37.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.WH_Supply_Location" Width="1.5" PointX="16.625" PointY="37.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.WH_Supply_MST" Width="1.5" PointX="14.375" PointY="51.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.WH_Supply_Request_Item" Width="1.5" PointX="20.625" PointY="44.125" />
+        <AssociationConnector Association="ProductionAppModel.FK_WH_Item_location_WH_Supply_Request_Item" />
+        <AssociationConnector Association="ProductionAppModel.FK_WH_Supply_Location_WH_Location_MST1" />
+        <AssociationConnector Association="ProductionAppModel.FK_WH_Supply_Location_WH_Supply_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.WH_Supply_Request" Width="1.5" PointX="18.375" PointY="0.75" />
+        <AssociationConnector Association="ProductionAppModel.FK_WH_Supply_Request_TBL_USERS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_WH_Supply_Request_Item_WH_Supply_Request" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LTS_APPROVE" Width="1.5" PointX="6.875" PointY="6.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LTS_NONREC_LOT" Width="1.5" PointX="23.375" PointY="7.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_ABN_Items" Width="1.5" PointX="32.625" PointY="16" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_ABN_Mst" Width="1.5" PointX="30.375" PointY="29.125" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_ABN_Items_TBL_DEPARTMENT_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.STA_Dep_Budget" Width="1.5" PointX="14.375" PointY="30.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_ABN_Request" Width="1.5" PointX="18.375" PointY="31" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_ABN_Items_HR_ABN_Request" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_ABN_Request_TBL_USERS_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.TD_TimeDeduction_Request" Width="1.5" PointX="18.375" PointY="61.375" />
+        <AssociationConnector Association="ProductionAppModel.FK_TD_TimeDeduction_Request_TBL_USERS_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_CS_ShiftChange_Request" Width="1.5" PointX="18.375" PointY="0.75" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_CS_ShiftChange_Request_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_CS_ShiftChange_Request_TBL_USERS_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_Notes" Width="1.5" PointX="32.75" PointY="28.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_SAH_MST" Width="1.5" PointX="0.75" PointY="31.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TDS_SupportTimeRequest" Width="1.5" PointX="18.375" PointY="66.875" />
+        <AssociationConnector Association="ProductionAppModel.FK_TDS_SupportTimeRequest_TBL_USERS_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_MailLog" Width="1.5" PointX="30.375" PointY="22.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.IT_Fixed_Asset" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.IT_Fixed_Asset_BK" Width="1.5" PointX="18.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.IT_PC_Model_MST" Width="1.5" PointX="13.5" PointY="49.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_DIVISION_MST" Width="1.5" PointX="13.5" PointY="52.125" />
+        <AssociationConnector Association="ProductionAppModel.FK_IT_Fixed_Asset_IT_PC_Model_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_IT_Fixed_Asset_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_IT_Fixed_Asset_TBL_DIVISION_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_IT_Fixed_Asset_BK_IT_PC_Model_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_IT_Fixed_Asset_BK_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_IT_Fixed_Asset_BK_TBL_DIVISION_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.GRC_UserApprove" Width="1.5" PointX="32.375" PointY="29.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.GRC_TransferAssets" Width="1.5" PointX="26.375" PointY="0.75" />
+        <AssociationConnector Association="ProductionAppModel.FK_GRC_TransferAssets_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_GRC_TransferAssets_TBL_USERS_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Tran_Request" Width="1.5" PointX="15.75" PointY="80.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Tran_Van_MST" Width="1.5" PointX="5.375" PointY="28" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Tran_Request_TBL_DEPARTMENT_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.TD_TimeDeduction_Items" Width="1.5" PointX="20.625" PointY="62" />
+        <EntityTypeShape EntityType="ProductionAppModel.TDS_SupportTimeItems" Width="1.5" PointX="20.625" PointY="67.875" />
+        <AssociationConnector Association="ProductionAppModel.FK_TD_TimeDeduction_Items_TD_TimeDeduction_Request" />
+        <AssociationConnector Association="ProductionAppModel.FK_TDS_SupportTimeItems_TDS_SupportTimeRequest" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Meals_Order" Width="1.5" PointX="32.75" PointY="23.5" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Meals_Order_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Meals_Order_TBL_SHIFT_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_TTS_ORDER_ST" Width="1.5" PointX="23.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_TTS_ORDER_ST_LOG" Width="1.5" PointX="29.375" PointY="10.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_Carton_Mst" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_ORDER_SPR_TBL_LOG" Width="1.5" PointX="0.75" PointY="22.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_COMPNT" Width="1.5" PointX="30.375" PointY="34.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_ORDER_ST" Width="1.5" PointX="12.375" PointY="24.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_COMPNT_DEFECT" Width="1.5" PointX="31.375" PointY="11.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_QC_COMPNT_STT" Width="1.5" PointX="33.375" PointY="11.125" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_RC_Request" Width="1.5" PointX="18.375" PointY="93" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_RC_Request_Data" Width="1.5" PointX="18.375" PointY="84.875" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_RC_Request_Data_Detail" Width="1.5" PointX="20.625" PointY="86.5" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_RC_Request_Detail" Width="1.5" PointX="20.625" PointY="94.625" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_RC_Request_Detail_TBL_RC_Request" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_RC_Request_TBL_USERS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_RC_Request_Data_Detail_TBL_RC_Request_Detail" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_RC_Request_Data_TBL_USERS_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_RC_ComParts" Width="1.5" PointX="0.75" PointY="35.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TDS_UserApprover" Width="1.5" PointX="23.375" PointY="11.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_CS_ShiftChange_Items" Width="1.5" PointX="20.625" PointY="37.625" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_CS_ShiftChange_Items_HR_CS_ShiftChange_Request" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_CT_ORDER_SPR_TBL" Width="1.5" PointX="5.375" PointY="20.375" />
+        <EntityTypeShape EntityType="ProductionAppModel.WH_User_Approver" Width="1.5" PointX="28.375" PointY="15.25" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_KANBAN" Width="1.5" PointX="18.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_KANBAN_DATA" Width="1.5" PointX="21.375" PointY="0.75" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_TBL_USERS_MST_CallBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_TBL_USERS_MST_CancelBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_TBL_USERS_MST_CPSendBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_TBL_USERS_MST_SPSendBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_TBL_USERS_MST_UploadBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_DATA_TBL_USERS_MST_CallBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_DATA_TBL_USERS_MST_CancelBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_DATA_TBL_USERS_MST_CPSendBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_DATA_TBL_USERS_MST_SPSendBy" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_DATA_TBL_USERS_MST_UploadBy" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_Travel_Destination" Width="1.5" PointX="18.375" PointY="24" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_GROUP_MST" Width="1.5" PointX="21" PointY="48.625" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_GROUP_MST_TBL_BUSINESS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_CASE_LABEL_TBL_GROUP_MST1" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_Eff_Target_TBL_GROUP_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_DATA_TBL_GROUP_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_KANBAN_TBL_GROUP_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_WLOT_LOC_TBL_GROUP_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_Tbl_Working_Hour_TBL_GROUP_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_WH_Supply_Request_TBL_GROUP_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.HR_Travel_Request" Width="1.5" PointX="15.75" PointY="0.75" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Travel_Request_TBL_DEPARTMENT_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_HR_Travel_Request_TBL_Positions_MST" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_CT_ACI" Width="1.5" PointX="6.375" PointY="35.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_CT_BOM" Width="1.5" PointX="35.375" PointY="27.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_CT_Goal" Width="1.5" PointX="35.375" PointY="12.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.MUV_CT_SellingWC" Width="1.5" PointX="35.375" PointY="19.75" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LTS_Details" Width="1.5" PointX="18.375" PointY="54.625" />
+        <EntityTypeShape EntityType="ProductionAppModel.TBL_LTS_Items" Width="1.5" PointX="20.625" PointY="56" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_LTS_Details_TBL_USERS_MST" />
+        <AssociationConnector Association="ProductionAppModel.FK_TBL_LTS_Items_TBL_LTS_Details" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

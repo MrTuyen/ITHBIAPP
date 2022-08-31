@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Fabric Recieve";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>Fabric Receiving</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box gray">
+    <div class="portlet-title">
+    <div class="row margin-bottom-10">
+    </div>
+    </div>
+    <div class="portlet-body" >
+        <div class="row margin-bottom-10">
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                WO#
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="txtWO" id="txtWO" class="form-control" />
+            </div>
+            <div class="col-md-1" style="text-align:left">
+            </div>
+            <div class="col-md-2" style="text-align:left">
+                <select id="optLaborSrc" name="optLaborSrc" class="form-control">
+                    <option selected=selected value="1">Recieve/ Nhận</option>
+                </select>
+            </div>
+            </div>
+        <div id="materialchange" class="row margin-bottom-10">
+            @Html.Action("ShowFabricRcv", "CTModule")
+        </div>
+
+    </div>
+</div>
+    
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+<script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+<script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script>
+    jQuery(document).ready(function () {
+        $('#txtWO').focus();
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                var caseID = $('#txtWO').val();
+                var id2 = $('#optLaborSrc option:selected').val();
+                if (caseID.length < 4 || caseID.length >6)
+                {
+                    $('#txtCase').val('');
+                    $('#txtCase').focus();
+                    alert('Invalid command!');
+                    return 0;
+                }
+                else {
+                    $("#materialchange").load("/CTModule/ShowFabricRcv",
+                    { id: caseID, id2: id2 });
+                    $('#txtWO').val('');
+                    $('#txtWO').focus();
+                }
+            }
+        });
+    });
+</script>
+}

@@ -1,0 +1,91 @@
+﻿@model ProductionApp.Models.TBL_QC_ENDLINE
+
+<h2>Save</h2>
+@using (Html.BeginForm("save", "QCModule", FormMethod.Post, new { id = "popupForm" }))
+{
+    if (Model != null && Model.ID > 0)
+    {
+        @Html.HiddenFor(a => a.ID)
+    }
+
+    <div class="form-group">
+        <label>QC STAFF ID</label>
+        @Html.TextBoxFor(a => a.QC_STAFF_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.QC_STAFF_ID)
+    </div>
+    <div class="form-group">
+        <label>WORKER ID</label>
+        @Html.TextBoxFor(a => a.WORKER_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.WORKER_ID)
+    </div>
+    @*<div class="form-group">
+            <label>SUPRNT ID</label>
+            @Html.TextBoxFor(a => a.SUPRNT_ID, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.SUPRNT_ID)
+        </div>*@
+    <div class="form-group">
+        <label>LINE ID</label>
+        @Html.TextBoxFor(a => a.LINE_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.LINE_ID)
+    </div>
+    <div class="form-group">
+        <label>DEFECT ID</label>
+        @Html.TextBoxFor(a => a.DEFECT_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.DEFECT_ID)
+    </div>
+    <div class="form-group">
+        <label>QUANTITY</label>
+        @Html.TextBoxFor(a => a.QUANTITY, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.QUANTITY)
+    </div>
+    <div class="form-group">
+        <label>Bisiness ID</label>
+        @*@Html.DropDownList()*@
+        @Html.TextBoxFor(a => a.BIZI_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.BIZI_ID)
+    </div>
+    <div class="form-group">
+        <label>Ngày Nhập</label>
+        @Html.TextBoxFor(a => a.TS_1, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.TS_1)
+    </div>
+    @*<div class="form-group">
+            <label>TS_2</label>
+            @Html.TextBoxFor(a => a.TS_2, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.TS_2)
+        </div>*@
+    @*<div class="form-group">
+            <label>COMMENT</label>
+            @Html.TextBoxFor(a => a.COMMENT, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.COMMENT)
+        </div>*@
+    <div class="form-group">
+        <label>PROCESS_ID</label>
+        @Html.TextBoxFor(a => a.PROCESS_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.PROCESS_ID)
+    </div>
+    <div class="form-group">
+        <label>TOTAL SAMPLE</label>
+        @Html.TextBoxFor(a => a.TOTAL_SAMPLE, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.TOTAL_SAMPLE)
+    </div>
+    @*<div class="form-group">
+            <label>TS_1_USER</label>
+            @Html.TextBoxFor(a => a.TS_1_USER, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.TS_1_USER)
+        </div>*@
+    @*<div class="form-group">
+            <label>TS_2_USER</label>
+            @Html.TextBoxFor(a => a.TS_2_USER, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.TS_2_USER)
+        </div>*@
+    <div class="form-group">
+        <label>OTFQ</label>
+        @Html.TextBoxFor(a => a.OTFQ, new { @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.OTFQ)
+    </div>
+
+    <div>
+        <input type="submit" value="Save" onclick="location.href=location.href" />
+    </div>
+}

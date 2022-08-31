@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<style>
+    ol {
+        list-style: none;
+        padding-left: 0px;
+        width: 300px;
+        border: 1px solid #000
+    }
+
+
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .mainleft ol li {
+        font-size: 17px;
+        width: 100%;
+        padding-left: 20px;
+        line-height: 40px;
+        border-bottom: 1px dashed grey;
+    }
+
+        .mainleft ol li:hover {
+            background-color: #D8B6EE;
+            cursor: pointer;
+        }
+
+    ol li a:hover {
+        text-decoration: none;
+    }
+
+    .mainleft div {
+        border: 1px solid grey;
+        padding-bottom: 20px;
+    }
+
+    .ttl {
+        margin-top: 0px;
+    }
+
+    input {
+        background: #fff;
+        color: #fff;
+        border: 0px;
+    }
+
+    .inforWarn {
+        margin-top: 30px;
+        margin-left: 30px;
+    }
+
+    .inforWarn2 {
+        margin-bottom: 23px;
+        margin-left: 30px;
+    }
+
+
+</style>
+
+<div class="container">
+    <div class="mainleft">
+        <h3 class="ttl">ONLINE TESTING</h3>
+        <ol>
+
+            <li data-toggle="modal" data-target="#myModal">
+                @*<a href="@Url.Action("JoinTest", "OnlineTraining")">*@
+                <span class=" glyphicon glyphicon-calendar "></span>&nbsp&nbsp&nbsp Tham gia thi trực tuyến
+                @*</a>*@
+            </li>
+
+        </ol>
+    </div>
+
+  
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog" style="margin-top: 100px">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header alert-info">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p class="modal-title"><span class="glyphicon glyphicon-edit "></span>&nbsp&nbsp&nbsp <b>Nhập thông tin nhân viên / Fill in your information</b></p>
+            </div>
+            <div class="modal-body">
+                <p><b>Mã nhân viên / Your ID:</b> <input type="text" name="EmpID" class="form-control" required id="EmpID" placeholder="Nhập mã nhân viên / Please fill in your ID" /></p>
+               </div>
+            <div class="modal-footer">
+                <input type="Submit" class="btn btn-primary" value="Submit"  onclick="CheckInformation()"/>
+                <input type="button" class="btn btn-danger" data-dismiss="modal" value="Thoát" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<div class="modal fade" id="WarningModal" role="dialog" style="margin-top: 100px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p class="modal-title"><span class="glyphicon glyphicon-warning-sign "></span>&nbsp&nbsp&nbsp <b>Warning</b></p>
+            </div>
+            <div class="modal-body">
+                <p class="inforWarn">
+                    <b id="inforViet">Vui lòng điền đầy đủ thông tin của bạn!</b>
+                </p>
+                <p class="inforWarn2"> <b id="inforEng">Please fill in your information fully!</b></p>
+                
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-danger" data-dismiss="modal" value="Thoát" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script language="javascript">
+    function CheckInformation() {
+        var EmpID = $("#EmpID").val();
+        if (EmpID == "" ) {
+            $("#WarningModal").modal("show");
+        }
+        else {
+            window.location.assign("/TestOnline/CheckInfor/?EmpID=" + EmpID);
+        }
+    }
+</script>

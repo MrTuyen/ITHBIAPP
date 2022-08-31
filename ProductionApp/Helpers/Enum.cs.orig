@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace ProductionApp.Helpers {
+    public class EnumHelper {
+        public enum Enum_Action {
+            Cancel = 1 ,
+            Call = 2 ,
+            CPSend = 3 ,
+            SPSend = 4 ,
+            Complete = 5
+        }
+
+        public enum Manager_Action {
+            None = 1 ,
+            Approve = 2 ,
+            Reject = 3
+        }
+
+        public enum HR_Action {
+            None = 1 ,
+            Approve = 2 ,
+            Reject = 3
+        }
+
+        public enum Action {
+            None = 1 ,
+            Processing = 2 ,
+            Approve = 3 ,
+            Reject = 4
+        }
+
+        public enum Recut_Action_Click {
+            QASew = 1 ,
+            Manager = 2 ,
+            Plan = 3 ,
+            CCDFabric = 4 ,
+            Warehouse = 5 ,
+            CCD = 6 ,
+            QACut = 7 ,
+            Production = 8
+        }
+
+        public enum View_Type {
+            Weekly = 1 ,
+            Daily = 2 ,
+            Style = 3 ,
+            Fabric = 4
+        }
+
+        public enum LtsStatus {
+            //statusApprove.Add(2, "Quản Đốc pendding");
+            //statusApprove.Add(-2, "Quản đốc reject");
+            //statusApprove.Add(3, "Trưởng BP pendding");
+            //statusApprove.Add(-3, "Trưởng BP reject");
+            //statusApprove.Add(4, "Kho tạm  pendding");
+            //statusApprove.Add(-4, "Kho tạm reject");
+            //statusApprove.Add(5, "Kế Toán  pendding");
+            //statusApprove.Add(-5, "Kế Toán reject");
+            CreateRequest = 1 ,
+            Prod_Approve = 2 ,
+            Prod_Reject = -2 ,
+
+            PM_Approve = 3 ,
+            PM_Reject = -3 ,
+
+            Odd_Approve = 4 ,
+            Odd_Reject = -4 ,
+
+            IA_Approve = 5 ,
+            IA_Reject = -5 ,
+
+
+        }
+    }
+}

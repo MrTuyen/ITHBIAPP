@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Edit_Leave";
+}
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var List = (List<OL_Leave_Item>)ViewData["item"];
+    var leave1 = (OL_LeaveDetails)ViewData["leave"];
+    var manager = (OL_User_Approver)ViewData["manager"];
+    UserModels user = (UserModels)Session["SignedInUser"];
+
+    //var user1 = db.TBL_USERS_MST.Find(user.Username);
+    var hrteam = (TBL_SYSTEM)ViewData["hrteam"];
+}
+
+
+
+<h4>CHI TIẾT ĐỀ NGHỊ NGHỈ / LEAVE REQUEST DETAILS</h4>
+@Html.Raw(TempData["msg"])
+
+<div class="panel panel-default" id="panel-oddcase" >
+    <div class="panel-heading">Action</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+                <span>Phòng ban/Dept</span>: <br />
+                @*<select class="form-control" id="dept" name="dept">
+                            <option value="@dept.DEPT_ID">@dept.NAME</option>
+                        </select>*@
+                <input type="text" readonly="" value="@dept.NAME" class="form-control" />
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-md-12">
+                <table id="table2" class="table " style="width: auto">
+                    <form action="@Url.Action("Approve", "Leave_OT",  new { id = leave1.LeaveID })" method="post">
+
+                        <tr>
+                            <td>Manager</td>
+                            <td>
+                                <select style="width:200px" class="form-control" name="dept">
+
+                                    <option value="@manager.EmpID">@manager.ApproverName</option>
+
+
+                                </select>
+                            </td>
+                            <td>
+                                <input type="hidden" id="id" name="id" value="@leave1.LeaveID" />
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Approve" class="btn btn-info" />
+
+                            </td>
+
+                            <td><a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_theme_primary">Reject</a></td>
+
+
+                        </tr>
+                    </form>
+                    <form action="@Url.Action("HRteam_Approve", "Leave_OT",  new { id = leave1.LeaveID })" method="post">
+                        <tr>
+                            <td>HR Team</td>
+                            <td>
+                                <select style="width:200px" class="form-control" name="hrteam">
+
+                                    <option value="@hrteam.id">@hrteam.fullname</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="hidden" id="id" name="id" value="@leave1.LeaveID" />
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Process" class="btn btn-info" />
+
+
+                            </td>
+                            <td></td>
+                        </tr>
+                    </form>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered" id="table1">
+
+            <tr style="text-align: center;background-color:#f5f5f5">
+                <th>No</th>
+                <th>Leave Code</th>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>From date</th>
+                <th>To date</th>
+                <th>Total</th>
+                <th>Leave in morning</th>
+                <th>Reason</th>
+
+            </tr>
+
+
+
+            @{ int i = 0;}
+            @foreach (OL_Leave_Item item in List)
+            {
+               // var leave = db.OL_LeaveCode.Where(s => s.LeaveCD == item.LeaveCD).Single();
+                i++;
+            <tr>
+                <td>@i</td>
+                <td>@item.OL_LeaveCode.LeaveName</td>
+                <td>@(item.OL_User_Approver!=null?item.OL_User_Approver.EmpID:"")</td>
+                <td>@(item.OL_User_Approver!=null?item.OL_User_Approver.EmpName:"")</td>
+                <td>@string.Format("{0:MM/dd/yyyy}", item.FromDate)</td>
+                <td>@string.Format("{0:MM/dd/yyyy}", item.ToDate)</td>
+
+                <td>@item.LeaveNo</td>
+                @if (item.LeaveInMorning == "1")
+                    {
+                    <td>Chọn</td>
+                    }
+                    else
+                    {
+                    <td>Không chọn</td>
+                    }
+                <td>@item.Reason</td>
+            </tr>
+            }
+
+        </table>
+
+        <div id="modal_theme_primary2" class="modal fade in" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+
+                    </div>
+
+                    <div class="modal-body">
+                        <fieldset>
+                            <label>Bạn không có quyền từ chối</label>
+
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_theme_primary" class="modal fade in" role="dialog">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h5 class="modal-title">Please provide your comments</h5>
+                    </div>
+                    @using (Html.BeginForm("SendMail", "Leave_OT", FormMethod.Post, new { id = leave1.LeaveID, @class = "form-horizontal", role = "form" }))
+                    {       <input type="hidden" id="id" name="id" value="@leave1.LeaveID" />
+                        <input type="hidden" id="id" name="dept1" value="@manager.EmpID" />
+                        @Html.AntiForgeryToken()
+                        <div style="width:570px;margin:10px">
+
+                            <textarea class="form-control" name="body"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                            <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

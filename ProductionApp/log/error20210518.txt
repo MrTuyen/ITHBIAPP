@@ -1,0 +1,133 @@
+2021-05-18 08:44:33
+tunguyen
+AddNewRequest
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 181
+TargetSite:System.Web.Mvc.ActionResult AddNewRequest(ProductionApp.Models.HR_Travel_Request)
+Line:181 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-18 08:57:28
+tunguyen
+AddNewRequest
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:System.Data
+InnerException:
+StackTrace:   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<>c.<Open>b__13_0(DbConnection t, DbConnectionInterceptionContext c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__55_0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass2_0.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 181
+TargetSite:Boolean TryOpenInner(System.Threading.Tasks.TaskCompletionSource`1[System.Data.ProviderBase.DbConnectionInternal])
+Line:0 in Method TryOpenInner, File , Column 0
+Line:0 in Method TryOpen, File , Column 0
+Line:0 in Method Open, File , Column 0
+Line:0 in Method <Open>b__13_0, File , Column 0
+Line:0 in Method Dispatch, File , Column 0
+Line:0 in Method Open, File , Column 0
+Line:0 in Method <Open>b__55_0, File , Column 0
+Line:0 in Method <Execute>b__0, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method Open, File , Column 0
+Line:0 in Method EnsureConnection, File , Column 0
+Line:0 in Method ExecuteInTransaction, File , Column 0
+Line:0 in Method <GetResults>b__0, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method GetResults, File , Column 0
+Line:0 in Method <System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0, File , Column 0
+Line:0 in Method MoveNext, File , Column 0
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:0 in Method <GetElementFunction>b__14_1, File , Column 0
+Line:0 in Method ExecuteSingle, File , Column 0
+Line:0 in Method System.Linq.IQueryProvider.Execute, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:181 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-18 08:58:26
+tunguyen
+AddNewRequest
+Message:The underlying provider failed on Open.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146233087
+HelpLink:
+Source:EntityFramework
+InnerException:System.InvalidOperationException: The connection was not closed. The connection's current state is connecting.
+   at System.Data.ProviderBase.DbConnectionClosedConnecting.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<>c.<Open>b__13_0(DbConnection t, DbConnectionInterceptionContext c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__55_0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass2_0.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+StackTrace:   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 181
+TargetSite:Void Open()
+Line:0 in Method Open, File , Column 0
+Line:0 in Method EnsureConnection, File , Column 0
+Line:0 in Method ExecuteInTransaction, File , Column 0
+Line:0 in Method <GetResults>b__0, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method GetResults, File , Column 0
+Line:0 in Method <System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0, File , Column 0
+Line:0 in Method MoveNext, File , Column 0
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:0 in Method <GetElementFunction>b__14_1, File , Column 0
+Line:0 in Method ExecuteSingle, File , Column 0
+Line:0 in Method System.Linq.IQueryProvider.Execute, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:181 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+

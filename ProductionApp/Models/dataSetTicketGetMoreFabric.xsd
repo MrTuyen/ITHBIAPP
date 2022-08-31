@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dataSetTicketGetMoreFabric" targetNamespace="http://tempuri.org/dataSetTicketGetMoreFabric.xsd" xmlns:mstns="http://tempuri.org/dataSetTicketGetMoreFabric.xsd" xmlns="http://tempuri.org/dataSetTicketGetMoreFabric.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dataSetTicketGetMoreFabric" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dataSetTicketGetMoreFabric" msprop:Generator_UserDSName="dataSetTicketGetMoreFabric">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dtTableTicket" msprop:Generator_TableClassName="dtTableTicketDataTable" msprop:Generator_TableVarName="tabledtTableTicket" msprop:Generator_RowChangedName="dtTableTicketRowChanged" msprop:Generator_TablePropName="dtTableTicket" msprop:Generator_RowDeletingName="dtTableTicketRowDeleting" msprop:Generator_RowChangingName="dtTableTicketRowChanging" msprop:Generator_RowEvHandlerName="dtTableTicketRowChangeEventHandler" msprop:Generator_RowDeletedName="dtTableTicketRowDeleted" msprop:Generator_RowClassName="dtTableTicketRow" msprop:Generator_UserTableName="dtTableTicket" msprop:Generator_RowEvArgName="dtTableTicketRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID_TICKET_DETAIL" msprop:Generator_ColumnVarNameInTable="columnID_TICKET_DETAIL" msprop:Generator_ColumnPropNameInRow="ID_TICKET_DETAIL" msprop:Generator_ColumnPropNameInTable="ID_TICKET_DETAILColumn" msprop:Generator_UserColumnName="ID_TICKET_DETAIL" type="xs:int" minOccurs="0" />
+              <xs:element name="ID_TICKET" msprop:Generator_ColumnVarNameInTable="columnID_TICKET" msprop:Generator_ColumnPropNameInRow="ID_TICKET" msprop:Generator_ColumnPropNameInTable="ID_TICKETColumn" msprop:Generator_UserColumnName="ID_TICKET" type="xs:int" minOccurs="0" />
+              <xs:element name="ORDER_IN_LIST" msprop:Generator_ColumnVarNameInTable="columnORDER_IN_LIST" msprop:Generator_ColumnPropNameInRow="ORDER_IN_LIST" msprop:Generator_ColumnPropNameInTable="ORDER_IN_LISTColumn" msprop:Generator_UserColumnName="ORDER_IN_LIST" type="xs:int" minOccurs="0" />
+              <xs:element name="CODE_FABRIC" msprop:Generator_ColumnVarNameInTable="columnCODE_FABRIC" msprop:Generator_ColumnPropNameInRow="CODE_FABRIC" msprop:Generator_ColumnPropNameInTable="CODE_FABRICColumn" msprop:Generator_UserColumnName="CODE_FABRIC" type="xs:string" minOccurs="0" />
+              <xs:element name="NOTE_DETAIL" msprop:Generator_ColumnVarNameInTable="columnNOTE_DETAIL" msprop:Generator_ColumnPropNameInRow="NOTE_DETAIL" msprop:Generator_ColumnPropNameInTable="NOTE_DETAILColumn" msprop:Generator_UserColumnName="NOTE_DETAIL" type="xs:string" minOccurs="0" />
+              <xs:element name="NUMBER_REQUEST" msprop:Generator_ColumnVarNameInTable="columnNUMBER_REQUEST" msprop:Generator_ColumnPropNameInRow="NUMBER_REQUEST" msprop:Generator_ColumnPropNameInTable="NUMBER_REQUESTColumn" msprop:Generator_UserColumnName="NUMBER_REQUEST" type="xs:double" minOccurs="0" />
+              <xs:element name="WO" msprop:Generator_ColumnVarNameInTable="columnWO" msprop:Generator_ColumnPropNameInRow="WO" msprop:Generator_ColumnPropNameInTable="WOColumn" msprop:Generator_UserColumnName="WO" type="xs:string" minOccurs="0" />
+              <xs:element name="ASSORTMENT" msprop:Generator_ColumnVarNameInTable="columnASSORTMENT" msprop:Generator_ColumnPropNameInRow="ASSORTMENT" msprop:Generator_ColumnPropNameInTable="ASSORTMENTColumn" msprop:Generator_UserColumnName="ASSORTMENT" type="xs:string" minOccurs="0" />
+              <xs:element name="NOTE_TTS" msprop:Generator_ColumnVarNameInTable="columnNOTE_TTS" msprop:Generator_ColumnPropNameInRow="NOTE_TTS" msprop:Generator_ColumnPropNameInTable="NOTE_TTSColumn" msprop:Generator_UserColumnName="NOTE_TTS" type="xs:string" minOccurs="0" />
+              <xs:element name="DATE_CREATE" msprop:Generator_ColumnVarNameInTable="columnDATE_CREATE" msprop:Generator_ColumnPropNameInRow="DATE_CREATE" msprop:Generator_ColumnPropNameInTable="DATE_CREATEColumn" msprop:Generator_UserColumnName="DATE_CREATE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TICKET_NUMBER" msprop:Generator_ColumnVarNameInTable="columnTICKET_NUMBER" msprop:Generator_ColumnPropNameInRow="TICKET_NUMBER" msprop:Generator_ColumnPropNameInTable="TICKET_NUMBERColumn" msprop:Generator_UserColumnName="TICKET_NUMBER" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

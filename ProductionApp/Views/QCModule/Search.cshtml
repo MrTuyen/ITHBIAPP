@@ -1,0 +1,129 @@
+﻿@using ProductionApp.Models
+@model List<PROC_GET_QC_SEARCH_BY_WL_Result>
+@{
+ViewBag.Title = "DEFECT BY WORKLOT";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+             <small>QC Seach</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("Search", "QCModule", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+
+    </div>
+    <div class="portlet-body ">
+        <div class="row margin-bottom-10">
+
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                Worklot#
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtSearch" id="txtSearch" class="form-control"/>
+            </div>
+            <div class="col-md-1">
+                <input type="submit" name="Submit" value="Search" class="btn blue purple-stripe" id="Submit" >
+            </div>
+        </div>
+        <div class="row margin-bottom-10 margin-top-20" id="DivShowData">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:85%;">
+                    @if (Model != null)
+                    {
+                        <thead>
+                            <tr style="background-color:darkseagreen;">
+                                <th style="text-align:center">No.</th>
+                                <th style="text-align:center">Worklot</th>
+                                <th style="text-align:center">Group</th>
+                                <th style="text-align:center">Categories</th>
+                                <th style="text-align:center">Process ID</th>
+                                <th style="text-align:center">Process Name</th>
+                                <th style="text-align:center">Defect ID</th>
+                                <th style="text-align:center">Defect Name</th>
+                                <th style="text-align:center">Defect Qty</th>
+                                <th style="text-align:center">OTFQ</th>
+                                <th style="text-align:center">Employee ID</th>
+                                <th style="text-align:center">QC ID</th>
+                                <th style="text-align:center" width="17%">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                <tr>
+                                    <td>@(i+1)</td>
+                                    <td>@Model[i].WL_ID</td>
+                                    <td>@Model[i].LINE_ID </td>
+                                    <td>@Model[i].CAT_NAME  </td>
+                                    <td>@Model[i].PROCESS_ID </td>
+                                    <td>@Model[i].NAME </td>
+                                    <td>@Model[i].DEFECT_ID </td>
+                                    <td>@Model[i].DEFECT_NAME </td>
+                                    <td>@Model[i].QUANTITY </td>
+                                    <td>@(Model[i].OTFQ ==1 ?"X":"")</td>
+                                    <td>@Model[i].WORKER_ID </td>
+                                    <td>@Model[i].QC_STAFF_ID </td>
+                                    <td>@Model[i].TS_1.Value.ToString("MM/dd/yyyy")</td>
+                                </tr>
+                                }
+                        </tbody>
+                        }else
+                                    {
+
+                                    }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        //$('#DivShowData').hide();
+        $("#Submit").click(function (e) {
+            var From = $('#txtSearch').val();
+            //alert(From.length);
+
+            if (From.length != 10 )
+            {
+                    alert('Incorrect Data!');
+                    $('#txtFrom').focus();
+                    e.preventDefault();
+                    return 0;
+            }
+        });
+
+     </script>
+}

@@ -1,0 +1,85 @@
+﻿@model ProductionApp.Models.TBL_QC_ENDLINE
+
+<h2>Delete</h2>
+@using (Html.BeginForm("delete", "QCModule", FormMethod.Post, new { id = "popupForm" }))
+{
+    @Html.HiddenFor(a => a.ID)
+    <div class="form-group">
+        <label>QC STAFF ID</label>
+        <p>@Model.QC_STAFF_ID</p>
+    </div>
+
+    <div class="form-group">
+        <label>WORKER_ID</label>
+        <p>@Model.WORKER_ID</p>
+    </div>
+
+    @*<div class="form-group">
+            <label>SUPRNT_ID</label>
+            <p>@Model.SUPRNT_ID</p>
+        </div>*@
+
+    <div class="form-group">
+        <label>LINE_ID</label>
+        <p>@Model.LINE_ID</p>
+    </div>
+
+    <div class="form-group">
+        <label>DEFECT_ID</label>
+        <p>@Model.DEFECT_ID</p>
+    </div>
+
+    <div class="form-group">
+        <label>QUANTITY</label>
+        <p>@Model.QUANTITY</p>
+    </div>
+
+    <div class="form-group">
+        <label>Business ID</label>
+        <p>@Model.BIZI_ID</p>
+    </div>
+
+    <div class="form-group">
+        <label>Ngày Nhập</label>
+        <p>@Model.TS_1</p>
+    </div>
+
+    @*<div class="form-group">
+            <label>TS_2</label>
+            <p>@Model.TS_2</p>
+        </div>*@
+
+    @*<div class="form-group">
+            <label>COMMENT</label>
+            <p>@Model.COMMENT</p>
+        </div>*@
+
+    <div class="form-group">
+        <label>PROCESS_ID</label>
+        <p>@Model.PROCESS_ID</p>
+    </div>
+
+    <div class="form-group">
+        <label>TOTAL_SAMPLE</label>
+        <p>@Model.TOTAL_SAMPLE</p>
+    </div>
+
+    @*<div class="form-group">
+            <label>TS_1_USER</label>
+            <p>@Model.TS_1_USER</p>
+        </div>
+
+        <div class="form-group">
+            <label>TS_2_USER</label>
+            <p>@Model.TS_2_USER</p>
+        </div>*@
+
+    <div class="form-group">
+        <label>OTFQ</label>
+        <p>@Model.OTFQ</p>
+    </div>
+
+    <div>
+        <input type="submit" value="Delete" onclick="location.href=location.href" />
+    </div>
+}

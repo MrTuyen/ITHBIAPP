@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "List Supply";
+}
+@using ProductionApp.Models;
+
+@model IEnumerable<WH_Supply_Request>
+
+
+
+<h3 style="text-align: center; margin-bottom: 40px">DANH SÁCH PHIẾU YÊU CẦU VẬT TƯ</h3>
+@Html.Raw(TempData["msg"])
+<a class="btn btn-primary btn-sm" href="@Url.Action("Add_Supply", "Supply")" style="margin-bottom: 10px;margin-left: 0px;">Thêm phiếu</a>
+<a href="#" class="btn btn-primary btn-sm" style="text-align:right;margin-bottom: 10px" data-toggle="modal" data-target="#myModal1">Export Request</a>
+<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal4" style="text-align:right;margin-bottom:10px">Upload Supply</button>
+<table class=" table  table-bordered table-hover " id="tblsupply">
+    <thead>
+        <tr style="text-align: center;font-weight:bold;background-color:#f5f5f5 ">
+            <th data-defaultsort="asc">No#</th>
+            <th data-defaultsort="asc">Người tạo phiếu</th>
+            <th>Tổ</th>
+            <th>Người Phê duyệt</th>
+            <th>Ngày/Giờ Phê Duyệt</th>
+            <th>Kiểm tra VT / Nhập thực xuất</th>
+            <th>Kho xuất hàng</th>
+            <th>SX Xác nhận</th>
+            <th>Chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var supply in Model) {
+            <tr>
+                <td>@supply.ID</td>
+                <td>@supply.TBL_USERS_MST.FULLNAME</td>
+                <td>@supply.TBL_GROUP_MST.GROUP_NAME</td>
+                @if(supply.ManagerStatus == -2) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Từ chối</span>
+                    </td>
+                } else if(supply.ManagerStatus != 2) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">@supply.ManagerMail</span>
+                    </td>
+                } else {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">@supply.ManagerMail</span>
+                    </td>
+                }
+                <td>@(supply.ManagerDate == null ? "" : string.Format("{0:MM/dd/yyyy - hh:mm:ss}" ,supply.ManagerDate))</td>
+                @if(supply.WarehouseLocStatus == -3) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Từ chối</span>
+                    </td>
+                } else if(supply.WarehouseLocStatus != 3) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">@supply.WarehouseLocMail</span>
+                    </td>
+                } else {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">@supply.WarehouseLocMail</span>
+                    </td>
+                }
+
+                @if(supply.WarehouseIssueStatus == -4) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Từ chối</span>
+                    </td>
+                } else if(supply.WarehouseIssueStatus != 4) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Đang Kiểm tra</span>
+                    </td>
+                } else {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold"> Hoàn thành</span>
+                    </td>
+                }
+
+
+                @if(supply.Status != 5) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">@supply.TBL_USERS_MST.FULLNAME</span>
+                    </td>
+                } else {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">@supply.TBL_USERS_MST.FULLNAME</span>
+                    </td>
+                }
+
+                <td><a href="@Url.Action("Edit_Supply","Supply",new { id = supply.ID })" class="btn btn-info btn-sm">Chi tiết</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Xuất file Excel</h5>
+            </div>
+            @using(Html.BeginForm("Export" ,"Supply" ,FormMethod.Post ,new {
+                @class = "form-horizontal" ,
+                role = "form"
+            })) {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Ngày bắt đầu</label>
+                                <input type="text" name="ngaybatdau" class="form-control isdate" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày kết thúc</label>
+                                <input type="text" name="ngayketthuc" class="form-control isdate" autocomplete="off" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info" value="Thực Hiện" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog">
+
+        @using(Html.BeginForm("Upload_Supply" ,"Supply" ,FormMethod.Post ,new {
+            enctype = "multipart/form-data"
+        })) {<!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile1" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" onclick="  App.blockUI('body');" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+    </script>
+    <script>$(document).ready(function () { $('#tblsupply').DataTable({ "pageLength": 100, "bPaginate": false, "info": false, bSort: false, language: { search: 'Tìm kiếm' } }); });</script>
+}

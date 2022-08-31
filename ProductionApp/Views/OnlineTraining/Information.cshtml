@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Notification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section styles{
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+
+        .modal-title {
+            font-size: 17px
+        }
+
+        #btnmore {
+            margin-left: 20px;
+        }
+
+        .rowHidden {
+            display: none;
+        }
+
+        .showInfor > .row {
+            margin-top: 20px;
+        }
+
+        .btnJoin {
+            text-align: center;
+        }
+
+        .joining {
+            width: 150px;
+        }
+
+        .titleInfor {
+            font-weight: bold;
+        }
+    </style>
+}
+
+<div class="container">
+
+    <h2><b></b></h2>
+    <div class="col-md-2"></div>
+    <div class="col-md-7"></div>
+    <div class="row" style="margin: 100px 0px 0px 60px">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-danger">
+                <div class="panel-heading" style="color: black"><span class="glyphicon glyphicon-bell"></span> <b>Thông báo/ Notification</b></div>
+                <div class="panel-body">
+                    <p>Bạn đã hoàn thành bài thi này. Chúc mừng!</p>
+                    <p>You have already finished this exam. Congratulations!</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>

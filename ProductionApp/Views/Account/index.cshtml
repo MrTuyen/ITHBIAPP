@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "Account";
+}
+@model ProductionApp.Models.TBL_USERS_MST
+@using ProductionApp.Models
+
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Account Management
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<form id="" class="" method="post">
+    <div class="panel panel-default">
+        <div class="panel-heading">Detail</div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>User name</label>
+                        <input type="text" class="form-control" name="USERNAME" value="@(Model != null ? Model.USERNAME : "")" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="text" class="form-control" name="Password" value="@(Model != null ? Model.Password : "")" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Display Name</label>
+                        <input type="text" class="form-control" name="FULLNAME" value="@(Model != null ? Model.FULLNAME : "")" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" name="EMAIL" value="@(Model != null ? Model.EMAIL : "")" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Dept</label>
+                        <select class="form-control" name="DEPT">
+                            @foreach (var item in (List<TBL_DEPARTMENT_MST>)ViewBag.Department)
+                            {
+                                <option @(Model != null && Model.DEPT == item.DEPT_ID ? "selected" : "") value="@item.DEPT_ID">@item.NAME</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>WSHOP</label>
+                        <select class="form-control" name="WSHOP_ID">
+                            @foreach (var item in (List<TBL_WSHOP_MST>)ViewBag.ListWSHOP)
+                            {
+                                <option @(Model != null && Model.WSHOP_ID == item.WSHOP_ID ? "selected" : "") value="@item.WSHOP_ID">@item.NAME</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <select class="form-control" name="ACTIVATE">
+                            @foreach (var item in (Dictionary<int, string>) ViewBag.Active)
+                            {
+                                <option @(Model != null && Model.ACTIVATE == item.Key ? "selected" : "") value="@item.Key">@item.Value </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Position</label>
+                        <select class="form-control" name="POSID">
+                            @foreach (var item in (List<TBL_Positions_MST>)ViewBag.ListPositions)
+                            {
+                                <option @(Model != null && Model.POSID == item.ID ? "selected" : "") value="@item.ID">@item.NAME </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+              
+                </div>
+            <div class="row">
+
+                <div class="col-md-3" style="margin-left:85%">
+                    <div class="form-group">
+                        <br />
+                        <button type="submit" class="btn btn-primary">@( Model != null ? "Lưu lại" : "Thêm mới")</button>
+                        <a href="~/Account/index" class="btn btn-info">Làm mới</a>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Permission Roles</div>
+        <div class="panel-body">
+
+            @if (ViewBag.Cate1 != null)
+            {
+
+                foreach (var cate0 in ViewBag.Cate0 as List<TBL_CATEGORIES>)
+                {   <div class="row">
+                    <div class="col-md-12" style="border-bottom: 1px solid #fff">
+                        <div class="form-group"><label style="font-weight: bold;font-size: 15px">@cate0.CA_NAME:</label></div>
+                        @foreach (var cate1 in ViewBag.Cate1 as List<TBL_CATEGORIES>)
+                        {
+                            if (cate1.CA_PARENT == cate0.CA_ID)
+                            {
+
+                                var check = "";
+                                if (ViewBag.Permission != null)
+                                {
+                                    foreach (var tmp in ViewBag.Permission as List<TBL_PERMISSION>)
+                                    {
+                                        if (tmp.MO_ID == cate1.CA_ID)
+                                        {
+                                            check = "checked";
+                                            break;
+                                        }
+                                    }
+                                }
+                                <div class="checkbox  checkbox-primary checkbox-inline">
+                                    <input id="checkbox-@cate1.CA_ID" name="PERMISSION" type="checkbox" @check value="@cate1.CA_ID">
+                                    <label for="checkbox-@cate1.CA_ID">
+                                        @cate1.CA_NAME
+                                    </label>
+                                </div>
+                            }
+                        }
+                        <hr style="margin: 10px 0" />
+                    </div>
+                </div>
+
+                }
+
+            }
+
+
+        </div>
+    </div>
+
+</form>
+<div class="panel panel-default">
+    <div class="panel-heading">List Account</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="" class="table table-bordered table-hover table-disabled ">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">User Name</th>
+                            <th class="text-center">Display Name</th>
+                            <th class="text-center">Dept</th>
+                            <th class="text-center">Workshop</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Position</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.ListUser != null)
+                        {
+                            var dem = 1;
+                            foreach (var item in ViewBag.ListUser as List<TBL_USERS_MST>)
+                            {
+                                <tr class="@(item.ACTIVATE == 1 ? "" : "disabled")">
+                                    <td class="text-center">@(dem++)</td>
+                                    <td class="text-left">@item.USERNAME</td>
+                                    <td class="text-left">@item.FULLNAME</td>
+                                    <td class="text-left">
+                                        @if (item.TBL_DEPARTMENT_MST != null)
+                                        {
+                                            @item.TBL_DEPARTMENT_MST.NAME
+                                        }
+                                    </td>
+                                    <td class="text-left">
+                                        @if (item.TBL_WSHOP_MST != null)
+                                        {
+                                            @item.TBL_WSHOP_MST.NAME
+                                        }
+
+
+                                    </td>
+                                    <td class="text-left">@item.EMAIL</td>
+                                    <td class="text-left">@item.TBL_Positions_MST.NAME</td>
+                                    <td class="text-center">@(item.ACTIVATE == 1 ? "Enable" : "Disable")</td>
+                                    <td class="text-center">
+                                        <a href="~/Account/index?editUser=@item.USERNAME">Sửa</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            @Html.Raw(ViewBag.mess != null ? "alert('" + ViewBag.mess + "');" : "")
+        });
+
+    </script>
+}

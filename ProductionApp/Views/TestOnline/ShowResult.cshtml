@@ -1,0 +1,62 @@
+﻿
+
+
+@{
+    Layout = null;
+}
+@using ProductionApp.Models;
+@model dynamic
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The result of the exam</title>
+    <link href="~/Content/themes/assets/css/ResultExamForEmp.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        .btnBack {
+            border-radius: 25px;
+            width: 134px;
+            border: 1px solid #f0ad4e;
+            height: 35px;
+            line-height: 35px;
+            color: #fff;
+            margin-left: 688px;
+            background-color: #f0ad4e;
+            margin-top: 588px;
+        }
+    </style>
+    
+</head>
+
+<body >
+  
+    <div class="box">
+        <span>	</span>
+        <span>	</span>
+        <span>	</span>
+        <span>	</span>
+        @foreach (ResultExamForEmp item in Model.getOneResult)
+        {
+            <div class="content">
+                <h1 class="title">KẾT QUẢ BÀI THI</h1>
+
+                <p>Thí sinh: @item.EmployeeName</p>
+                <p>Bài Thi: @item.ExamName</p>
+                <p>Khóa học: @item.CourseName</p>
+                <p>Điểm: @item.Score điểm</p>
+                <p>Thời Gian Thi: @item.Time phút</p>
+                <p>Số câu đúng: @item.CorrectAnswers/@item.QuestionNumber câu</p>
+                <p>Hoàn thành: @Math.Round(@item.Rate, 1)/100%</p>
+
+            </div>
+        }
+    </div>
+
+    <div>
+        <a href="@Url.Action("Index","TestOnline")"><button type="button" class="btnBack"><b><span class="glyphicon glyphicon-repeat"></span> TRANG CHỦ</b></button></a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,207 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string status = ViewBag.Status;
+}
+
+@using ProductionApp.Models;
+@model dynamic
+
+@section styles{
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+        .modal-title {
+            font-size: 17px;
+        }
+
+        #btnmore {
+            margin-left: 40px;
+        }
+    </style>
+}
+<div class="container">
+
+    <h3 class="title"><b>LIST OF EMPLOYEES JOIN IN TRAINING COURSES</b></h3>
+    <div class="col-md-2"></div>
+    <div class="col-md-6">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Input TraineeID" name="search" onchange="SearchTraineeID(value)">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" style="margin-bottom: 40px">
+        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-open"></span> Upload File</button>
+    </div>
+    <p style="color:red">@(status == null ? "" : status.ToString())</p>
+    <table class="table table-bordered   ">
+        <thead>
+            <tr>
+
+                <th>EmpID</th>
+                <th>FullName</th>
+                <th>Department Name</th>
+                <th>UpdatedBy</th>
+                <th>Courses's Details</th>
+            </tr>
+        </thead>
+        <tbody id="list">
+
+            @foreach (var p in (List<HR_Training_Emp>)Model.emp)
+            {
+                <tr>
+
+                    <td>@p.Emp_ID</td>
+                    <td>@p.NAME</td>
+                    <td>@p.TBL_DEPARTMENT_MST.NAME</td>
+                    <td>@p.UpdatedBy</td>
+                    <td> <button type="button" class="btn btn-danger" id="btnmore" onclick="chitietkhoahoc(@p.Emp_ID)"><span class="glyphicon glyphicon-eye-open"></span></button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        @using (Html.BeginForm("UploadEmployee", "Trainee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {<!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<!-- End Modal -->
+<!-- Modal -->
+<div class="modal fade" id="moreModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p class="modal-title"><span class="glyphicon glyphicon-eye-open "></span>&nbsp&nbsp&nbsp <b>Trainee's Courses</b></p>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table class="table table-bordered" id="tbl">
+                        <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Trainer</th>
+                                <th>Training Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hienthi"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="Submit" class="btn btn-primary " data-dismiss="modal" value="Close" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<script>
+            function convertDate(data) {
+                var a = data;
+                var getdate = parseInt(a.replace("/Date(", "").replace(")/", ""));
+                var ConvDate = new Date(getdate);
+                var month = parseInt(ConvDate.getMonth()) + 1;
+                var result = ConvDate.getDate() + "/" + month + "/" + ConvDate.getFullYear();
+                return result;
+            }
+
+            function SearchTraineeID(id) {
+                if (isNaN(id)) {
+                    alert("Vui lòng nhập đúng mã nhân viên!");
+                }
+                else {
+                    $.get("/Trainee/SearchOneTrainee", { id: id }, function (data) {
+                        console.log(data);
+                        if (data == 0) {
+                            $("#list").html("");
+                            $("#list").append("<tr>\
+                                      <td colspan='7' align='center'> KHÔNG TỒN TẠI NHÂN VIÊN CÓ MÃ NÀY </td> </tr>");
+                        }
+                        else {
+
+                            $("#list").html("");
+                            var i = 1;
+                            $.each(data, function (i, val) {
+                                $.get("/Trainee/GetCourse", function (data) {
+                                    $.each(data, function (j, gtri) {
+                                        if (val.DEPARTMENT == gtri.DEPT_ID) {
+                                            $("#list").append("<tr>\
+                                        <td>"+ val.Emp_ID + "</td> \
+                                        <td>"+ val.NAME + "</td> \
+                                        <td>"+ gtri.NAME + "</td> \
+                                    <td>"+ val.UpdatedBy + "</td> \
+                                     <td> <button type='button' class='btn btn-danger' id='btnmore' onclick='chitietkhoahoc("+ val.Emp_ID + ")'><span class='glyphicon glyphicon-eye-open'></span></button></td>\
+                                        </tr>");
+                                        }
+
+                                    });
+                                });
+                            })
+                        }
+                    });
+                }
+            }
+
+            function chitietkhoahoc(id) {
+                $("#hienthi").html("");
+                //$.get("/Trainee/getOneDetails", { id: id }, function (data) {
+                //    //$.each(data, function (j, val) {
+                //    //    console.log(data);
+                //    //    $.get("/Trainee/getCourse", function (data) {
+                //    $.each(data, function (i, dt) {
+                //        //  if (dt.id == val.Course_ID)
+                //        $("#hienthi").append("<tr> <td>" + dt.CourseName + "</td> <td>" + dt.CourseName + "</td><td>" + dt.CourseName + "</td> </tr>");
+                //    });
+                //    //    });
+                //    //});
+                //    $("#moreModal").modal("show");
+                //}
+                $.ajax({
+                    url: "/Trainee/getOneDetails",
+                    data: { id: id },
+                    dataType: 'json',
+                    method: "POST",
+                    success: function (data) {
+                        $.each(data, function (i, dt) {
+                            //  if (dt.id == val.Course_ID)
+                            $("#hienthi").append("<tr> <td>" + dt.CourseName + "</td> <td>" + dt.Trainner + "</td><td>" + dt.Training_Date + "</td> </tr>");
+                        });
+                        $("#moreModal").modal("show");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+
+
+
+            }
+    </script>

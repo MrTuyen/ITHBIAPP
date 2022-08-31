@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewBag.Title = "Add new ticket order Fabric";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<style>
+    /* Actions */
+    .actions11 {
+        float: left;
+        display: inline-block;
+    }
+
+    .actions .actCreate {
+    }
+
+    .actions .actProcess {
+    }
+
+    .actions .actReceived {
+    }
+
+    .actions .actNone {
+    }
+</style>
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>Tạo phiếu yêu cầu thêm vải</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+@Html.Raw(TempData["msg"])
+@using (Html.BeginForm("AddNewTicket", "CTTicketOrderFabric", FormMethod.Post))
+{
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <input type="submit" name="btnCreateNew" id="btnCreateNew" class="btn btn-info" value="Tạo phiếu yêu cầu" />
+            </div>
+            <div class="caption">
+                <input type="button" style="margin-left:5px" name="btnCancelCreateNew" onclick="CancelCreateNew()" id="btnCancelCreateNew" class="btn btn-info" value="Dừng tạo phiếu" />
+            </div>
+        </div>
+
+        <div class="portlet-body">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center; margin-top:10px;">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:100%;">
+                        <thead class="portlet-body">
+                            <tr>
+                                <th style="text-align:center">STT</th>
+                                <th style="text-align:center">Mã vải</th>
+                                <th style="text-align:center">Chi tiết</th>
+                                <th style="text-align:center">Số yards</th>
+                                <th style="text-align:center">WO</th>
+                                <th style="text-align:center">Assortment</th>
+                                <th style="text-align:center">Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int index = 3;
+                                for (int i = 1; i <= 10; i++)
+                                {
+                                    string nameCodeFabric = "txtCodeFabric" + i.ToString();
+                                    string nameDetail = "txtDetail" + i.ToString();
+                                    string nameYards = "txtYards" + i.ToString();
+                                    string nameWO = "txtWO" + i.ToString();
+                                    string nameAssortment = "txtAssortment" + i.ToString();
+                                    string nameNoteTTS = "txtNoteTTS" + i.ToString();
+                                    <tr>
+                                        <td>@i</td>
+                                        <td> <input type="text" ng-model=@nameCodeFabric maxlength="50" name=@nameCodeFabric id=@nameCodeFabric class="form-control height-auto" tabindex=@(index + 1) value="" /> </td>
+                                        <td> <input type="text" ng-model=@nameDetail maxlength="150" name=@nameDetail id=@nameDetail class="form-control height-auto" tabindex=@(index + 2) value="" /> </td>
+                                        <td> <input type="text" ng-model=@nameYards maxlength="10" name=@nameYards id=@nameYards class="form-control height-auto" tabindex=@(index + 3) value="" /> </td>
+                                        <td> <input type="text" ng-model=@nameWO ng-maxlength="50" name=@nameWO id=@nameWO class="form-control height-auto" tabindex=@(index + 4) value="" /> </td>
+                                        <td> <input type="text" ng-model=@nameAssortment ng-maxlength="50" name=@nameAssortment id=@nameAssortment class="form-control height-auto" tabindex=@(index + 5) value="" /> </td>
+                                        <td> <input type="text" ng-model=@nameNoteTTS ng-maxlength="150" name=@nameNoteTTS id=@nameNoteTTS class="form-control height-auto" tabindex=@(index + 6) value="" /> </td>
+                                        @{index = (index + 6);}
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+<script>
+    function CancelCreateNew() {
+        window.location.href = "/CTTicketOrderFabric/Index/";
+    }
+</script>
+
+<script>
+    function checkChange(id) {
+
+        alert("Bạn phải điền đủ ở cột: Mã vải + Số yards + WO + Assortment");
+    }
+</script>
+<script>
+    // CHECK Input txtCodeFabric
+    $(document).ready(function () {
+        $("input").blur(function () {
+            if ((this.name).substring(0, 13) == "txtCodeFabric") {
+                var valueCodeFabric = $(this).val().trim();
+                var index = (this.name).substring(13, (this.name).length);
+                var valueYard = $("#txtYards" + (index)).val().trim();
+                var valueWO = $("#txtWO" + (index)).val().trim();
+                var valueAssortment = $("#txtAssortment" + (index)).val().trim();
+                if (valueCodeFabric == "" & (valueYard != "" || valueWO != "" || valueAssortment != "")) {
+                    alert('Phải điền mã vải');
+                }
+            }
+            if ((this.name).substring(0, 8) == "txtYards") {
+                var valueYard = $(this).val().trim();
+                var index = (this.name).substring(8, (this.name).length);
+                var valueCodeFabric = $("#txtCodeFabric" + (index)).val().trim();
+                var valueWO = $("#txtWO" + (index)).val().trim();
+                var valueAssortment = $("#txtAssortment" + (index)).val().trim();
+                if (valueYard == "" & (valueCodeFabric != "" || valueWO != "" || valueAssortment != "")) {
+                    alert('Phải điền số yards vải yêu cầu');
+                }
+            }
+
+            if ((this.name).substring(0, 5) == "txtWO") {
+                var valueWO = $(this).val().trim();
+                var index = (this.name).substring(5, (this.name).length);
+                var valueCodeFabric = $("#txtCodeFabric" + (index)).val().trim();
+                var valueYard = $("#txtYards" + (index)).val().trim();
+                var valueAssortment = $("#txtAssortment" + (index)).val().trim();
+                if (valueWO == "" & (valueCodeFabric != "" || valueYard != "" || valueAssortment != "")) {
+                    alert('Phải điền số WO');
+                }
+            }
+
+            if ((this.name).substring(0, 13) == " txtAssortment") {
+                var valueAssortment = $(this).val().trim();
+                var index = (this.name).substring(13, (this.name).length);
+                var valueCodeFabric = $("#txtCodeFabric" + (index)).val().trim();
+                var valueWO = $("#txtWO" + (index)).val().trim();
+                var valueYard = $("#txtYards" + (index)).val().trim();
+                if (valueAssortment == "" & (valueCodeFabric != "" || valueWO != "" || valueYard != "")) {
+                    alert('Phải điền số Assortment');
+                }
+            }
+        }); //dont forget this semicolon
+    });
+</script>
+    }

@@ -1,0 +1,213 @@
+﻿@using ProductionApp.Models;
+@model List<ViewFinConfModel>
+@{
+    ViewBag.Title = "QC Final Conf";
+    int QCModule = 1;
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>QC Final Conf</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+<div class="portlet box gray">
+    <div class="portlet-title">
+        <div class="row margin-bottom-10">
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="row margin-bottom-10">
+            <table class="table table-hover table-bordered" style="width: 100%;max-width: 900px">
+                <thead>
+                    <tr style="font:bold 13px arial; text-align:center">
+                        <td>WO</td>
+                        <td>Quantity</td>
+                        @*<td style="width:9%">Cut Part</td>
+                            <td style="width:9%">Leg Binding</td>
+                            <td style="width:9%">Waist Binding</td>
+                            <td style="width:9%">Defect Code</td>
+                            <td style="width:9%">Defect Qty</td>*@
+                        <td>Pass</td>
+                        <td>Reject</td>
+                        <td>Defect Code</td>
+                        <td>Scan</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align:center">
+                        <td><input type="text" name="txtWO" id="txtWO" class="form-control" /></td>
+                        <td><input type="text" name="txtQty" id="txtQty" class="form-control" /></td>
+                        @*<td><input type="checkbox" name="ChkCutPart" id="ChkCutPart"  /></td>
+                            <td><input type="checkbox" name="ChkLegBind" id="ChkLegBind" /></td>
+                            <td><input type="checkbox" name="ChkWaistBind" id="ChkWaistBind"  /></td>
+                            <td><input type="text" name="txtDefCode" id="txtDefCode" class="form-control" /></td>
+                            <td><input type="text" name="txtDefQty" id="txtDefQty" class="form-control" /></td>*@
+                        <td><input type="radio" name="RdoResult" id="RdoResult_1" value="1" onchange="DefectCodeChange()" /></td>
+                        <td><input type="radio" name="RdoResult" id="RdoResult_0" value="0" onchange="DefectCodeChange()" /></td>
+                        <td><input type="text" name="DefectCode" id="DefectCode" class="form-control" /></td>
+                        <td style="background-color:lightskyblue"><input type="text" name="txtScan" id="txtScan" class="form-control" /></td>
+                        <td><input type="button" name="btnSub" id="btnSub" value="SUBMIT" class="btn green purple-stripe margin-bottom-10" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="materialchange" class="row margin-bottom-10">
+            @Html.Action("ShowQCFinConf" ,"CTModule")
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        jQuery(document).ready(function () {
+            $('#txtScan').focus();
+            document.getElementById('DefectCode').readOnly = true;
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    var sub = false
+                    var scan = $('#txtScan').val().toUpperCase();
+                    if (scan == "") {
+                        document.getElementById('uploadmss').innerHTML = 'Sai dữ liệu-' + scan;
+                        return 0;
+                    } else document.getElementById('uploadmss').innerHTML = '';
+                    switch (scan) {
+                        case "CUT":
+                            $('#ChkCutPart')[0].checked = true;
+                            $('#txtScan').val('');
+                            $('#txtScan').focus();
+                            break;
+                        case "VC":
+                            $('#ChkWaistBind')[0].checked = true;
+                            $('#txtScan').val('');
+                            $('#txtScan').focus();
+                            break;
+                        case "VO":
+                            $('#ChkLegBind')[0].checked = true;
+                            $('#txtScan').val('');
+                            $('#txtScan').focus();
+                            break;
+                        case "PASS":
+                            $('#RdoResult_1')[0].checked = true;
+                            $('#txtScan').val('');
+                            $('#txtScan').focus();
+                            DefectCodeChange();
+                            break;
+                        case "REJECT":
+                            $('#RdoResult_0').prop("checked", true);
+                            $('#txtScan').val('');
+                            $('#txtScan').focus();
+                            DefectCodeChange();
+                            break;
+                        case "SUB":
+                            sub = true;
+                            break;
+                        default:
+                            if (scan.length < 3) {
+                                //alert('Maloi')
+                                $('#txtScan').val('');
+                                $('#txtScan').focus();
+                                $('#txtDefQty').val(scan);
+                            } else if (scan.length == 3) {
+                                $('#txtScan').val('');
+                                $('#txtScan').focus();
+                                $('#txtDefCode').val(scan);
+                            } else if (scan.length > 5) {
+                                var arr = scan.split('-');
+                                $('#txtWO').val(arr[0]);
+                                $('#txtQty').val(arr[1]);
+                                $('#txtScan').val('');
+                                $('#txtScan').focus();
+                            }
+                            $('#txtScan').focus();
+                    }
+
+                    if (sub == true) {
+                        //$('btnSub').click();
+                        document.getElementById("btnSub").click();
+                    }
+
+                }
+
+            });
+
+            $("#btnSub").click(function (e) {
+
+
+                // var cut = $('#ChkCutPart').attr('checked') ? "1" : "0";
+                //  var WaistBind =  $('#ChkWaistBind').attr('checked') ? "1" : "0";
+                // var LegBind = $('#ChkLegBind').attr('checked') ? "1" : "0";
+                var result = $('input[name=RdoResult]:checked').val();
+                var WO = $('#txtWO').val();
+                var Qty = $('#txtQty').val();
+                var DefectCode = $('#DefectCode').val();
+                // var DefCode = $('#txtDefCode').val();
+                //  var DefQty = $('#txtDefQty').val();
+
+                if (WO == "" || Qty === "" || (result != '1' && result != '0') || (result == '0' && DefectCode == '')) {
+
+                    document.getElementById('uploadmss').innerHTML = 'Chưa nhập đủ dữ liệu';
+                    $('#txtScan').val('');
+                    $('#txtScan').focus();
+                    return 0;
+                } else document.getElementById('uploadmss').innerHTML.innerHTML = '';
+
+                //if (result == '0' && (DefCode == "" || DefQty == "") || (cut != '1' && WaistBind != '1' && LegBind != '1')) {
+                //    alert('Chưa nhập đủ dữ liệu 2');
+                //    $('#txtScan').val('');
+                //    $('#txtScan').focus();
+                //    return 0;
+                //}
+
+                //if (result == '1' && cut == 0) {
+                //    alert('Chưa nhập đủ dữ liệu 3');
+                //    $('#txtScan').val('');
+                //    $('#txtScan').focus();
+                //    return 0;
+                //}
+
+                $("#materialchange").load("/CTModule/ShowQCFinConf",
+                    { re: result, wo: WO, qt: Qty, DefectCode: DefectCode });
+                $('#txtScan').val('');
+                $('#txtScan').focus();
+
+            });
+        });
+
+        function DefectCodeChange() {
+            if ($('input[id=RdoResult_0]:checked').length > 0) {
+                document.getElementById('DefectCode').readOnly = false;
+                $('#DefectCode').focus();
+            } else {
+                $('#DefectCode').val('');
+                document.getElementById('DefectCode').readOnly = true;
+            }
+
+        }
+    </script>
+}

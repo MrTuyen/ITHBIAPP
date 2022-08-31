@@ -1,0 +1,294 @@
+﻿
+@{
+    ViewBag.Title = "GetAnExam";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models;
+@model dynamic
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+</script>
+<style>
+    .affix {
+        top: 64px;
+        left: 1130px;
+        z-index: 9999 !important;
+    }
+
+    .khung_hoa {
+        margin-left: 60px;
+        margin-top: -10px;
+        float: left;
+        margin-right: -127px;
+        margin-bottom: 40px;
+    }
+
+    .gio {
+        font-size: 21px;
+        font-weight: bold;
+        color: red;
+        padding-top: 50px;
+    }
+
+    .tt {
+        font-weight: bold;
+    }
+
+    .btnJoin {
+        border-top: 1px solid #cecece;
+        margin-top: 100px;
+    }
+
+    .joining {
+        margin-top: 10px;
+        margin-left: 120px;
+    }
+
+    .contentQues {
+        background-color: #b3e0ff;
+    }
+</style>
+<body onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
+    <div class="container-fluid">
+        @foreach (var k in Model.LstExam)
+        {
+            <h2><b>@k.NameExam</b></h2>
+        }
+        <div class="col-md-2">
+            <input type="hidden" id="txtExamID" value="@ViewBag.ExamID" />
+        </div>
+        <div class="col-md-7">
+
+        </div>
+
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                @foreach (var p in Model.LstExam)
+                {
+                    <div class="panel-heading"><b>Bài thi gồm @p.QuestionNumber câu (Từ câu 1 đến @p.QuestionNumber)</b></div>
+                    <input type="hidden" id="txtCourseID" value="@p.CourseID" />
+                    <input type="hidden" id="txtQuestionNumber" value="@p.QuestionNumber" />
+                }
+                @{ var n = 0; }
+                <div class="panel-body showInfor">
+                    @foreach (var p in Model.ktraLstQues)
+                    {
+                        n = n + 1;
+                        foreach (var q in Model.LstQuestion)
+                        {
+                            if (p.QuestionID == q.Question_ID)
+                            {
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="contentQues">
+                                            <th>Câu @n: @q.Content</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{ var m = 0; }
+                                        @foreach (var a in Model.LstAnswer)
+                                        {
+
+                                            if (q.Question_ID == a.QuestionID)
+                                            {
+
+                                                @*<tr>
+                                                        <td><input type="checkbox" name="@a.QuestionID" value="@a.AnswerID" onclick=" AddSelectedAnswer( @q.CourseID,  @ViewBag.ExamID,  @a.QuestionID,  @a.AnswerID,  @ViewBag.EmployeeID)" /> <b>@Model.AnsName[m]:</b> @a.Content </td>
+                                                    </tr>*@
+                                                <tr>
+                                                    <td><input type="checkbox" name="@a.QuestionID" value="@a.AnswerID" /> <b>@Model.AnsName[m]:</b> @a.Content </td>
+                                                </tr>
+                                                m = m + 1;
+                                            }
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                            }
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3" data-spy="affix" data-offset-top="140">
+            <div class="panel panel-default">
+                <div class="panel-heading"><b>Thời gian thi</b></div>
+                <div class="panel-body showInfor">
+                    @foreach (var m in Model.LstExam)
+                    {
+                        <div>
+                            <img src="~/img/khung.png" width="180" class="khung_hoa" height="150" />
+
+                            <p class="gio">
+                                <span id="m"></span> :
+                                <span id="s">00</span>
+                            </p>
+                            <input type="hidden" value="@m.Time" id="MinuteValue" />
+
+                        </div>
+                        <div class="row btnJoin"><button type="button" class="btn btn-warning joining" data-toggle="modal" data-target="#myModal">&nbsp;&nbsp; Nộp bài</button></div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog" style="margin-top:100px">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header alert-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><span class="glyphicon glyphicon-ok-circle"></span>&nbsp&nbsp&nbsp <b>Xác nhận</b></h4>
+                </div>
+                <div class="modal-body">
+                    <p><b>Thời gian vẫn còn, bạn có chắc chắn muốn nộp bài thi không?</b></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" onclick="SubmitExam()" value="Nộp bài" />
+                    <input type="button" class="btn btn-danger" value="Thoát" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>
+    <script>
+    //window.onbeforeunload = function () { return "Your work will be lost."; };
+     var ExamID = $("#txtExamID").val();
+    var CourseID = $("#txtCourseID").val();
+    var EmpID = @ViewBag.EmployeeID;
+    var QuestionNumber = $("#txtQuestionNumber").val();
+    var arrQuestion = []
+
+    function findObjectInArray(array, object) {
+        let keys = Object.keys(object);
+        let rs = false;
+        for (let i = 0; i < array.length; i++) {
+            let data = array[i];
+            let check = false;
+            for (let j = 0; j < keys.length; j++) {
+                let field = keys[j];
+                if (object[field].toString() === data[field].toString()) {
+                    check = true;
+                } else {
+                    check = false;
+                    break;
+                }
+            }
+            if (check) {
+                rs = true;
+                break;
+            }
+        }
+        return rs
+    }
+
+    function mathResult(dapan, traloi) {
+        let count = 0;
+        for (let i = 0; i < traloi.length; i++) {
+            let rs = findObjectInArray(dapan, traloi[i])
+            if (rs) {
+                count++;
+            }
+        }
+        return count
+    }
+
+        function SubmitExam() {
+            var all_location_id = document.querySelectorAll('input[type="checkbox"]:checked');
+            var obj; var dapan = []; var traloi = [];
+            for (var x = 0, l = all_location_id.length; x < l; x++) {
+                obj = {
+                    QuestionID: all_location_id[x].name,
+                    AnswerID: all_location_id[x].value
+                }
+                traloi.push(obj);
+            }
+
+            $.get("/TestOnline/GetKeyExam", { CourseID: CourseID, ExamID: ExamID }, function (data) {
+                var dapan = []; var d = 0;
+                dapan = data;
+
+                const ListOfKeys = Object.values(dapan.reduce((acc, { AnswerID, ...r }) => {
+                    const key = Object.entries(r).join('-');
+                    acc[key] = (acc[key] || { ...r, AnswerID: "" });
+                    return (acc[key].AnswerID = AnswerID + "#" + acc[key].AnswerID, acc);
+                }, {}));
+
+                const AnswerListOfEmp = Object.values(traloi.reduce((acc, { AnswerID, ...r }) => {
+                    const key = Object.entries(r).join('-');
+                    acc[key] = (acc[key] || { ...r, AnswerID: "" });
+                    return (acc[key].AnswerID = AnswerID + "#" + acc[key].AnswerID, acc);
+                }, {}));
+
+                let CorrectAnswers = mathResult(ListOfKeys, AnswerListOfEmp);
+                var mark = (10 / QuestionNumber) * CorrectAnswers;
+                var Score = mark.toFixed(2);
+                var tile = (Score * 100) / 10;
+                var Rate = tile.toFixed(2);
+
+                $.post("/TestOnline/GetResult", { ExamID: ExamID, Score: Score, EmpID: EmpID }, function (data) {
+                    window.location.assign("/TestOnline/ShowResult/?ExamID=" + ExamID + "&EmpID=" + EmpID + "&Rate=" + Rate + "&CorrectAnswers=" + CorrectAnswers);
+                });
+
+            });
+        };
+
+    function AddSelectedAnswer(CourseID, ExamID, QuestionID, AnswerID, EmployeeID) {
+        $.post("/TestOnline/AddSelectedAnswer", { CourseID: CourseID, ExamID: ExamID, QuestionID: QuestionID, AnswerID: AnswerID, EmployeeID: EmployeeID }, function (data) {
+            console.log(data.msg);
+        });
+
+    }
+
+    </script>
+
+    <script language="javascript">
+        var p = document.getElementById("MinuteValue").value; // Phút
+        var m = p;
+
+        var s = 00; // Giây
+        var timeout = null; // Timeout
+
+        function stop() {
+            clearTimeout(timeout);
+        }
+        function start() {
+
+            if (s === -1) {
+                m -= 1;
+                s = 59;
+            }
+
+            if (m == -1) {
+                clearTimeout(timeout);
+                // alert('Hết giờ');
+                SubmitExam();
+                return false;
+            }
+
+            document.getElementById('m').innerText = m.toString();
+            document.getElementById('s').innerText = s.toString();
+
+
+            timeout = setTimeout(function () {
+                s--;
+                start();
+            }, 1000);
+        }
+        start();
+
+    </script>
+</body>

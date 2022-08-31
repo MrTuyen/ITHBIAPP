@@ -1,0 +1,311 @@
+﻿@{
+    ViewBag.Title = "Đăng ký tách giờ làm việc/ Time Deduction Request";
+}
+
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+    var rq = (TD_TimeDeduction_Request)ViewData["request"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var List = (List<TD_TimeDeduction_Items>)ViewData["item"];
+    var manager = (OL_User_Approver)ViewData["manager"];
+    var hrmanager = (TBL_USERS_MST)ViewData["hrmanager"];
+    var hrteam = (TDS_UserApprover)ViewData["hrteam"];
+    var hrsup = (TDS_UserApprover)ViewData["hrsup"];
+    UserModels user = (UserModels)Session["SignedInUser"];
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Đăng ký tách giờ làm việc/ Time Deduction Request
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+@Html.Raw(TempData["msg"])
+<div class="panel panel-default" id="panel1">
+    <div class="panel-heading">Thông tin/Detail</div>
+    <div class="panel-body">
+       
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table  table-bordered " id="table1">
+                    <tr style="background-color: #f5f5f5">
+                        <th>EmpID</th>
+                        <th>Full name</th>
+                        <th>Line</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Reason</th>
+                        <th>Deducted working hours</th>
+                        <th>Deduct OT or not</th>
+                    </tr>
+                    @{ int i = 0;
+                        }
+                    @foreach(TD_TimeDeduction_Items item in List) {
+                        <tr>
+                            <td>@item.Employee_ID</td>
+                            <td>@item.NAME</td>
+                            <td>@item.Line</td>
+                            <td>@string.Format("{0:MM/dd/yyyy}" ,item.DateStart)</td>
+                            <td>@string.Format("{0:MM/dd/yyyy}" ,item.DateEnd)</td>
+                            <td>@item.Content</td>
+                            <td>@item.Total</td>
+                            <td>@item.DeductOT</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default" id="panel1">
+    <div class="panel-heading">Trạng thái phê duyệt/ Approve Status</div>
+    <div class="panel-body">
+        <style>
+            #table2 td {
+                padding: 3px;
+            }
+        </style>
+        <table id="table2" style="width: auto">
+
+            <tr>
+                <td>Line Manager</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="manager">
+                        <option value="@manager.EmpID">@manager.ApproverName</option>
+
+
+                    </select>
+                </td>
+                @if(rq.Status == 1) {
+                    <td>
+                        @using(Html.BeginForm("Approve" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@rq.ID" />
+                           
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Approve" class="btn btn-info " />
+                            <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#lmReject">Reject</a>
+                        }
+                    </td>
+                } else if(rq.Status >= 2 || rq.Status < -2) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -2) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected: </span>
+                        <span style="color: red; font-weight: bold">@rq.ReasonReject</span>
+                    </td>
+                }
+
+            </tr>
+            <tr>
+                <td>HR Process</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="manager">
+                        <option value="@hrteam.id">@hrteam.FullName</option>
+
+
+                    </select>
+                </td>
+                @if(rq.Status <= 2 && rq.Status >= -2) {
+                    <td>
+                        @using(Html.BeginForm("HRteam_Approve" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@rq.ID" />
+                           
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Approve" class="btn btn-info " />
+                            <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#hrTeamReject">Reject</a>
+                        }
+                    </td>
+                } else if(rq.Status >= 3 || rq.Status < -3) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -3) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected: </span>
+                        <span style="color: red; font-weight: bold">@rq.ReasonReject</span>
+                    </td>
+                }
+
+            </tr>
+            <tr>
+                <td>HR Supervisor</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="manager">
+                        <option value="@hrsup">@hrsup.FullName</option>
+                    </select>
+                </td>
+                @if(rq.Status <= 3) {
+                    <td>
+                        @using(Html.BeginForm("HrSupApprove" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@rq.ID" />
+                            <input type="submit" value="Approve" class="btn btn-info " />
+                            <a href="#" class="btn btn-warning " data-toggle="modal" data-target="#modal_checking">Re-Check</a>
+                        }
+                    </td>
+                } else if(rq.Status == 4.5) {
+                    <td>
+                        <span style="color:#39B3D7;font-weight:bold">Re-Upload:</span>
+                        <span style="color: red; font-weight: bold">@rq.ReasonReject</span>
+                    </td>
+                } else if(rq.Status >= 4) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+                    </td>
+                }
+            </tr>
+            <tr>
+                <td>HR Process</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="manager">
+                        <option value="@hrteam.id">@hrteam.FullName</option>
+                    </select>
+                </td>
+                @if(rq.Status <= 4.5) {
+                    <td>
+                        @if(rq.Status == 4.5) {
+                            using(Html.BeginForm("ExportForEdit" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,style = "display: inline" ,role = "form" })) {
+                                <input type="hidden" id="id" name="id" value="@rq.ID" />
+
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Download" class="btn btn-primary" />
+                                <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#Upload">Upload</a>
+
+                            }
+                        }
+
+                        @using(Html.BeginForm("HRteam_Process" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,style = "display: inline" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@rq.ID" />
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Process" class="btn btn-info" />
+                        }
+                    </td>
+
+                } else if(rq.Status == 5) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Processed</span>
+
+                    </td>}
+
+            </tr>
+
+        </table>
+    </div>
+
+    <div id="lmReject" class="modal fade in" role="dialog">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h5 class="modal-title">Lý do/Reason</h5>
+                </div>
+                @using(Html.BeginForm("LMReject" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {       <input type="hidden" id="id" name="id" value="@rq.ID" />
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" value="" name="body" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="modal_checking" class="modal fade in" role="dialog">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h5 class="modal-title">Nội dung/Content</h5>
+                </div>
+                @using(Html.BeginForm("HrSupChecking" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                    <input type="hidden" id="id" name="id" value="@rq.ID" />
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" value="" name="body" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="hrTeamReject" class="modal fade in" role="dialog">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h5 class="modal-title">Lý do/Reason</h5>
+                </div>
+                @using(Html.BeginForm("HrTeamReject" ,"TimeDeduction" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                    <input type="hidden" id="id" name="id" value="@rq.ID" />
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" value="" name="body" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <input class="btn btn-primary" type="submit" name="" value="Submit">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="Upload" role="dialog">
+        <div class="modal-dialog">
+
+            @using(Html.BeginForm("Upload_TimeDeduction2" ,"TimeDeduction" ,FormMethod.Post ,new { enctype = "multipart/form-data" })) {<!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="id" name="id" value="@rq.ID" />
+                        <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="Submit" class="btn btn-primary" value="Submit" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,296 @@
+﻿@using ProductionApp.Models
+@model List<ViewCTOutputDetail>
+@{
+    ViewBag.Title = "Cutting Detail";
+    var FromDate = Convert.ToDateTime(ViewBag.FromDate);
+    var ToDate = Convert.ToDateTime(ViewBag.ToDate);
+    var Cri = ViewBag.Cri;
+    var Opt = ViewBag.Opt;
+    var LstWcID = ViewBag.LstWCID;
+    ViewCTOutputTotal OutputTotal = ViewBag.OutputTotal;
+    PostbackValue PostBack = ViewBag.PostBack;
+    PROC_GET_LAST_TTS_UPDATE_Result LastTTSUpdate = ViewBag.LastTTSUpdate;
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+           <small>Cutting Output Tracking</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("OutputDetail","CTRptModule", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+
+    </div>
+    <div class="portlet-body ">
+        <div class="row margin-bottom-10">
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                Criterial:
+            </div>
+            <div class="col-md-2 margin-top-10">
+                <input type="radio" name="RdoCriterial" id="RdoCriterial" value="2" @(PostBack!=null && PostBack.num == 2? "checked=checked":"")  /> &nbsp; Production &nbsp;
+                <input type="radio" name="RdoCriterial" id="RdoCriterial" value="1" @(PostBack!=null && PostBack.num == 1? "checked=checked":"") /> &nbsp; Planning &nbsp;
+            </div>
+
+            <div class="col-md-2 margin-top-10">
+                <select name="OptType" id="OptType" class="form-control">
+                    <option value="1" @(PostBack!=null && PostBack.num2 == 1? "selected=selected":"") >Fabric Rcv Date</option>
+                    <option value="2" @(PostBack!=null && PostBack.num2 == 2? "selected=selected":"")>Spread Date</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                From
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtFrom" id="txtFrom" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                To
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtTo" id="txtTo" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-1">
+                <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit" >
+            </div>
+            <div class="col-md-2"> Note: Planning only select one day. <br />
+                Last TTS update:  @LastTTSUpdate.TS_1 - @LastTTSUpdate.FULLNAME
+            </div>
+        </div>
+        <div class="row margin-bottom-10 margin-top-20" id="DivShowData">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:99%;">
+                        <thead>
+                            <tr style="background-color:darkseagreen;">
+                                <th style="text-align:center">No.</th>
+                                <th style="text-align:center">WO</th>
+                                <th style="text-align:center">Asst</th>
+                                <th style="text-align:center">Mfg Style</th>
+                                <th style="text-align:center">Sel Style</th>
+                                <th style="text-align:center">Business</th>
+                                <th style="text-align:center">Fabric</th>
+                                <th style="text-align:center">Fabric 2</th>
+                                <th style="text-align:center">Size</th>
+                                <th style="text-align:center">Plan Qty</th>
+                                <th style="text-align:center">Plan Date</th>
+                                <th style="text-align:center; background-color:khaki;">TTS Status</th>
+                                <th style="text-align:center; background-color:khaki;">Status</th>
+                                <th style="text-align:center; background-color:khaki;">Fabric Date</th>
+                                <th style="text-align:center; background-color:khaki;">Spread Date</th>
+                                <th style="text-align:center; background-color:khaki;">Cut Date</th>
+                                <th style="text-align:center; background-color:khaki;">Sprd Body</th>
+                                <th style="text-align:center; background-color:khaki;">Sprd Liner</th>
+                                <th style="text-align:center; background-color:khaki;">Produce</th>
+                                @*<th style="text-align:center; background-color:khaki;">Shift</th>*@
+                                <th style="text-align:center; background-color:khaki;">MisMatch</th>
+                                <th style="text-align:center; background-color:khaki;">Full Asst</th>
+                                <th style="text-align:center; background-color:khaki;">TransferWH</th>
+                                <th style="text-align:center; background-color:khaki;">TransferDate</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            @if (OutputTotal != null)
+                            {
+                                <td colspan="9" style="text-align:center; font:bold 12px arial; background-color:lightsteelblue">TOTAL</td>
+                                <td style="text-align:left; font:bold 12px arial; background-color:lightsteelblue">@(OutputTotal.TotalPlan)</td>
+                                <td colspan="3" style="text-align:center; font:bold 12px arial; background-color:lightsteelblue"></td>
+                                <td colspan="1" style="text-align:left; font:bold 12px arial; background-color:lightsteelblue"></td>
+                                <td colspan="1" style="text-align:left; font:bold 12px arial; background-color:lightsteelblue"></td>
+                                    <td style="text-align:left; font:bold 12px arial; background-color:lightsteelblue">@OutputTotal.TotalType1</td>
+                                    <td style="text-align:left; font:bold 12px arial; background-color:lightsteelblue">@OutputTotal.TotalType2</td>
+                                    <td style="text-align:left; font:bold 12px arial; background-color:lightsteelblue">@OutputTotal.TotalProduced</td>
+                                    @*<td style="text-align:left; font:bold 12px arial; background-color:lightsteelblue">@(0-(OutputTotal.TotalPlan - OutputTotal.TotalMismatch))</td>*@
+                                    <td colspan="2" style="text-align:left; font:bold 12px arial; background-color:lightsteelblue"></td>
+                                    <td style="text-align:left; font:bold 12px arial; background-color:lightsteelblue">@OutputTotal.TotalTransWH</td>
+                                    <td style="text-align:left; font:bold 12px arial; background-color:lightsteelblue"></td>
+                            }
+                        </tr>
+
+                        @if (Model != null)
+                        {
+                            double total = 0;
+                        <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {                                    //total += Convert.ToDouble(Model[i].QUANTITY);
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@Model[i].WO</td>
+                                    <td>@Model[i].Assortment</td>
+                                    <td>@Model[i].MfgStyle</td>
+                                    <td>@Model[i].SellingStyle</td>
+                                    <td>@Model[i].Business</td>
+                                    <td>@Model[i].FabricCode</td>
+                                    <td>@Model[i].FabricCode2</td>
+                                    <td>@Model[i].Size</td>
+                                    <td>@Model[i].Quantity</td>
+                                    <td>@((Model[i].PlanDate).ToString("dd/MM"))</td>
+                                    <td>@Model[i].TTS_STT</td>
+                                    <td>@Model[i].Status</td>
+                                    <td>@{ 
+                                        var a = "";
+                                        if (Model[i].Fabric_Recieved == Convert.ToDateTime("1/1/0001 12:00:00 AM"))
+                                        { a = ""; }
+                                        else { a = Model[i].Fabric_Recieved.ToString("dd/MM HH:mm"); }
+                                        @a
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            var b = "";
+                                            if (Model[i].WipDate == Convert.ToDateTime("1/1/0001 12:00:00 AM"))
+                                            { b = ""; }
+                                            else { b = Model[i].WipDate.ToString("dd/MM HH:mm"); }
+                                        @b
+                                    }
+                                    </td>
+                                    <td>
+                                        @{
+                                            var cc = "";
+                                            if (Model[i].CutDate == Convert.ToDateTime("1/1/0001 12:00:00 AM"))
+                                            { cc = ""; }
+                                            else { cc = Model[i].CutDate.ToString("dd/MM HH:mm"); }
+                                        @cc
+                                    }
+                                    </td>
+                                    <td>
+                                        @{
+                                        var Body = (Model[i].CutBody).ToString() == "0" ? "" : Model[i].CutBody.ToString();
+                                        @Body   }
+                                    </td>
+                                    <td>@{
+                                        var Liner = (Model[i].CutLiner).ToString() == "0" ? "" : Model[i].CutLiner.ToString();
+                                         @Liner   }
+                                    </td>
+                                    <td>
+                                        @{
+                                        var Produced = (Model[i].Produced).ToString() == "0" ? "" : Model[i].Produced.ToString();
+                                        @Produced   }
+                                    </td>
+                                    <td>@(0-Model[i].Discrapancy)</td>
+                                    <td>@Model[i].FullAsst</td>
+                                    <td>
+                                        @{
+                                            var TransferWH = (Model[i].TransferWH).ToString() == "0" ? "" : Model[i].TransferWH.ToString();
+                                            @TransferWH   }
+                                    </td>
+                                    
+                                    <td>
+                                        @{
+                                            var c = "";
+                                            if (Model[i].TransferDate == Convert.ToDateTime("1/1/0001 12:00:00 AM"))
+                                            { c = ""; }
+                                            else { c = Model[i].TransferDate.ToString("dd/MM HH:mm"); }
+                                            @c
+                                        }
+                                    </td>
+                                    
+                                </tr>
+                                }
+                        </tbody>
+                        }
+                    </table>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@using (Html.BeginForm("ExporttoExcel", "CTModule", FormMethod.Post))
+{
+    if (ToDate.ToString() != "1/1/00001 12:00:00 AM")
+    {
+        <div class="row margin-bottom-10 margin-top-0">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:70%;">
+                        <tr>
+                            <td align="right"><input type="text" name="TxtFrom" value="@FromDate" hidden="hidden" /></td>
+                            <td align="right"><input type="text" name="TxtTo" value="@ToDate" hidden="hidden" /></td>
+                            <td align="right"><input type="text" name="TxtCri" value="@Cri" hidden="hidden" /></td>
+                            <td align="right"><input type="text" name="TxtOpt" value="@Opt" hidden="hidden" /></td>
+                            <td colspan="5" align="right"><input type="submit" value="Export To Excel" class="btn purple fa fa-download" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        //$('#DivShowData').hide();
+
+        //$("input:radio[name=RdoCriterial]:checked").change(function () {
+        //    alert('ok');
+        //    if ($("input[name='RdoCriterial']:checked").val() == 1) {
+        //        alert('Allot Thai Gayo Bhai');
+        //    }
+        //});
+
+        jQuery(document).ready(function () {
+            if ($('input[name=RdoCriterial]:checked').val() == '1')
+                $("#OptType").prop('disabled', 'disabled');
+
+            $('input:radio[name="RdoCriterial"]').change(function () {
+                if ($(this).val() == '1') {
+                    $("#OptType").prop('disabled', 'disabled');
+                }
+                else
+                {
+                    $('#OptType').attr('disabled', false);
+                }
+            });
+        });
+
+        $("#Submit").click(function (e) {
+            var From = $('#txtFrom').val();
+            var To = $('#txtTo').val();
+            var type = $('input[name=RdoCriterial]:checked').val()
+            if (From == "") {
+                    alert('Please select date!');
+                    $('#txtFrom').focus();
+                    e.preventDefault();
+                    return 0;
+            }
+                if (To == "") {
+                    alert('Please select date!');
+                    $('#txtTo').focus();
+                    e.preventDefault();
+                    return 0;
+                }
+
+   });
+
+    </script>
+}

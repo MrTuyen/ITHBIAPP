@@ -1,0 +1,42 @@
+﻿@using ProductionApp.Models
+@model IEnumerable<TBL_GROUP_MST>
+@{
+    ViewBag.Title = "Display";
+}
+
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="portlet box gray">
+            <div class="panel panel-default">
+                <div class="panel-heading">Select Groups</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <select class="form-control search-select" multiple="multiple" size="@Model.Count()" id="gogr">
+                                @foreach(var item in Model) {
+                                    <option value="@item.GROUP_ID">@item.GROUP_NAME</option>
+                                }
+                            </select>
+
+                        </div>
+                        
+                       
+                        <div class="col-xs-12 col-md-3">
+                            <input type="button" value="Display" onclick=" GoDisplay()" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        function GoDisplay() {
+           // var gogr = document.getElementById("gogr");
+           // var gogrvalue = gogr.options[gogr.selectedIndex].value;
+            window.location.href = '/display/OutputEff?grID=' + $('#gogr').val();
+        }
+    </script>
+}

@@ -1,0 +1,586 @@
+﻿@{
+    ViewBag.Title = "Travel Request";
+}
+@{
+    var user = (ProductionApp.Models.UserModels)ViewData["User"];
+    var config = user.Email == ViewData["PlantManager"].ToString() ? "" : "disabled";
+    var hr = (user.DeptID == 5 || user.Username.ToLower() == "admin" || user.Username.ToLower() == "hradm") ? "" : "disabled";
+    var destinationList = (List<ProductionApp.Models.TBL_Travel_Destination>)ViewData["Destination"];
+}
+@model List<ProductionApp.Models.HR_Travel_Request>
+@section styles{
+
+    <style>
+
+     .page-content {
+         padding-top: 0 !important;
+     }
+
+    .travel-area .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+
+     .upload-btn-wrapper {
+         position: relative;
+         overflow: hidden;
+         display: inline-block;
+     }
+
+     textarea {
+         resize: vertical;
+     }
+
+     .div-destination .select2-container {
+         width: 32.5% !important;
+         padding: 0;
+     }
+
+     .div-travel .select2-container {
+         width: 100% !important;
+         padding: 0;
+     }
+
+     .select2-container--open {
+         z-index: 99999;
+     }
+
+     .travel-area #formTRReport {
+         width: 300px;
+     }
+
+     .travel-area .modal-footer {
+         border-top: 0;
+     }
+
+     .modal-xlg{
+         width: 1150px;
+     }
+    </style>
+}
+
+<div class="travel-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title text-center">
+                <small><strong class="text-uppercase"> đề nghị công tác/ business trip request</strong></small>
+            </h3>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="d-none d-sm-block">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 float-left form-inline">
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddRequest"><i class="fa fa-plus"></i> &nbsp;Add Request</button>
+                            <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#modalConfig" @config><i class="fa fa-cog"></i> &nbsp;Config</button>
+                            <button class="btn btn-light btn-sm" data-toggle="modal" data-target="#modalAddDestination" @hr><i class="fa fa-plus" title="Thêm địa điểm/ Add more destination"></i>&nbsp;Add Destination</button>
+                            <div class="btn-group btn-filter">
+                                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown">
+                                    <span class="fa fa-download"></span> Report
+                                </button>
+                                <div class="dropdown-menu p-3">
+                                    <form class="form-inline" id="formTRReport">
+                                        <div style="display: flex;">
+                                            <div class="">
+                                                <p class="mb-1">From date</p>
+                                                <input type="text" class="form-control w-100 isDate" id="txtReportFrom" />
+                                            </div>
+                                            <div class="ml-2">
+                                                <p class="mb-1">To date</p>
+                                                <input type="text" class="form-control w-100 isDate" id="txtReportTo" />
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-3 text-right">
+                                            <button type="button" class="btn btn-success btn-sm" onclick="Report()">Download</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-light btn-sm" onclick="Refresh()"><i class="fa fa-refresh"></i>&nbsp;Refresh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body overflow-auto pt-0">
+                    <table class="table table-responsive table-hover table-bordered table-scrollable">
+                        <thead>
+                            <tr>
+                                <th>ID#</th>
+                                <th>Name - Position</th>
+                                <th>Department</th>
+                                <th>Purpose</th>
+                                <th>Hotel, Air Ticker</th>
+                                <th>Manager</th>
+                                <th>Senior Manager</th>
+                                <th>HR TEAM</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="travel-table-body">
+                            @foreach (var item in Model)
+                            {
+                                <tr id="travel-@item.Id">
+                                    <td>@item.Id</td>
+                                    <td>@item.Name - @item.TBL_Positions_MST.NAME</td>
+                                    <td>@item.TBL_DEPARTMENT_MST.NAME</td>
+                                    <td>@item.Purpose</td>
+                                    <td>
+                                       @if (!string.IsNullOrEmpty(item.AirTicketLink))
+                                       {
+                                            <div>
+                                                Air ticket: <a href="/Uploads/Travel/@item.AirTicketLink">View Ticket</a> <br />
+                                                Hotel: <a href="/Uploads/Travel/@item.HotelLink">View Hotel</a>
+                                            </div>
+                                       }
+                                    </td>
+                                    <td id="mgr-@item.Id">
+                                        @if (item.ManagerApproved == (int)ProductionApp.Helpers.EnumHelper.Manager_Action.None)
+                                        {
+                                            <label class="text-danger bold">Pending</label>
+                                        }
+                                        else if (item.ManagerApproved == (int)ProductionApp.Helpers.EnumHelper.Manager_Action.Approve)
+                                        {
+                                            <label class="text-success bold">Approved</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="text-danger bold">Reject</label>
+                                        }
+                                    </td>
+                                    <td id="smgr-@item.Id">
+                                        @if (item.SManagerApproved == (int)ProductionApp.Helpers.EnumHelper.Manager_Action.None)
+                                        {
+                                            <label class="text-danger bold">Pending</label>
+                                        }
+                                        else if (item.SManagerApproved == (int)ProductionApp.Helpers.EnumHelper.Manager_Action.Approve)
+                                        {
+                                            <label class="text-success bold">Approved</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="text-danger bold">Reject</label>
+                                        }
+                                    </td>
+                                    <td id="hr-@item.Id">
+                                        @if (item.HRApproved == (int)ProductionApp.Helpers.EnumHelper.HR_Action.None)
+                                        {
+                                            <label class="text-danger bold">Pending</label>
+                                        }
+                                        else if (item.HRApproved == (int)ProductionApp.Helpers.EnumHelper.HR_Action.Approve)
+                                        {
+                                            <label class="text-success bold">Approved</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="text-danger bold">Reject</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class='btn btn-primary btn-sm' onclick="GetRequestDetail(@item.Id)">Detail</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add request -->
+    <div id="modalAddRequest" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Thêm yêu cầu/ Add Request</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtPurpose">Mục đích/ Purpose</label>
+                            <textarea class="form-control" id="txtPurpose" placeholder="" autofocus autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label>Điểm đến/ Destination</label>
+                            <div class="div-destination">
+                                <select id="txtDestination" class="form-control travel">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in destinationList)
+                                    {
+                                        <option value="@item.Name">@item.Name</option>
+                                    }
+                                </select>
+                                <button style="margin-left: 7px;" class="btn btn-light" onclick="BindSelect()"><i class="fa fa-refresh" title="Lấy dữ liệu mới nhất/ Get latest data"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3 text-center">
+                            <label><strong>Chặng đi/ Departure</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="txtUsageDate">Ngày đi/ Date</label>
+                            <input type="text" class="form-control isDate" id="txtDeptDate" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtDeptFrom">Điểm đi/ From</label>
+                            <div class="div-travel">
+                                <select id="txtDeptFrom" class="form-control w-100 travel">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in destinationList)
+                                    {
+                                        <option value="@item.Name">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtDeptTo">Điểm đến/ To</label>
+                            <div class="div-travel">
+                                <select id="txtDeptTo" class="form-control travel">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in destinationList)
+                                    {
+                                        <option value="@item.Name">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3 text-center">
+                            <label><strong>Chặng về/ Return</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="txtReturnDate">Ngày về/ Date</label>
+                            <input type="text" class="form-control isDate" id="txtReturnDate" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtReturnFrom">Điểm đi/ From</label>
+                            <div class="div-travel">
+                                <select id="txtReturnFrom" class="form-control travel">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in destinationList)
+                                    {
+                                        <option value="@item.Name">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtReturnTo">Điểm đến/ To</label>
+                            <div class="div-travel">
+                                <select id="txtReturnTo" class="form-control travel">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in destinationList)
+                                    {
+                                        <option value="@item.Name">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" onclick="AddNewRequest(event)">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal update request -->
+    <div id="modalUpdateRequest" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Chi tiết yêu cầu/ Request Detail</b></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="txtRequestId" placeholder="">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDEmpId">Mã nhân viên/ Employee Id</label>
+                            <input type="text" class="form-control" id="txtRDEmpId" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDFullname">Họ tên/ Fullname - Vị trí/ Position</label>
+                            <input type="text" class="form-control" id="txtRDName" placeholder="" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRDPurpose">Mục đích/ Purpose</label>
+                            <textarea class="form-control" id="txtRDPurpose" placeholder="" autofocus disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3 text-center">
+                            <label><strong>Chặng đi/ Departure</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="txtRDDeptDate">Ngày đi/ Date</label>
+                            <input type="text" class="form-control isDate" id="txtRDDeptDate" placeholder="" disabled autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtRDDeptFrom">Điểm đi/ From</label>
+                            <input type="text" class="form-control" id="txtRDDeptFrom" placeholder="" disabled autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtRDDeptTo">Điểm đến/ To</label>
+                            <input type="text" class="form-control" id="txtRDDeptTo" placeholder="" disabled autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3 text-center">
+                            <label><strong>Chặng về/ Return</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="txtRDReturnDate">Ngày về/ Date</label>
+                            <input type="text" class="form-control isDate" id="txtRDReturnDate" placeholder="" disabled autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtRDReturnFrom">Điểm đi/ From</label>
+                            <input type="text" class="form-control" id="txtRDReturnFrom" placeholder="" disabled autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtRDReturnTo">Điểm đến/ To</label>
+                            <input type="text" class="form-control" id="txtRDReturnTo" placeholder="" disabled autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3 text-center">
+                            <label><strong>Quản lý xử lý/ Manager process</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="txtRDDepartment">Phòng ban/ Department</label>
+                            <input type="text" class="form-control" id="txtRDDepartment" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtRDManager">Quản lý/ Manager</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control w-50" id="txtRDManager" placeholder="" disabled>
+                                <button class="btn btn-success btnApprove" onclick="Approve(Enum_Manager_Type.Manager)">Approve</button>
+                                <button class="btn btn-danger btnReject" data-toggle="modal" data-target="#modalReason" data-manager="1">Reject</button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtRDManager">Quản lý cấp cao/ Senior Manager</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control w-50" id="txtRDSManager" placeholder="" disabled>
+                                <button class="btn btn-success btnSApprove" onclick="Approve(Enum_Manager_Type.SeniorManager)">Approve</button>
+                                <button class="btn btn-danger btnSReject" data-toggle="modal" data-target="#modalSReason" data-manager="2">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3 text-center">
+                            <label><strong>Nhân sự xử lý/ Human resource process</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="txtAttachHotel">Thông tin khách sạn/ Hotel attachment file</label>
+                            <table class="w-100">
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <div class="upload-btn-wrapper">
+                                                        <button class="btn btn-light">Upload a file</button>
+                                                        <input type="file" name="UploadedFile" id="fileHotelUpload" onchange="UploadFile(Enum_Type.Hotel)" accept=".xlsx, .xls, .docx, .doc, .pdf" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>File: </td>
+                                                <td><span class="label label-warning ml-3 fileUploadNameHotel"></span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="fileTicketUpload">Thông tin vé/ Air ticket attachment file</label>
+                            <table class="w-100">
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <div class="upload-btn-wrapper">
+                                                        <button class="btn btn-light">Upload a file</button>
+                                                        <input type="file" name="UploadedFile" id="fileTicketUpload" onchange="UploadFile(Enum_Type.Ticket)" accept=".xlsx, .xls, .docx, .doc, .pdf" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>File: </td>
+                                                <td><span class="label label-warning ml-3 fileUploadNameTicket"></span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtRDManager">Nhân sự/ Human resource</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control w-50" id="txtRDHR" placeholder="" disabled>
+                                <button class="btn btn-success" onclick="Process()" @hr>Process</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="">Lý do/ Reason</label>
+                            <textarea class="form-control" id="txtRDReason" placeholder="" autofocus disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal add destination -->
+    <div id="modalAddDestination" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Thêm địa điểm/ Add destination</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtDestinationName">Tên địa điểm/ Destination name</label>
+                            <input class="form-control" id="txtDestinationName" placeholder="" autofocus autocomplete="off" />
+                            <i><span class="text-danger isError" id="txtDesError"></span></i>
+                        </div>
+                    </div>
+                </div> 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" onclick="AddDestination(event)">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal add reason -->
+    <div id="modalReason" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Reason</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtReason">Name</label>
+                            <input type="text" class="form-control" id="txtReason" placeholder="Reason" autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success btn-sm" onclick="Reject(Enum_Manager_Type.Manager)">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modalSReason" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Reason</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtSReason">Name</label>
+                            <input type="text" class="form-control" id="txtSReason" placeholder="Reason" autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success btn-sm" onclick="Reject(Enum_Manager_Type.SeniorManager)">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modalConfig" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Configuration</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label><input type="checkbox" id="txtDelegate" name="txtDelegate" style="transform: scale(2)" onchange="ConfigChange()"> &nbsp;&nbsp;&nbsp; Ủy quyền quản lý cấp cao cho HRM</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        var $user = '@user.Email.ToLower()';
+        var $username = '@user.Username.ToLower()';
+    </script>
+
+    <script src="~/Scripts/HBI/Controller/TravelController.js?v=1"></script>
+}
+

@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "AllExams";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductionApp.Models;
+@model dynamic
+@section styles{
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+    <style>
+
+        .modal-title {
+            font-size: 17px
+        }
+
+        #btnmore {
+            margin-left: 20px;
+        }
+
+        .rowHidden {
+            display: none;
+        }
+        .inforExam > p > b{
+            font-size: 16px;
+        }
+
+    </style>
+}
+
+<div class="container">
+
+    <h2><b>Management of Exams</b></h2>
+    <div class="col-md-9" >
+
+    </div>
+    <div class="col-md-3" style="margin-bottom: 40px">
+        <a href="@Url.Action("ExportExamExcel","OnlineTraining")"><button type="button" class="btn btn-info btn-sm" id="SampleFile"><span class="glyphicon glyphicon-open"></span> Sample File</button></a>
+        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-open"></span> Upload File</button>
+    </div>
+
+    <table class="table table-bordered">
+        <thead style="background-color: #c2d1f0">
+            <tr>
+                <th>STT</th>
+                <th>Exam Name</th>
+                <th>Course Name</th>
+                <th>Question Number</th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Point</th>
+                @*<th>State</th>*@
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody id="list">
+            @{ var n = 0; }
+            @foreach (HR_Exam p in Model.LstExam)
+            {
+                n = n + 1;
+                <tr>
+
+                    <td>@n</td>
+                    <td>@p.NameExam</td>
+                    <td>@p.HR_Training_Plan.CourseName</td>
+                    <td>@p.QuestionNumber</td>
+                    <td>@p.Time</td>
+                    <td>@string.Format("{0:M/d/yyyy}", @p.Date)</td>
+                    <td>@p.Point</td>
+                    @*<td contenteditable="true">@p.State</td>*@
+                    <td><button type="button" class="btn btn-danger"  onclick="getInforExam(@p.ExamID)"><span class="glyphicon glyphicon-edit"></span></button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalEdit" role="dialog">
+    <div class="modal-dialog">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header alert-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-edit"></span>&nbsp&nbsp <b>Nhập thông tin chi tiết/ Fill in the detail information</b></p>
+                </div>
+                <div class="modal-body inforExam">
+                    <input type="hidden" id="ExamID" />
+                    <p><b>Tên bài thi / Exam Name:</b> <input type="text" class="form-control" required id="ExamName" placeholder="Nhập tên bài thi / Please fill in the exam name" /></p>
+                    <p class="infoName">
+                        <b>Khóa đào tạo / Course Name:</b>
+                        <select class="form-control" id="CourseName">
+                            @foreach (HR_Training_Plan p in Model.LstCourse)
+                            {
+                                <option value="@p.id">@p.CourseName</option>
+                            }
+                        </select>
+                    </p>
+                    <p><b>Thời gian thi / Time:</b> <input type="number" min="1" class="form-control" required id="Time" placeholder="Nhập thời gian thi/ Fill in the time" /></p>
+                    <p><b>Ngày thi / Exam Name:</b> <input type="text" id="Date" class="form-control isdate" autocomplete="off" required placeholder="Nhập ngày thi/ Fill in the date" /></p>
+                    <p><b>Điểm / Score:</b> <input type="number" min="1" class="form-control" required id="Score" placeholder="Nhập điểm/ Fill in the score" /></p>
+                    <p><b>Số câu hỏi / Number of questions:</b> <input type="number" min="1" class="form-control" required id="NumberQuestion" placeholder="Nhập số câu hỏi/ Fill in number of questions" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Lưu/ Save" onclick="SaveChanges()" />
+                    <input type="button" class="btn btn-danger" value="Thoát/ Exit" data-dismiss="modal"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- End Modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("UploadExam", "OnlineTraining", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                    <input type="button" class="btn btn-danger" value="Exit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<!-- End Modal -->
+@section scripts
+{
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+    </script>
+}
+<script language="javascript">
+  
+    function convertDate(data) {
+        var a = data;
+        var getdate = parseInt(a.replace("/Date(", "").replace(")/", ""));
+        var ConvDate = new Date(getdate);
+        var day = ConvDate.getDate() < 10 ? "0" + ConvDate.getDate() : ConvDate.getDate();
+        var month = parseInt(ConvDate.getMonth()) + 1;
+        var themonth = month < 10 ? "0" + month : month;
+        var result = ConvDate.getFullYear() + "-" + themonth + "-" + day;
+     //   console.log(result);
+        return result;
+    }
+
+
+    function getInforExam(ExamID) {
+       
+        $.get("/OnlineTraining/GetDetailExam", { ExamID: ExamID }, function (data) {
+            console.log(convertDate(data.Date));
+            if (data !=null) {
+                $("#ExamID").val(data.ExamID);
+                $("#ExamName").val(data.NameExam);
+                $("#CourseName").val(data.CourseID);
+                $("#Time").val(data.Time);
+                $("#Date").val(convertDate(data.Date));
+                $("#Score").val(data.Point);
+                $("#NumberQuestion").val(data.QuestionNumber);
+                $("#ModalEdit").modal("show");
+            }
+        });
+    }
+
+    function SaveChanges() {
+        var ExamID = $("#ExamID").val();
+        var ExamName = $("#ExamName").val();
+        var CourseID = $("#CourseName").val();
+        var Time = $("#Time").val();
+        var Date = $("#Date").val();
+        var Score = $("#Score").val();
+        var NumberQuestion = $("#NumberQuestion").val();
+        //console.log(Date);
+        $.post("/OnlineTraining/EditDetailExam", { ExamID: ExamID, ExamName: ExamName, CourseID: CourseID, Time: Time, Date: Date, Score: Score, NumberQuestion: NumberQuestion }, function (data) {
+            alert(data.msg);
+           // window.location.assign("/OnlineTraining/AllExams");
+        });
+        return false;
+    }
+</script>

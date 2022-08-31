@@ -1,0 +1,82 @@
+2021-05-14 11:33:36
+hobui
+ManagerApprove
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.ManagerApprove(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 186
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:186 in Method ManagerApprove, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-14 11:33:38
+hobui
+ManagerApprove
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.ManagerApprove(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 186
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:186 in Method ManagerApprove, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-14 11:33:43
+hobui
+ManagerReject
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.ManagerReject(Int32 requestId, String note) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 246
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:246 in Method ManagerReject, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-14 15:20:55
+hradm
+Report
+Message:Column '#Fullname' does not belong to table .
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147024809
+HelpLink:
+Source:System.Data
+InnerException:
+StackTrace:   at System.Data.DataRow.GetDataColumn(String columnName)
+   at System.Data.DataRow.set_Item(String columnName, Object value)
+   at ProductionApp.Controllers.Travel.TravelController.Report(String fromDate, String toDate) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 678
+TargetSite:System.Data.DataColumn GetDataColumn(System.String)
+Line:0 in Method GetDataColumn, File , Column 0
+Line:0 in Method set_Item, File , Column 0
+Line:678 in Method Report, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 21
+
+-----------------------
+

@@ -1,0 +1,245 @@
+2021-05-17 08:30:54
+uypham
+ReadExcelFile
+Message:An error occurred while updating the entries. See the inner exception for details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146233087
+HelpLink:
+Source:EntityFramework
+InnerException:System.Data.Entity.Core.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TBL_GROUP_MST_TBL_BUSINESS_MST". The conflict occurred in database "ProductionApp", table "dbo.TBL_BUSINESS_MST", column 'ID'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.<>c.<Reader>b__6_0(DbCommand t, DbCommandInterceptionContext`1 c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext,TResult](TTarget target, Func`3 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.Reader(DbCommand command, DbCommandInterceptionContext interceptionContext)
+   at System.Data.Entity.Internal.InterceptableDbCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Core.Mapping.Update.Internal.DynamicUpdateCommand.Execute(Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Entity.Core.Mapping.Update.Internal.UpdateTranslator.Update()
+   --- End of inner exception stack trace ---
+   at System.Data.Entity.Core.Mapping.Update.Internal.UpdateTranslator.Update()
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.<>c.<Update>b__21_0(UpdateTranslator ut)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.Update[T](T noChangesResult, Func`2 updateFunction)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.Update()
+   at System.Data.Entity.Core.Objects.ObjectContext.<SaveChangesToStore>b__153_0()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChangesToStore(SaveOptions options, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction)
+   at System.Data.Entity.Core.Objects.ObjectContext.<>c__DisplayClass148_0.<SaveChangesInternal>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChangesInternal(SaveOptions options, Boolean executeInExistingTransaction)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.AutoKanban.AutoKanbanController.ReadExcelFile(Int32 selectedSheet, Int32 selectedHeader) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\AutoKanban\AutoKanbanController.cs:line 196
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:196 in Method ReadExcelFile, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\AutoKanban\AutoKanbanController.cs, Column 25
+
+-----------------------
+
+2021-05-17 09:09:36
+uypham
+ReadExcelFile
+Message:An error occurred while updating the entries. See the inner exception for details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146233087
+HelpLink:
+Source:EntityFramework
+InnerException:System.Data.Entity.Core.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TBL_GROUP_MST_TBL_BUSINESS_MST". The conflict occurred in database "ProductionApp", table "dbo.TBL_BUSINESS_MST", column 'ID'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.<>c.<Reader>b__6_0(DbCommand t, DbCommandInterceptionContext`1 c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext,TResult](TTarget target, Func`3 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.Reader(DbCommand command, DbCommandInterceptionContext interceptionContext)
+   at System.Data.Entity.Internal.InterceptableDbCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Core.Mapping.Update.Internal.DynamicUpdateCommand.Execute(Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Entity.Core.Mapping.Update.Internal.UpdateTranslator.Update()
+   --- End of inner exception stack trace ---
+   at System.Data.Entity.Core.Mapping.Update.Internal.UpdateTranslator.Update()
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.<>c.<Update>b__21_0(UpdateTranslator ut)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.Update[T](T noChangesResult, Func`2 updateFunction)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.Update()
+   at System.Data.Entity.Core.Objects.ObjectContext.<SaveChangesToStore>b__153_0()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChangesToStore(SaveOptions options, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction)
+   at System.Data.Entity.Core.Objects.ObjectContext.<>c__DisplayClass148_0.<SaveChangesInternal>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChangesInternal(SaveOptions options, Boolean executeInExistingTransaction)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.AutoKanban.AutoKanbanController.ReadExcelFile(Int32 selectedSheet, Int32 selectedHeader) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\AutoKanban\AutoKanbanController.cs:line 196
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:196 in Method ReadExcelFile, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\AutoKanban\AutoKanbanController.cs, Column 25
+
+-----------------------
+
+2021-05-17 10:17:52
+tunguyen
+GetRequestDetail
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.<>c__DisplayClass13_1.<GetRequestDetail>b__0(TBL_USERS_MST x) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at ProductionApp.Controllers.Travel.TravelController.GetRequestDetail(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+TargetSite:Boolean <GetRequestDetail>b__0(ProductionApp.Models.TBL_USERS_MST)
+Line:522 in Method <GetRequestDetail>b__0, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 65
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:522 in Method GetRequestDetail, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-17 10:17:53
+tunguyen
+GetRequestDetail
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.<>c__DisplayClass13_1.<GetRequestDetail>b__0(TBL_USERS_MST x) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at ProductionApp.Controllers.Travel.TravelController.GetRequestDetail(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+TargetSite:Boolean <GetRequestDetail>b__0(ProductionApp.Models.TBL_USERS_MST)
+Line:522 in Method <GetRequestDetail>b__0, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 65
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:522 in Method GetRequestDetail, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-17 10:18:18
+tunguyen
+GetRequestDetail
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.<>c__DisplayClass13_1.<GetRequestDetail>b__0(TBL_USERS_MST x) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at ProductionApp.Controllers.Travel.TravelController.GetRequestDetail(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+TargetSite:Boolean <GetRequestDetail>b__0(ProductionApp.Models.TBL_USERS_MST)
+Line:522 in Method <GetRequestDetail>b__0, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 65
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:522 in Method GetRequestDetail, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-17 10:18:30
+tunguyen
+GetRequestDetail
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.<>c__DisplayClass13_1.<GetRequestDetail>b__0(TBL_USERS_MST x) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at ProductionApp.Controllers.Travel.TravelController.GetRequestDetail(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+TargetSite:Boolean <GetRequestDetail>b__0(ProductionApp.Models.TBL_USERS_MST)
+Line:522 in Method <GetRequestDetail>b__0, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 65
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:522 in Method GetRequestDetail, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-17 10:18:59
+tunguyen
+GetRequestDetail
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.<>c__DisplayClass13_1.<GetRequestDetail>b__0(TBL_USERS_MST x) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at ProductionApp.Controllers.Travel.TravelController.GetRequestDetail(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+TargetSite:Boolean <GetRequestDetail>b__0(ProductionApp.Models.TBL_USERS_MST)
+Line:522 in Method <GetRequestDetail>b__0, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 65
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:522 in Method GetRequestDetail, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-17 10:24:25
+tunguyen
+GetRequestDetail
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.<>c__DisplayClass13_1.<GetRequestDetail>b__0(TBL_USERS_MST x) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at ProductionApp.Controllers.Travel.TravelController.GetRequestDetail(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+TargetSite:Boolean <GetRequestDetail>b__0(ProductionApp.Models.TBL_USERS_MST)
+Line:522 in Method <GetRequestDetail>b__0, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 56
+Line:0 in Method MoveNext, File , Column 0
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:522 in Method GetRequestDetail, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-17 10:40:51
+tunguyen
+GetRequestDetail
+Message:Object reference not set to an instance of an object.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2147467261
+HelpLink:
+Source:ProductionApp
+InnerException:
+StackTrace:   at ProductionApp.Controllers.Travel.TravelController.<>c.<GetRequestDetail>b__13_0(TBL_USERS_MST x) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at ProductionApp.Controllers.Travel.TravelController.GetRequestDetail(Int32 requestId) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 522
+TargetSite:Void <GetRequestDetail>b__13_0(ProductionApp.Models.TBL_USERS_MST)
+Line:522 in Method <GetRequestDetail>b__13_0, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 40
+Line:0 in Method ForEach, File , Column 0
+Line:522 in Method GetRequestDetail, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+

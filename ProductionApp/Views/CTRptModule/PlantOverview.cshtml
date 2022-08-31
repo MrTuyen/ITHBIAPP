@@ -1,0 +1,352 @@
+﻿@using ProductionApp.Models
+@model List<CTPlantOverview>
+@{
+    DateTime FromDate = Convert.ToDateTime(ViewBag.FromDate);
+    DateTime ToDate = Convert.ToDateTime(ViewBag.ToDate);
+    ViewBag.Title = "CUTTING PLANT OVERVIEW";
+    PostbackValue PostBack = ViewBag.PostBack;
+    List<CTPlantOverview> ProductionOverview = ViewBag.ProductionOverview;
+    List<CTPlantOverviewByShift> Production1ShiftOverview = ViewBag.Production1ShiftOverview;
+    List<CTPlantOverviewByShift> Production2ShiftOverview = ViewBag.Production2ShiftOverview;
+    List<CTPlantOverviewByShift> Production3ShiftOverview = ViewBag.Production3ShiftOverview;
+
+    CTPlantOverview PlanningOverviewTotal = ViewBag.PlanningOverviewTotal;
+    CTPlantOverview ProductionOverviewTotal = ViewBag.ProductionOverviewTotal;
+    CTPlantOverviewByShift Production1ShiftOverviewTotal = ViewBag.Production1ShiftOverviewTotal;
+    CTPlantOverviewByShift Production2ShiftOverviewTotal = ViewBag.Production2ShiftOverviewTotal;
+    CTPlantOverviewByShift Production3ShiftOverviewTotal = ViewBag.Production3ShiftOverviewTotal;
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+           <small>Plant Overview</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("PlantOverview","CTRptModule", FormMethod.Post))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+
+    </div>
+    <div class="portlet-body ">
+        <div class="row margin-bottom-10">
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                From
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtFrom" id="txtFrom" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                To
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtTo" id="txtTo" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-2">
+                <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit" >
+            </div>
+        </div>
+        <div class="row margin-bottom-0 margin-top-20" id="DivShowData">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    @* TABLE SHOW TOTAL DEFECT BY BUSSINESS*@
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:40%; margin-left:20px; float:left">
+                        <thead>
+                            <tr>
+                                <th colspan="7" style="font:bold 13px arial; text-align:center;">PLANNING</th>
+                            </tr>
+                            <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                <th style="text-align:center">Business</th>
+                                <th style="text-align:center">Plan Qty</th>
+                                <th style="text-align:center">Fabric Rcv</th>
+                                <th style="text-align:center">Spread</th>
+                                <th style="text-align:center">Produced</th>
+                                <th style="text-align:center">QC Reject</th>
+                                <th style="text-align:center">WH Transfer</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                                @if(Model != null)
+                                {
+                                    for(int i =0; i< Model.Count; i++)
+                                    {
+                                       <tr style="">
+                                        <TD style="height:15px;"><b>@Model[i].Business</b></TD>
+                                        <td style="height:15px;">@Model[i].PlanQty.ToString("#,##")</td>
+                                        <td style="height:15px;">@Model[i].FabricRcv.ToString("#,##")</td>
+                                        <td style="height:15px;">@Model[i].SpreadBody.ToString("#,##")</td>
+                                        <td style="height:15px;">@Model[i].Produced.ToString("#,##")</td>
+                                        <td style="height:15px;">@Model[i].Reject.ToString("#,##")</td>
+                                        <td style="height:15px;">@Model[i].TransferWH.ToString("#,##")</td>
+                                       </tr>
+                                    }
+                                }
+                                @if (PlanningOverviewTotal != null)
+                                {
+                                    <tr style="">
+                                        <TD style="height:15px;"><b>TOTAL </b></TD>
+                                        <td style="height:15px;">@PlanningOverviewTotal.PlanQty.ToString("#,##")</td>
+                                        <td style="height:15px;">@PlanningOverviewTotal.FabricRcv.ToString("#,##")</td>
+                                        <td style="height:15px;">@PlanningOverviewTotal.SpreadBody.ToString("#,##")</td>
+                                        <td style="height:15px;">@PlanningOverviewTotal.Produced.ToString("#,##")</td>
+                                        <td style="height:15px;">@PlanningOverviewTotal.Reject.ToString("#,##")</td>
+                                        <td style="height:15px;">@PlanningOverviewTotal.TransferWH.ToString("#,##")</td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                    @* TABLE ACTUAL PRODUCTION OVERVIEW*@
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:40%; margin-left:30px; float:left">
+                        <thead>
+                            <tr>
+                                <th colspan="8" style="font:bold 13px arial; text-align:center;">PRODUCTION</th>
+                            </tr>
+                            <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                <th style="text-align:center">Business</th>
+                                <th style="text-align:center">Plan Qty</th>
+                                <th style="text-align:center">Fabric Rcv</th>
+                                <th style="text-align:center">Spread</th>
+                                <th style="text-align:center">Spread Liner</th>
+                                <th style="text-align:center">Produced</th>
+                                <th style="text-align:center">QC Reject</th>
+                                <th style="text-align:center">WH Transfer</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (ProductionOverview != null)
+                            {
+                                for (int i = 0; i < ProductionOverview.Count; i++)
+                                {
+                                    <tr style="">
+                                        <TD style="height:15px;"><b>@ProductionOverview[i].Business </b></TD>
+                                        <td style="height:15px;">@ProductionOverview[i].PlanQty.ToString("#,##")</td>
+                                        <td style="height:15px;">@ProductionOverview[i].FabricRcv.ToString("#,##")</td>
+                                        <td style="height:15px;">@ProductionOverview[i].SpreadBody.ToString("#,##")</td>
+                                        <td style="height:15px;">@ProductionOverview[i].SpreadLiner.ToString("#,##")</td>
+                                        <td style="height:15px;">@ProductionOverview[i].Produced.ToString("#,##")</td>
+                                        <td style="height:15px;">@ProductionOverview[i].Reject.ToString("#,##")</td>
+                                        <td style="height:15px;">@ProductionOverview[i].TransferWH.ToString("#,##")</td>
+                                    </tr>
+                                }
+                            }
+
+                            @if (ProductionOverviewTotal != null)
+                            {
+                                <tr style="">
+                                    <TD style="height:15px;"><b>TOTAL </b></TD>
+                                    <td style="height:15px;">@ProductionOverviewTotal.PlanQty.ToString("#,##")</td>
+                                    <td style="height:15px;">@ProductionOverviewTotal.FabricRcv.ToString("#,##")</td>
+                                    <td style="height:15px;">@ProductionOverviewTotal.SpreadBody.ToString("#,##")</td>
+                                    <td style="height:15px;">@ProductionOverviewTotal.SpreadLiner.ToString("#,##")</td>
+                                    <td style="height:15px;">@ProductionOverviewTotal.Produced.ToString("#,##")</td>
+                                    <td style="height:15px;">@ProductionOverviewTotal.Reject.ToString("#,##")</td>
+                                    <td style="height:15px;">@ProductionOverviewTotal.TransferWH.ToString("#,##")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @* TABLE PRODUCTION BY 1 SHIFT*@
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:31%; margin-left:20px; float:left">
+                        <thead>
+                            <tr>
+                                <th colspan="8" style="font:bold 13px arial; text-align:center;">1st SHIFT</th>
+                            </tr>
+                            <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                <th style="text-align:center">Business</th>
+                                <th style="text-align:center">Fabric Rcv</th>
+                                <th style="text-align:center">Spread</th>
+                                <th style="text-align:center">Spread Liner</th>
+                                <th style="text-align:center">Produced</th>
+                                <th style="text-align:center">QC Reject</th>
+                                <th style="text-align:center">WH Transfer</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Production1ShiftOverview != null)
+                            {
+                                for (int i = 0; i < Production1ShiftOverview.Count; i++)
+                                {
+                                    <tr style="">
+                                        <TD style="height:15px;"><b>@Production1ShiftOverview[i].Business </b></TD>
+                                        <td style="height:15px;">@Production1ShiftOverview[i].FabricRcv.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production1ShiftOverview[i].SpreadBody.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production1ShiftOverview[i].SpreadLiner.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production1ShiftOverview[i].Produced.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production1ShiftOverview[i].Reject.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production1ShiftOverview[i].TransferWH.ToString("#,##")</td>
+                                    </tr>
+                                }
+                            }
+
+                            @if (Production1ShiftOverviewTotal != null)
+                            {
+                                <tr style="">
+                                    <TD style="height:15px;"><b>TOTAL </b></TD>
+                                    <td style="height:15px;">@Production1ShiftOverviewTotal.FabricRcv.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production1ShiftOverviewTotal.SpreadBody.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production1ShiftOverviewTotal.SpreadLiner.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production1ShiftOverviewTotal.Produced.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production1ShiftOverviewTotal.Reject.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production1ShiftOverviewTotal.TransferWH.ToString("#,##")</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                    @* TABLE PRODUCTION BY 2 SHIFT*@
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:31%; margin-left:20px; float:left">
+                        <thead>
+                            <tr>
+                                <th colspan="8" style="font:bold 13px arial; text-align:center;">2nd SHIFT</th>
+                            </tr>
+                            <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                <th style="text-align:center">Business</th>
+                                <th style="text-align:center">Fabric Rcv</th>
+                                <th style="text-align:center">Spread</th>
+                                <th style="text-align:center">Spread Liner</th>
+                                <th style="text-align:center">Produced</th>
+                                <th style="text-align:center">QC Reject</th>
+                                <th style="text-align:center">WH Transfer</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Production2ShiftOverview != null)
+                            {
+                                for (int i = 0; i < Production2ShiftOverview.Count; i++)
+                                {
+                                    <tr style="">
+                                        <TD style="height:15px;"><b>@Production2ShiftOverview[i].Business </b></TD>
+                                        <td style="height:15px;">@Production2ShiftOverview[i].FabricRcv.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production2ShiftOverview[i].SpreadBody.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production2ShiftOverview[i].SpreadLiner.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production2ShiftOverview[i].Produced.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production2ShiftOverview[i].Reject.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production2ShiftOverview[i].TransferWH.ToString("#,##")</td>
+                                    </tr>
+                                }
+                            }
+
+                            @if (Production2ShiftOverviewTotal != null)
+                            {
+                                <tr style="">
+                                    <TD style="height:15px;"><b>TOTAL </b></TD>
+                                    <td style="height:15px;">@Production2ShiftOverviewTotal.FabricRcv.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production2ShiftOverviewTotal.SpreadBody.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production2ShiftOverviewTotal.SpreadLiner.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production2ShiftOverviewTotal.Produced.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production2ShiftOverviewTotal.Reject.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production2ShiftOverviewTotal.TransferWH.ToString("#,##")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @* TABLE PRODUCTION BY 3 SHIFT*@
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:31%; margin-left:20px; float:left">
+                        <thead>
+                            <tr>
+                                <th colspan="8" style="font:bold 13px arial; text-align:center;">3rd SHIFT</th>
+                            </tr>
+                            <tr style="background-color:darkseagreen; font:bold 12px arial; text-align:center;">
+                                <th style="text-align:center">Business</th>
+                                <th style="text-align:center">Fabric Rcv</th>
+                                <th style="text-align:center">Spread</th>
+                                <th style="text-align:center">Spread Liner</th>
+                                <th style="text-align:center">Produced</th>
+                                <th style="text-align:center">QC Reject</th>
+                                <th style="text-align:center">WH Transfer</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Production3ShiftOverview != null)
+                            {
+                                for (int i = 0; i < Production3ShiftOverview.Count; i++)
+                                {
+                                    <tr style="">
+                                        <TD style="height:15px;"><b>@Production3ShiftOverview[i].Business </b></TD>
+                                        <td style="height:15px;">@Production3ShiftOverview[i].FabricRcv.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production3ShiftOverview[i].SpreadBody.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production3ShiftOverview[i].SpreadLiner.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production3ShiftOverview[i].Produced.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production3ShiftOverview[i].Reject.ToString("#,##")</td>
+                                        <td style="height:15px;">@Production3ShiftOverview[i].TransferWH.ToString("#,##")</td>
+                                    </tr>
+                                }
+                            }
+
+                            @if (Production3ShiftOverviewTotal != null)
+                            {
+                                <tr style="font-style:unset">
+                                    <TD style="height:15px;"><b>TOTAL </b></TD>
+                                    <td style="height:15px;">@Production3ShiftOverviewTotal.FabricRcv.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production3ShiftOverviewTotal.SpreadBody.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production3ShiftOverviewTotal.SpreadLiner.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production3ShiftOverviewTotal.Produced.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production3ShiftOverviewTotal.Reject.ToString("#,##")</td>
+                                    <td style="height:15px;">@Production3ShiftOverviewTotal.TransferWH.ToString("#,##")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        //$('#DivShowData').hide();
+        $("#Submit").click(function (e) {
+            var From = $('#txtFrom').val();
+            var To = $('#txtTo').val();
+            if (From == "") {
+                    alert('Please select date!');
+                    $('#txtFrom').focus();
+                    e.preventDefault();
+                    return 0;
+            }
+            if (To == "") {
+                alert('Please select date!');
+                $('#txtTo').focus();
+                e.preventDefault();
+                return 0;
+            }
+           
+   });
+
+    </script>
+}

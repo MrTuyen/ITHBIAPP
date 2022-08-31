@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewBag.Title = "ReportResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models;
+@model dynamic
+
+@section styles{
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+    <link href="~/Content/themes/assets/css/cssReportResult.css" rel="stylesheet" />
+    <style>
+        .rowUpload {
+            margin: 10px 0px 20px 0px;
+        }
+        .mainBody {
+            margin-left: 75px;
+        }
+    </style>
+}
+
+<h3 class="title"><b>Management of reporting the results</b></h3>
+<div class="row rowUpload">
+    <div class="col-md-7">
+        <b>Choose a course:</b>
+        <select id="showYear" onchange="getDate()">
+            @foreach (var p in Model.TrainingPlan)
+            {
+                <option value="@p.id">@p.CourseName</option>
+            }
+
+        </select>
+        <input type="hidden" id="txtTest" />
+    </div>
+    <div class="col-md-3">
+        <b>Choose a date:</b>
+        <select id="showDate" onchange="loadYear(value)">
+        </select>
+    </div>
+
+  
+    <div class="col-md-2">
+        <button type="button" class="btn btn-info btn-sm" onclick="exportHTML()" style="margin-left: -30px"><span class="glyphicon glyphicon-export"  ></span> Export Word</button>
+        @*<button type="button" class="btn btn-danger btn-sm" id="exportExcel"><span class="glyphicon glyphicon-export"></span> Export Excel</button>*@
+
+    </div>
+
+</div>
+@{ var today = DateTime.Now;}
+<div class="container">
+    <div class="container chitietdethi" id="HTMLtoPDF">
+        <div class="row head">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-5 coso">
+                    <h4 class="nameCompany"><b><u>HANES BRANDS INC</u></b></h4>
+
+                </div>
+                <div class="col-md-6 coso2">
+                    <p class="under_gach">@*Hung Yen, @today.ToString("MMMM") @today.Day, @today.Year*@</p>
+
+
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row bangdiem">
+                <h3 style="text-align:center;font-family: 'Times New Roman', sans-serif;"><b>THE REPORT OF TRAINING EMPLOYEE RESULTS</b></h3>
+            </div>
+            <div class="row titleReport">
+                <div class="col-md-12" style="text-align:center"><b>Course Name: <span id="nameCourse"></span></b></div>
+
+            </div>
+            <div class="row " style="text-align:center">
+                <div class="col-md-12" style="margin-bottom: 10px"><b>Date: <span id="ngaythi"></span> </b></div>
+                <div class="mainBody" >
+                    <table id="tableData" width="700">
+                        <thead style="background-color: #b3c6ff">
+                            <tr class="contentQues">
+                                <th>STT</th>
+                                <th>Exam Name</th>
+                                <th>Employee Name</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="LstResult" >
+                            @*@{ var m = 0; }
+                            @foreach (var a in Model.ResultTest)
+                            {
+                                m = m + 1;
+                                <tr>
+                                    <td>@m</td>
+                                    @foreach (var p in Model.LstExam)
+                                    {
+                                        if (p.ExamID == a.ExamID)
+                                        {
+                                            <td> @p.NameExam</td>
+                                        }
+                                    }
+                                    @foreach (var h in Model.LstEmployee)
+                                    {
+                                        if (h.Emp_ID == a.UserID.ToString())
+                                        {
+                                            <td> @h.NAME</td>
+                                        }
+                                    }
+                                    <td>@a.Point</td>
+                                </tr>
+
+                            }*@
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @section scripts
+{
+        @*  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>*@
+        <script src="~/Scripts/excelexportjs.js"></script>
+        @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+        <script>
+            function getDate() {
+                $("#showDate").html("");
+                var CourseID = $("#showYear").val();
+                $.get("/OnlineTraining/LoadDateExamByCourse", { CourseID: CourseID }, function (data) {
+                    if (data[0]) {
+                        var ngay = $("#txtTest").val(convertDate(data[0].Date));
+                        var DateReport = $("#txtTest").val();
+                        getDataToReport(DateReport, CourseID);
+                        $.each(data, function (j, val) {
+                            var element = convertDate(val.Date);
+                            $("#showDate").append("<option value=" + element + ">" + element + "</option>");
+                        });
+                    }
+                    else {
+                        $("#LstResult").html("");
+                        $("#showDate").html("");
+                        $("#nameCourse").html("");
+                        $("#ngaythi").html("");
+                        $("#LstResult").append("<tr><td colspan='4'><p style='text-align:center'>KHÔNG CÓ DỮ LIỆU</p></td></tr>");
+                    }
+                });
+            }
+            getDate();
+
+            function getDataToReport(DateReport, CourseID) {
+                $("#nameCourse").html("");
+                $("#ngaythi").html("");
+                $("#ngaythi").html(DateReport);
+                $.get("/TrainingCourse/getOneCourse", { id: CourseID }, function (data) {
+                    $("#nameCourse").html(data[0].CourseName);
+                });
+                $.get("/OnlineTraining/getResultByCourseDate", { CourseID: CourseID, DateReport: DateReport }, function (data) {
+                    $("#LstResult").html("");
+
+                    var tt = 1;
+                    if (data[0] != null) {
+                        $.each(data, function (j, val) {
+                            $("#LstResult").append("<tr>\
+                                        <td>"+ tt + "</td> \
+                                        <td>"+ val.ExamName + "</td> \
+                                        <td>"+ val.EmployeeName + "</td> \
+                                        <td>"+ val.Point + "</td> \
+                                         </tr>");
+                            tt++;
+                        });
+                    }
+                    else {
+                        $("#LstResult").append("<tr><td colspan='4'><p style='text-align:center'>KHÔNG CÓ DỮ LIỆU</p></td></tr>");
+                    }
+                });
+            }
+
+            function convertDate(data) {
+                var a = data;
+                var getdate = parseInt(a.replace("/Date(", "").replace(")/", ""));
+                var ConvDate = new Date(getdate);
+                var month = parseInt(ConvDate.getMonth()) + 1;
+                var ngay, thang;
+               
+                ngay = ConvDate.getDate() < 10 ? "0" + ConvDate.getDate() : ConvDate.getDate();
+                thang = month < 10 ? "0" + month : month;
+              
+                return thang + "/" + ngay + "/" + ConvDate.getFullYear();
+            }
+
+            function loadYear(value) {
+                var CourseID = $("#showYear").val();
+                $("#txtTest").val(value);
+                var DateReport = $("#txtTest").val();
+                getDataToReport(DateReport, CourseID);
+
+            }
+
+            function exportHTML() {
+                var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+                    "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+                    "xmlns='http://www.w3.org/TR/REC-html40'>" +
+                    "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+                var footer = "</body></html>";
+                var sourceHTML = header + document.getElementById("HTMLtoPDF").innerHTML + footer;
+
+                var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+                var fileDownload = document.createElement("a");
+                document.body.appendChild(fileDownload);
+                fileDownload.href = source;
+                fileDownload.download = 'document.doc';
+                fileDownload.click();
+                document.body.removeChild(fileDownload);
+            }
+
+            //export a excel file
+            $('#exportExcel').on('click', function () {
+                var x = document.getElementById("LstResult").rows.length;
+                //if (x >= 2) {
+                $("#tableData").excelexportjs({
+                    containerid: "tableData",
+                    datatype: 'table'
+                });
+                //}
+                //else alert("Năm bạn chọn không có dữ liệu!");
+
+            });
+
+        </script>
+}

@@ -1,0 +1,242 @@
+﻿@{
+    ViewBag.Title = "Add_Supply";
+}
+@using ProductionApp.Models
+@model List<WH_Supply_Request_Item>
+@{
+    MyContext db = new MyContext();
+    var requestby = (UserModels)ViewData["requestby"] ?? new UserModels();
+    var managers = (List<WH_User_Approver>)ViewData["manager"] ?? new List<WH_User_Approver>();
+    var loc = (List<WH_User_Approver>)ViewData["loc"] ?? new List<WH_User_Approver>();
+    var issue = (List<WH_User_Approver>)ViewData["issue"] ?? new List<WH_User_Approver>();
+}
+
+@{
+    ViewBag.Title = " PHIẾU YÊU CẦU CẤP VẬT TƯ";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            PHIẾU YÊU CẦU CẤP VẬT TƯ
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<form action="@Url.Action("Submit","Supply")" method="post">
+    <div class="panel panel-default" id="panel1" style="max-width: 1336px">
+        <div class="panel-heading">Thông tin phiếu</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="col-input">Tổ:</span>
+                    <select name="group_mst" id="group_mst" class="form-control">
+                        @foreach(TBL_GROUP_MST groupt_mst in ViewBag.group_mst) {
+                            <option value="@groupt_mst.GROUP_ID">@groupt_mst.GROUP_NAME</option>
+                        }
+
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <span class="col-input">Lô SX:</span>
+                    <input type="text" name="wl" id="wl" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <span class="col-input">Ngày yêu cầu cấp:</span>
+                    <input type="text" name="date" id="date" class="form-control isdate" autocomplete="off">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="col-input">Người tạo:</span>
+                    <select name="requestby" class="form-control">
+
+                        <option value="@requestby.Username">@requestby.Fullname</option>
+
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <span class="col-input">Sản xuất phê duyệt:</span>
+                    <select name="manager" class="form-control">
+                        @foreach(WH_User_Approver manager in managers) {
+                            <option value="@manager.id">@manager.fullname</option>
+                        }
+
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <span class="col-input">Kho kiểm tra vị trí:</span>
+                    <select name="loc" class="form-control">
+                        @foreach(WH_User_Approver loc1 in loc) {
+                            <option value="@loc1.id">@loc1.fullname</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="col-input">Kho issue cho SX:</span>
+                    <select name="issue" class="form-control">
+                        @foreach(WH_User_Approver issue1 in issue) {
+                            <option value="@issue1.id">@issue1.fullname</option>
+                        }
+
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <span class="col-input">Sản xuất xác nhận:</span>
+                    <select name="manager" class="form-control">
+                        <option value="@requestby.Username">@requestby.Fullname</option>
+
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <span class="col-input"></span>
+                    <input type="submit" value="SUBMIT" class="btn btn-info" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" id="panel">
+        <div class="panel-heading">Danh sách vật tư</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <button type="button" class="btn btn-info " data-toggle="modal" data-target="#myModal" onclick="clear()">Thêm vật tư</button>
+                    <table id="table1" class="table  table-bordered  ">
+
+                        <tr style="text-align: center; background-color: #f5f5f5">
+                            <td rowspan="2">STT</td>
+                            <td rowspan="2">Mã vật tư /Material code</td>
+                            <td colspan="2">Số lượng yêu cầu</td>
+                            <td colspan="2">Số lượng cấp</td>
+                            <td rowspan="2">Vị trí</td>
+                            <td rowspan="2">Ghi chú</td>
+                            <td rowspan="2"></td>
+
+                        </tr>
+                        <tr style="text-align: center; background-color: #f5f5f5">
+                            <td>ĐVT</td>
+                            <td>Yêu cầu</td>
+                            <td>ĐVT</td>
+                            <td>Thực xuất</td>
+                        </tr>
+                        <tbody id="list_supply"></tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+@Html.Action("Modal_Supply" ,"Supply")
+@section scripts
+{
+    @Html.Raw(TempData["msg"])
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        $(document).ready(function () {
+            $('#group_mst').select2({ width: '100%' });
+            // $('#supply').select2({ width: '100%', dropdownParent: $("#myModal") });
+            load_supply();
+
+            $('#statiID').select2({ width: '100%', dropdownParent: $("#myModal") });
+            $(document).on('click',
+                '.xoa',
+                function () {
+                    var id = $(this).attr('data-id');
+                    $.ajax({
+                        url: '@(Url.Action("Delete"))',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            id: id
+                        }),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function (data) {
+                            load_supply();
+                        }
+                    });
+                });
+
+
+        });
+
+
+
+
+
+
+        function add_supply() {
+
+            var supply = $("#supply").val();
+            var qty_yc = $("#qty_yc").val();
+
+            var note = $("#note").val();
+
+            $.get("/Supply/Modal_Supply1",
+                { supplyID: supply, qty_yc: qty_yc, note: note },
+                function (data) {
+
+                    load_supply();
+                });
+
+            $("#qty_yc").val("");
+            $("#note").val("");
+        }
+
+        function clear() {
+            $('#body').html("");
+        }
+
+        function load_supply() {
+            $('#list_supply').html("");
+            $.get("/Supply/Load_Supply",
+                function(data) {
+                    if (data != null)
+                        $.each(data,
+                            function(i, val) {
+                                $("#list_supply").append(" <tr>\
+                    <td class='text-center'>" +
+                                    (i + 1) +
+                                    "</td>\
+                    <td class='text-center'>" +
+                                    val.SupplyName +
+                                    "</td>\
+                    <td  class='text-center'>" +
+                                    val.Unit +
+                                    "</td>\
+                    <td  class='text-center'>" +
+                                    val.Quantity +
+                                    "</td>\
+                    <td  class='text-center'>" +
+                                    val.Unit +
+                                    "</td>\
+                    <td  class='text-center'>" +
+                                    0 +
+                                    "</td>\
+                    <td></td>\
+                    <td>" +
+                                    val.Note +
+                                    "</td>" +
+                                    "<td><a class=\"xoa\" style=\"cursor:pointer\" data-id=" +
+                                    val.ID +
+                                    ">xóa</a></td>" +
+                                    +"</tr>"
+                                );
+                            });
+                });
+        }
+
+
+    </script>
+}

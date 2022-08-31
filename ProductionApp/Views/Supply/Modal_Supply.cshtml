@@ -1,0 +1,44 @@
+﻿@using ProductionApp.Models
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chọn vật tư</h4>
+            </div>
+
+            <div class="modal-body" id="body">
+                <div class="form-group">
+                    <label>Tên vật tư</label>
+                    <select name="supply" id="supply" class="form-control">
+                        @foreach(WH_Supply_MST supply in ViewBag.supply)
+                        {
+                            <option value="@supply.ID">@(supply.Name)</option>
+                        }
+
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Số lượng </label>
+                    <input type="number" name="qty_yc" class="form-control" id="qty_yc">
+                </div>
+
+
+
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <textarea name="note" id="note" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-info" onclick="add_supply()" id="button">Submit</button>
+            </div>
+        </div>
+
+    </div>
+</div>

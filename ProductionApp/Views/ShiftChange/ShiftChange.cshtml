@@ -1,0 +1,90 @@
+﻿@{ ViewBag.Title = "ShiftChange"; }
+@using ProductionApp.Models
+@{
+    var user = (TBL_USERS_MST)ViewData["user"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var app = (OL_User_Approver)ViewData["app"];
+
+}
+@Html.Raw(TempData["msg"])
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            PHIẾU ĐĂNG KÝ ĐỔI CA
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+@using (Html.BeginForm("Upload_ShiftChange", "ShiftChange", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data"
+    }))
+{
+
+
+    <div id="info3">
+        <div class="row">
+            <div class="col-md-5">
+                <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" id="UploadedFile" /></p>
+            </div>
+            <div class="col-md-3" style="margin-top: 20px;">
+                <input type="Submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-2">
+
+                <div class="form-group">
+                    <label>Department</label>
+                    <br />
+                    <select name="dept" id="dept1" readonly class="form-control">
+                        <option value="@dept.DEPT_ID">@dept.NAME</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+                <div class="form-group">
+                    <label>Requester Name</label>
+                    <br />
+                    <input type="text" name="name" value="@user.FULLNAME" readonly class="form-control" />
+                    <input type="text" name="mail" value="@user.EMAIL" readonly class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Approver</label>
+                    <br />
+                    <input type="text" name="approver" value="@app.ApproverName" id="approver1" readonly class="form-control" />
+                    <input type="text" name="approverMail" value="@app.ApproverEmail" id="approverMail1" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>HR PIC</label>
+                    <br />
+                    <select name="nameHR" id="nameHR1" onchange="HR1()" class="form-control">
+                        @foreach (TBL_SYSTEM item in ViewBag.hr)
+                        {
+                            <option value="@item.id">@item.fullname</option>
+                        }
+                    </select>
+                @foreach(TBL_SYSTEM item in ViewBag.hr) {
+                    <input type="text" name="mailHR" value="@item.value" id="mailHR1" readonly class="form-control" />   }
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+
+

@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Daily";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+             <small>Daily Report</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("ExportExcel","Report", FormMethod.Post))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+
+    </div>
+    <div class="portlet-body ">
+        <div class="row margin-bottom-10">
+            <div class="col-md-2 bold" style="line-height: 32px; text-align: right">
+                Date
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="txtDate" id="txtDate" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-2">
+                <input type="button" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit">
+            </div>
+        </div>
+        <div class="row margin-bottom-10 margin-top-20" id="DivShowData">
+            @*@Html.Action("ShowData", "Report")*@
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+    jQuery(document).ready(function () {
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        //$('#DivShowData').hide();
+        $("#Submit").click(function (e) {
+            var date = $('#txtDate').val();
+                if (date == "") {
+                    alert('Please select date!');
+                    $('#txtDate').focus();
+                    return 0;
+                }
+                else {
+                    
+                    //$.ajax({
+
+
+                        $("#DivShowData").load("/Report/ShowData/",
+                        { datestr: date });
+                        //alert(date);
+                        //$('#DivShowData').show();
+                        @*type: 'POST',
+                        url: '@Url.Content("~/Report/ShowData/")',
+                        data: { datestr: date },
+                        success: function (response, status, XHR) {
+                            //$('#txtCase').val('');
+                            //$('#txtCase').focus();
+                            
+                            //$("#DivShowData").load();
+                            $('#DivShowData').show();
+                            //$('#DivShowData').html(data);
+                        },
+
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('err');
+                            $("#lblMessage").text(thrownError);
+                        }*@
+                    //});
+
+                }
+        });
+    });
+    </script>
+}

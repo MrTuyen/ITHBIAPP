@@ -1,0 +1,92 @@
+﻿@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model List< ProductionApp.Models.OL_Leave_Item>
+
+    @{
+        ViewBag.Title = "Leave Report";
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+            <h3 class="page-title">
+                Leave Report
+            </h3>
+            <!-- END PAGE TITLE & BREADCRUMB-->
+        </div>
+    </div>
+
+    <div class="panel panel-default" id="panel-oddcase">
+        <div class="panel-heading">Report Option</div>
+        <div class="panel-body">
+            <form id="fr-oddcase" action="" method="post">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Employee ID</label>
+                        <input type="text" name="empID" value="" class="form-control" />
+                    </div>
+                    @*<div class="col-md-3">
+                        <label>Request Date</label>
+                        <input type="text" id="fromdate" name="date" class="form-control isdate" autocomplete="off" />
+                    </div>*@
+                    <div class="col-md-3"><br/>
+                        <input type="submit" class="btn btn-info" value="Report" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">List</div>
+        <div class="panel-body">
+            <table id="tblOddCase" class="table table-bordered " style="width:100%;">
+                <thead>
+                    <tr style="text-align: center; background-color: #f5f5f5">
+                        <td>No#</td>
+                        <td>FullName</td>
+                        <td>Leave Code</td>
+                        <td>From Date</td>
+                        <td>To Date</td>
+                        <td>Total</td>
+                        <td>Approved</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if(Model != null) {
+                            foreach(var item in Model) {
+                                <tr>
+                                    <td class="text-center">@item.LeaveID</td>
+                                    <td class="text-center">@item.OL_User_Approver.EmpName</td>
+                                    <td class="">@(item.OL_LeaveCode.LeaveName + "(" + item.LeaveCD + ")")</td>
+                                    <td class="text-center">@(Utilities.GetMMDDYYYY(item.FromDate.ToString()))</td>
+                                    <td class="text-center">@(Utilities.GetMMDDYYYY(item.ToDate.ToString()))</td>
+                                    <td class="text-center">@item.LeaveNo</td>
+                                    <td class="text-center">@item.OL_LeaveDetails.ApproverName</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+    @section Scripts {
+
+        <script>
+            $(window).ready(function () {
+
+
+            });
+
+
+
+        </script>
+
+    }
+
+

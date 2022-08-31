@@ -1,0 +1,192 @@
+2021-05-13 09:16:19
+admin
+AddDestination
+Message:LINQ to Entities does not recognize the method 'System.String NonUnicode(System.String)' method, and this method cannot be translated into a store expression.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146233067
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.DefaultTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.EqualsTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateSet(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.UnarySequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.Convert()
+   at System.Data.Entity.Core.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__1()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   at ProductionApp.Controllers.Travel.TravelController.AddDestination(TBL_Travel_Destination destination) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 108
+TargetSite:System.Data.Entity.Core.Common.CommandTrees.DbExpression Translate(System.Data.Entity.Core.Objects.ELinq.ExpressionConverter, System.Linq.Expressions.MethodCallExpression)
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method TypedTranslate, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method TranslateExpression, File , Column 0
+Line:0 in Method TypedTranslate, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method TranslateExpression, File , Column 0
+Line:0 in Method TranslateLambda, File , Column 0
+Line:0 in Method TranslateLambda, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method TypedTranslate, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method TranslateExpression, File , Column 0
+Line:0 in Method TranslateSet, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method TypedTranslate, File , Column 0
+Line:0 in Method Translate, File , Column 0
+Line:0 in Method TranslateExpression, File , Column 0
+Line:0 in Method Convert, File , Column 0
+Line:0 in Method GetExecutionPlan, File , Column 0
+Line:0 in Method <GetResults>b__1, File , Column 0
+Line:0 in Method ExecuteInTransaction, File , Column 0
+Line:0 in Method <GetResults>b__0, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method GetResults, File , Column 0
+Line:0 in Method <System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0, File , Column 0
+Line:0 in Method MoveNext, File , Column 0
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:0 in Method <GetElementFunction>b__14_1, File , Column 0
+Line:0 in Method ExecuteSingle, File , Column 0
+Line:0 in Method System.Linq.IQueryProvider.Execute, File , Column 0
+Line:0 in Method Execute, File , Column 0
+Line:0 in Method FirstOrDefault, File , Column 0
+Line:108 in Method AddDestination, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-13 09:49:29
+admin
+AddNewRequest
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 53
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:53 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-13 09:56:00
+admin
+AddNewRequest
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 53
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:53 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-13 09:56:06
+admin
+AddNewRequest
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 53
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:53 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-13 09:57:43
+admin
+AddNewRequest
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 53
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:53 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+
+2021-05-13 13:08:45
+admin
+AddNewRequest
+Message:Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+Data:System.Collections.ListDictionaryInternal
+HResult:-2146232032
+HelpLink:
+Source:EntityFramework
+InnerException:
+StackTrace:   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at ProductionApp.Controllers.Travel.TravelController.AddNewRequest(HR_Travel_Request request) in \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs:line 71
+TargetSite:Int32 SaveChanges()
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:0 in Method SaveChanges, File , Column 0
+Line:71 in Method AddNewRequest, File \\hysfpsv\IT\13.Workbench\ProductionAppDev\ProductionApp\Controllers\Travel\TravelController.cs, Column 17
+
+-----------------------
+

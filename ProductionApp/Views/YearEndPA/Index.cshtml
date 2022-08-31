@@ -1,0 +1,525 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models;
+@model dynamic
+
+
+@section styles{
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<style>
+    .name {
+        font-weight: bold;
+    }
+
+    .Firstpart {
+        margin-bottom: 30px;
+    }
+
+    .calculateKPI {
+        background-color: antiquewhite;
+    }
+
+    .tblKPISetting, tr, th, td {
+        border: 1px solid #000;
+    }
+
+    .marginTable {
+        margin-top: -15px;
+    }
+
+    .comment {
+        height: 40px;
+        line-height: 40px;
+        background-color: #ddd;
+        margin-left: 14px;
+        width: 1483px;
+    }
+
+    .firstbox {
+        border: 1px solid black;
+        margin-bottom: 20px;
+    }
+
+    .titleKPI {
+        font-family: 'Times New Roman';
+        font-size: 40px;
+        text-align: center;
+        font-weight: bold;
+        height: 110px;
+        line-height: 110px;
+    }
+
+    .boxLeft {
+        border-right: 1px solid black;
+        height: 123px;
+        line-height: 120px;
+    }
+
+    .boxRight {
+        border-left: 1px solid black;
+    }
+
+        .boxRight > p {
+            margin-left: 30px;
+        }
+
+    .Calbonus {
+        background-color: yellow
+    }
+</style>
+}
+<div class="container-fluid firstbox">
+    <div class="col-md-2 boxLeft">
+        <img src="~/img/HBI.jpg" />
+    </div>
+    <div class="col-md-8"><p class="titleKPI"> PERFORMANCE APPRAISAL YEAR</p></div>
+    <div class="col-md-2 boxRight">
+        <p>HYS-F-HR-023</p>
+        <p>Revision:  02</p>
+        <p>Date of revision:4/2/2020</p>
+        <p>Page: 1/1</p>
+
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>I. EMPLOYEE DATA</b></div>
+    <div class="panel-body">
+        <div class="row Firstpart">
+            <div class="col-md-1"></div>
+            <div class="col-md-1 name">
+                ID & Name:
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="txtIDName" class="form-control" />
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2 name">
+                Superior/ Evaluator:
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="txtSuperior" class="form-control" />
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="row Firstpart">
+            <div class="col-md-1"></div>
+            <div class="col-md-1 name">
+                Department:
+            </div>
+            <div class="col-md-3">
+                <select id="DepartmentID" class="form-control" onchange="getData(value)">
+                    @foreach (TBL_DEPARTMENT_MST p in Model)
+                    {
+                    <option value="@p.DEPT_ID">@p.NAME</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2 name">
+                Manager:
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="txtSuperior" class="form-control" />
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="row Firstpart">
+            <div class="col-md-1"></div>
+            <div class="col-md-1 name">
+                Position:
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="txtPosition" class="form-control" />
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2 name">
+                Evaluation period:
+            </div>
+            <div class="col-md-3">
+                <select id="showYear" onchange="loadYear(value)"></select>
+                <input type="hidden" id="txtTest" />
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>II. KPI Result</b></div>
+    <div class="panel-body">
+
+        <div class="row marginTable">
+
+            <table class="table  tblKPISetting">
+                <tbody id="list">
+                    <tr>
+                        <td colspan="9"><b>1. Achievement of Individual KPIs</b></td>
+                    </tr>
+                    <tr style="background-color:#ddd">
+                        <th rowspan="2">No.</th>
+                        <th rowspan="2">KPI Items</th>
+                        <th rowspan="2">Quater KPI</th>
+                        <th colspan="3">KPI Results</th>
+                        <th rowspan="2">Quarter  KPI Result</th>
+                        <th rowspan="2">KPI Weight</th>
+                        <th rowspan="2">Actual vs. Target (%)</th>
+                        <th rowspan="2">KPI Bonus</th>
+                        <th rowspan="2">Final Score (%)</th>
+                        <th rowspan="2">Note</th>
+                    </tr>
+                    <tr style="background-color:#ddd">
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>March</th>
+
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="calculateKPI">THP</td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td class="Calbonus"></td>
+                        <td class="Calbonus"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="calculateKPI">TO</td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td class="Calbonus"></td>
+                        <td class="Calbonus"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="calculateKPI">Absenteeism</td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td class="Calbonus"></td>
+                        <td class="Calbonus"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="calculateKPI">Payroll accuracy & timely </td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td class="Calbonus"></td>
+                        <td class="Calbonus"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="calculateKPI">Kaizen</td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td class="Calbonus"></td>
+                        <td class="Calbonus"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="12"><b>2. Organizational Development (for team leading roles) </b></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="calculateKPI">
+                            Training to subordinate (courses)
+                        </td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td class="Calbonus"></td>
+                        <td class="Calbonus"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="calculateKPI">
+                            PR activities to promote HBI Image
+                        </td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="calculateKPI"></td>
+                        <td contenteditable="true"></td>
+                        <td class="Calbonus"></td>
+                        <td class="Calbonus"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="11" align="right"><b>Completion Ratio</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="12"><b><i>*KPI Bonus: 10% KPI Weight for each KPI exceeds target</i></b></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>III. EMPLOYEE'S SELF ASSESSMENT</b></div>
+    <div class="panel-body">
+        <div class="row" style="margin-top: -15px">
+            <div class="row">
+                <div class="col-md-12">
+                    <textarea name="" id="cmtASSESSMENT" class="form-control" rows="7"></textarea>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>IV. EVALUATOR'S ASSESSMENT</b></div>
+    <div class="panel-body">
+
+        <div class="row marginTable">
+
+            <table class="table  tblKPISetting">
+                <tbody id="list">
+                    <tr>
+                        <td colspan="9"><b>1. Core Values</b> <i>(Rate the following values using a scale of 1 to 5 with 1: Never, 2: Rarely, 3: Sometimes, 4: Frequent, 5: Always)</i></td>
+                    </tr>
+                    <tr style="background-color:#ddd">
+                        <th colspan="3">Value & Behaviors</th>
+                        <th colspan="2">Rating</th>
+                        <th>Star Rating</th>
+                        <th colspan="3">Value & Behavior</th>
+                        <th colspan="2">Rating</th>
+                        <th>Star Rating</th>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6"><b>1.1 Team work</b></td>
+                        <td colspan="6"><b>1.3 Commitment</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Act as one team</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Do what said</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Collaborate and develop mutual trust</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Respond with urgency</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Work with responsibility, excel in what to do</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Take ownership, drive and deliver</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Respect other people's time</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><b>1.2 Respect for Individuals </b></td>
+                        <td colspan="6"><b>1.4 Continuous Improvement </b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Develop people</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Set ambitious goals</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Listen to others</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Solve problem creatively</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Open and honestly feedback</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Encourage learning by doing</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Value every individual</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3">Gemba (improvement come from go & see)</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Contribute to build a happy workplace</td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <td colspan="3"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="12"><b>2. Competence & Behaviors  </b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Strengths:</td>
+                        <td contenteditable="true" colspan="9"></td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="3">Areas need to improve:</td>
+                        <td contenteditable="true" colspan="9"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>V. OVERAL PERFORMANCE RATING </b></div>
+    <div class="panel-body">
+        <div class="row Firstpart">
+            <div class="col-md-3"><input type="radio" name="radio"/> Exceeded Objectives (.....)</div>
+            <div class="col-md-3"><input type="radio" name="radio"/> Met Objectives (.....)</div>
+            <div class="col-md-3"><input type="radio" name="radio"/> Did not meet Objectives</div>
+            <div class="col-md-3"><input type="radio" name="radio"/> New in position</div>
+        </div>
+        <div>
+            Comment (if any):  <textarea name="" id="cmt" class="form-control"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>IV. SIGNATURE</b></div>
+    <div class="panel-body">
+        <div class="row marginTable">
+            <table class="table  tblKPISetting">
+                <tbody id="list">
+
+                    <tr>
+                        <td style="background-color:#ddd">Date, Signature Employees:</td>
+                        <td>4/15/2020</td>
+                        <td><button type="button" class="btn btn-danger btn-sm"> Submit</button></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color:#ddd">Date, Signature Superior/Evaluator:</td>
+                        <td>4/15/2020</td>
+                        <td><button type="button" class="btn btn-primary btn-sm"> Review</button></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color:#ddd">Date, Signature Manager:</td>
+                        <td>4/15/2020</td>
+                        <td><button type="button" class="btn btn-info btn-sm"> Approve</button></td>
+                        <td><button type="button" class="btn btn-warning btn-sm"> Revise KPI</button></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+            @section scripts
+{
+                @*
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>*@
+<script src="~/Scripts/excelexportjs.js"></script>
+                @*
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+<script>
+    function getNowYear() {
+        var d = new Date();
+        $("#txtTest").val(d.getFullYear());
+        console.log("năm nay là " + d.getFullYear());
+    }
+    getNowYear();
+
+    function getYear() {
+        var d = new Date();
+        var n = d.getFullYear();
+        var arr = [];
+        var text;
+        for (var i = n; i <= n + 1; i++) {
+            arr.push(i);
+        }
+
+        for (var i = 0; i < arr.length; i++) {
+            $("#showYear").append("<option value=" + arr[i] + ">" + arr[i] + "</option>");
+        };
+
+        document.getElementById("txtTest").value = n;
+    }
+    getYear();
+
+    function loadYear(value) {
+        var i = document.getElementById("txtTest").value;
+        $('#txtTest').val(value);
+        //var d = $('#txtTest').val();
+        //console.log("load " + d);
+
+    }
+
+</script>
+
+
+            }
+
+

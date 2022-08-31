@@ -1,0 +1,20 @@
+﻿@using ProductionApp.Helpers
+@model ProductionApp.Models.TBL_CASE_LABEL
+@if (Model != null)
+{
+    <tr>
+        <td class="text-center">@ViewBag.no</td>
+        <td class="text-center">@(Utilities.GetMMDDYYYY(Model.TS_1.ToString()))</td>
+        <td class="text-center">@Model.SHIFT</td>
+        <td class="text-center">@(Model.TBL_GROUP_MST!=null?Model.TBL_GROUP_MST.TBL_BUSINESS_MST.BIZ_NAME:"")</td>
+        <td class="text-center">@Model.LINE</td>
+        <td class="text-center">@Model.LABEL_ID</td>
+        <td class="text-center">@Model.WLOT_ID</td>
+        <td class="text-center">@Model.PkgStyle</td>
+        <td class="text-center">@Model.QUANTITY</td>
+        <td class="text-center">@Model.TYPE</td>
+        <td class="text-center">@Model.SIZE</td>
+        <td class="text-center">@Model.COLOR</td>
+    </tr>
+
+}

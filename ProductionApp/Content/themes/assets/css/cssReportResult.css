@@ -1,0 +1,105 @@
+﻿
+#showYear{
+    width: 700px;
+}
+
+#showDate {
+    width: 120px;
+}
+
+
+.chitietdethi {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    width: 950px;
+    font-family: 'Times New Roman', sans-serif;
+    border: 1px solid #000;
+}
+
+.nameCompany {
+    margin-left: 60px;
+    font-size: 19px;
+}
+
+
+.nameCompany > b {
+    font-family: 'Times New Roman', sans-serif;
+}
+
+.head h4, h5 {
+    font-weight: bold;
+}
+
+.under_gach {
+    width: 300px;
+    margin-left: 325px;
+    margin-top: 60px;
+    font-size: 17px;
+    font-style: italic;
+}
+
+    .coso {
+        margin-left: -186px;
+    }
+
+.coso2 {
+    margin-left: 300px;
+    margin-top: -90px;
+}
+
+
+.head {
+    margin-top: 30px;
+}
+
+    .head i {
+        font-size: 15px;
+    }
+
+.tendapan {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+
+
+.noidungdethi, .head {
+    margin-left: 20px;
+}
+
+span p {
+    display: inline;
+}
+
+
+.container-fluid {
+    margin-left: 300px;
+}
+
+
+.bangdiem {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+ 
+
+table {
+    font-family: 'Times New Roman', sans-serif;
+    border-collapse: collapse;
+    /*width: 830px;*/
+    margin-left: 30px;
+   margin-bottom: 50px;
+    font-size: 17px;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}

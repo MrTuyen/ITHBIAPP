@@ -1,0 +1,55 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The result of the exam</title>
+    <link href="~/Content/themes/assets/css/ResultExamForEmp.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        
+
+        .btnBack {
+            border-radius: 25px;
+            width: 134px;
+            border: 1px solid #f0ad4e;
+            height: 35px;
+            line-height: 35px;
+            color: #fff;
+            margin-left: 688px;
+            background-color: #f0ad4e;
+            margin-top: 588px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span>	</span>
+        <span>	</span>
+        <span>	</span>
+        <span>	</span>
+        <div class="content">
+            <h1 class="title">KẾT QUẢ BÀI THI</h1>
+            <p>Thí sinh: Lê Thị Ngọc Thảo</p>
+            <p>Khóa đào tạo: Orientation training</p>
+            <p>Bài Thi: Hệ thống vận hành ưu việt OPEX</p>
+            <p>Điểm: 9 điểm</p>
+            <p>Số câu đúng: 46/50 câu</p>
+            <p>Hoàn thành: 98/100%</p>
+            <p>Thời Gian Thi: 45 phút</p>
+            <p>" Well Done !!!"</p>
+        </div>
+    </div>
+
+    <div>
+        <a href="@Url.Action("Index","TestOnline")"><button type="button" class="btnBack"><b><span class="glyphicon glyphicon-repeat"></span> TRANG CHỦ</b></button></a>
+</div>
+</body>
+
+</html>

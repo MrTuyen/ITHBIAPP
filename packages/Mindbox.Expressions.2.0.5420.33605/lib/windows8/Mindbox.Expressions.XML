@@ -1,0 +1,1612 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Mindbox.Expressions</name>
+    </assembly>
+    <members>
+        <member name="T:Mindbox.Expressions.BooleanExpressions">
+            <summary>
+            Combines boolean expressions.
+            </summary>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{System.Boolean}}})">
+            <summary>
+            Combines boolean expressions without parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions without parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``1(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``3(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``4(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``5(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``6(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``7(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``8(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``9(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``10(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``11(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``12(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``13(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``14(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``15(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaAndAlso``16(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{System.Boolean}}})">
+            <summary>
+            Combines boolean expressions without parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions without parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``1(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``3(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``4(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``5(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``6(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``7(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``8(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``9(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``10(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``11(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``12(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``13(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``14(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``15(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.BooleanExpressions.CombineViaOrElse``16(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,System.Boolean}}})">
+            <summary>
+            Combines boolean expressions with same parameters via OrElse 
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expressions">Boolean expressions with same parameters to be combined.
+            Cannot be null. Cannot be empty. Cannot contain null values.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When <c>expressions</c> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">When <c>expressions</c> parameter is empty or contains null values.</exception>
+        </member>
+        <member name="T:Mindbox.Expressions.Extensions">
+            <summary>
+            Contains extension methods.
+            </summary>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.ExpandExpressions(System.Linq.Expressions.Expression)">
+            <summary>
+            Finds nested expression evaluations in the expression and, 
+            if possible, expands their bodies and substitutes the parameters with the argument values.
+            Nested expression evaluation can be either <c>Evaluate</c> method call or <c>Expression{}.Compile</c>
+            method call producing a delegate that is then invoked.
+            </summary>
+            <param name="expression">Expression that can contain nested expression evaluations. Cannot be null.</param>
+            <returns>Expression with replaced nested expression evaluations.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.ExpandExpressions``1(System.Linq.Expressions.Expression{``0})">
+            <summary>
+            Finds nested expression evaluations in the expression and, 
+            if possible, expands their bodies and substitutes the parameters with the argument values.
+            Nested expression evaluation can be either <c>Evaluate</c> method call or <c>Expression{}.Compile</c>
+            method call producing a delegate that is then invoked.
+            </summary>
+            <param name="expression">Expression that can contain nested expression evaluations. Cannot be null.</param>
+            <returns>Expression with replaced nested expression evaluations.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.ExpandExpressions``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Finds nested expression evaluations in the expressions used to build the query and, 
+            if possible, expands their bodies and substitutes the parameters with the argument values.
+            Nested expression evaluation can be either <c>Evaluate</c> method call or <c>Expression{}.Compile</c>
+            method call producing a delegate that is then invoked.
+            </summary>
+            <param name="query">Query build using expressions that can contain nested expression evaluations.
+            Cannot be null.</param>
+            <returns>Query rebuilt using expressions with replaced nested expression evaluations.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},``0)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``3(System.Linq.Expressions.Expression{System.Func{``0,``1,``2}},``0,``1)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``4(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3}},``0,``1,``2)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``5(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4}},``0,``1,``2,``3)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``6(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5}},``0,``1,``2,``3,``4)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``7(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6}},``0,``1,``2,``3,``4,``5)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``8(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7}},``0,``1,``2,``3,``4,``5,``6)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``9(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8}},``0,``1,``2,``3,``4,``5,``6,``7)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``10(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9}},``0,``1,``2,``3,``4,``5,``6,``7,``8)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``11(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10}},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="T10">Argument #10 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <param name="argument10">Argument #10.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``12(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11}},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="T10">Argument #10 type.</typeparam>
+            <typeparam name="T11">Argument #11 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <param name="argument10">Argument #10.</param>
+            <param name="argument11">Argument #11.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``13(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12}},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="T10">Argument #10 type.</typeparam>
+            <typeparam name="T11">Argument #11 type.</typeparam>
+            <typeparam name="T12">Argument #12 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <param name="argument10">Argument #10.</param>
+            <param name="argument11">Argument #11.</param>
+            <param name="argument12">Argument #12.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``14(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13}},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="T10">Argument #10 type.</typeparam>
+            <typeparam name="T11">Argument #11 type.</typeparam>
+            <typeparam name="T12">Argument #12 type.</typeparam>
+            <typeparam name="T13">Argument #13 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <param name="argument10">Argument #10.</param>
+            <param name="argument11">Argument #11.</param>
+            <param name="argument12">Argument #12.</param>
+            <param name="argument13">Argument #13.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``15(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14}},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="T10">Argument #10 type.</typeparam>
+            <typeparam name="T11">Argument #11 type.</typeparam>
+            <typeparam name="T12">Argument #12 type.</typeparam>
+            <typeparam name="T13">Argument #13 type.</typeparam>
+            <typeparam name="T14">Argument #14 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <param name="argument10">Argument #10.</param>
+            <param name="argument11">Argument #11.</param>
+            <param name="argument12">Argument #12.</param>
+            <param name="argument13">Argument #13.</param>
+            <param name="argument14">Argument #14.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``16(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15}},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="T10">Argument #10 type.</typeparam>
+            <typeparam name="T11">Argument #11 type.</typeparam>
+            <typeparam name="T12">Argument #12 type.</typeparam>
+            <typeparam name="T13">Argument #13 type.</typeparam>
+            <typeparam name="T14">Argument #14 type.</typeparam>
+            <typeparam name="T15">Argument #15 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <param name="argument10">Argument #10.</param>
+            <param name="argument11">Argument #11.</param>
+            <param name="argument12">Argument #12.</param>
+            <param name="argument13">Argument #13.</param>
+            <param name="argument14">Argument #14.</param>
+            <param name="argument15">Argument #15.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.Evaluate``17(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,``16}},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15)">
+            <summary>
+            Represent expression evaluation. Intended to be used in another expression that is later transformed
+            via <c>ExpandExpressions</c> method.
+            If called during run-time, compiles the expression and evaluates the resulting delegate.
+            </summary>
+            <typeparam name="T1">Argument #1 type.</typeparam>
+            <typeparam name="T2">Argument #2 type.</typeparam>
+            <typeparam name="T3">Argument #3 type.</typeparam>
+            <typeparam name="T4">Argument #4 type.</typeparam>
+            <typeparam name="T5">Argument #5 type.</typeparam>
+            <typeparam name="T6">Argument #6 type.</typeparam>
+            <typeparam name="T7">Argument #7 type.</typeparam>
+            <typeparam name="T8">Argument #8 type.</typeparam>
+            <typeparam name="T9">Argument #9 type.</typeparam>
+            <typeparam name="T10">Argument #10 type.</typeparam>
+            <typeparam name="T11">Argument #11 type.</typeparam>
+            <typeparam name="T12">Argument #12 type.</typeparam>
+            <typeparam name="T13">Argument #13 type.</typeparam>
+            <typeparam name="T14">Argument #14 type.</typeparam>
+            <typeparam name="T15">Argument #15 type.</typeparam>
+            <typeparam name="T16">Argument #16 type.</typeparam>
+            <typeparam name="TResult">Result type.</typeparam>
+            <param name="expression">Expression being evaluated. Cannot be null.</param>
+            <param name="argument1">Argument #1.</param>
+            <param name="argument2">Argument #2.</param>
+            <param name="argument3">Argument #3.</param>
+            <param name="argument4">Argument #4.</param>
+            <param name="argument5">Argument #5.</param>
+            <param name="argument6">Argument #6.</param>
+            <param name="argument7">Argument #7.</param>
+            <param name="argument8">Argument #8.</param>
+            <param name="argument9">Argument #9.</param>
+            <param name="argument10">Argument #10.</param>
+            <param name="argument11">Argument #11.</param>
+            <param name="argument12">Argument #12.</param>
+            <param name="argument13">Argument #13.</param>
+            <param name="argument14">Argument #14.</param>
+            <param name="argument15">Argument #15.</param>
+            <param name="argument16">Argument #16.</param>
+            <returns>Expression result.</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso(System.Linq.Expressions.Expression{System.Func{System.Boolean}},System.Linq.Expressions.Expression{System.Func{System.Boolean}})">
+            <summary>
+            Combines two boolean expressions without parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``2(System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``3(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``4(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``5(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``6(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``7(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``8(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``9(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``10(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``11(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``12(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``13(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``14(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``15(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.AndAlso``16(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via AndAlso 
+            (logical "and" that evaluates the second argument only when the first one is true).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse(System.Linq.Expressions.Expression{System.Func{System.Boolean}},System.Linq.Expressions.Expression{System.Func{System.Boolean}})">
+            <summary>
+            Combines two boolean expressions without parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``2(System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``3(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``4(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``5(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``6(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``7(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``8(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``9(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``10(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``11(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``12(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``13(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``14(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``15(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.Extensions.OrElse``16(System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,System.Boolean}})">
+            <summary>
+            Combines two boolean expressions with same parameters via OrElse
+            (logical "or" that evaluates the second argument only when the first one is false).
+            </summary>
+            <param name="expression1">The first expression to be combined. Cannot be null.</param>
+            <param name="expression2">The second expression to be combined. Cannot be null.</param>
+            <returns>Combined expression.</returns>
+            <exception cref="T:System.ArgumentNullException">When any of the expressions is null.</exception>
+        </member>
+        <member name="T:Mindbox.Expressions.ReflectionExpressions">
+            <summary>
+            Allows acquiring MemberInfo objects and member names in a refactoring friendly way via expressions.
+            </summary>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find <c>MethodInfo</c> via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns><c>MethodInfo</c> or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds <c>MethodInfo</c> via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetMethodName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find method name via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <returns>Method name or null (if the expression is not a method call expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for instance methods (and extension methods) with return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for instance methods (and extension methods) without return value.
+            </summary>
+            <typeparam name="TObject">Declaring type for instance methods. First parameter type for extension methods.</typeparam>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for static methods with return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for static methods without return value.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetMethodName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds method name via the method call expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="callExpression">Method call expression. Can contain any valid argument values.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a method call expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find <c>PropertyInfo</c> via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns><c>PropertyInfo</c> or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find <c>PropertyInfo</c> via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns><c>PropertyInfo</c> or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find <c>PropertyInfo</c> via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns><c>PropertyInfo</c> or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds <c>PropertyInfo</c> via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds <c>PropertyInfo</c> via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds <c>PropertyInfo</c> via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find property name via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns>Property name or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find property name via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns>Property name or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetPropertyName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find property name via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <returns>Property name or null (if the expression is not a property access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds property name via the property access expression.
+            This overload is for instance properties.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds property name via the property access expression.
+            This overload is for static properties.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetPropertyName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds property name via the property access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="propertyExpression">Property access expression.
+            Can contain any valid argument values for indexed properties.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a property access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find <c>FieldInfo</c> via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns><c>FieldInfo</c> or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find <c>FieldInfo</c> via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns><c>FieldInfo</c> or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find <c>FieldInfo</c> via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns><c>FieldInfo</c> or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldInfo``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds <c>FieldInfo</c> via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldInfo(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds <c>FieldInfo</c> via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds <c>FieldInfo</c> via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Tries to find field name via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns>Field name or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Tries to find field name via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns>Field name or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.TryGetFieldName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Tries to find field name via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <returns>Field name or null (if the expression is not a field access expression).</returns>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Finds field name via the field access expression.
+            This overload is for instance fields.
+            </summary>
+            <typeparam name="TObject">Declaring type.</typeparam>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldName(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Finds field name via the field access expression.
+            This overload is for static fields.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+        <member name="M:Mindbox.Expressions.ReflectionExpressions.GetFieldName(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Finds field name via the field access expression.
+            This overload is for cases when you already have the expression object.
+            </summary>
+            <param name="fieldExpression">Field access expression.</param>
+            <exception cref="T:System.ArgumentNullException">The expression is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">The expression is not a field access expression.</exception>
+        </member>
+    </members>
+</doc>

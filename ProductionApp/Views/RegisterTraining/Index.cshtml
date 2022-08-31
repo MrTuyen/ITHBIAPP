@@ -1,0 +1,359 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductionApp.Models;
+@model dynamic
+
+
+@section styles{
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+        td, th {
+            padding: 9px 18px;
+        }
+
+        .hidden_table {
+            display: none;
+        }
+    </style>
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Xuất báo cáo</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-10">
+                Đăng ký các khóa đào tạo năm:
+                <select id="showYear" onchange="loadYear(value)">
+                    @*@{
+                        var curYear = DateTime.Now.Year;
+                        for (int i = curYear - 5; i < curYear + 3; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }*@
+
+                </select>
+                <input type="hidden" id="txtTest" />
+            </div>
+            <div class="col-md-2  text-right"><button type="button" class="btn btn-danger" id="exportHTML">Export</button></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Đăng ký đào tạo</div>
+    <div class="panel-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                Phòng ban / Dept:
+                <select id="phongban" class="form-control">
+                    @foreach (TBL_DEPARTMENT_MST item in Model.buss)
+                    {
+                        <option value=" @item.DEPT_ID "> @item.NAME</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                L&D Team:
+                <select name="" id="ldteam" class="form-control">
+                    @foreach (TBL_SYSTEM item in Model.systems)
+                    {
+                        if (item.value3 == "L&D_TEAM")
+                        {
+                            <option value="@item.value"> @item.value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <b>1.Strategic Focus:</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                What are next year top priorities to implement HBI Strategy? <br>
+                <textarea name="" id="chienluoc1" class="form-control" rows="7"></textarea>
+            </div>
+            <div class="col-md-6">
+                What are the suggestion of training? <br>
+                <textarea name="" id="goiy1" class="form-control" rows="7"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <b>2.Problems & Dysfunctions:</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                What are your department current weaknesses (problems, dysfunctions)? <br>
+                <textarea name="" id="chienluoc2" class="form-control" rows="7"></textarea>
+            </div>
+            <div class="col-md-6">
+                What are the suggestion of training? <br>
+                <textarea name="" id="goiy2" class="form-control" rows="7"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <b>3.Job Evolution:</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                Can we expect job evolutions (new positions, new responsibilities, new management) next year? <br>
+                <textarea name="" id="chienluoc3" class="form-control" rows="7"></textarea>
+            </div>
+            <div class="col-md-6">
+                What are the suggestion of training? <br>
+                <textarea name="" id="goiy3" class="form-control" rows="7"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <b>4.Cultural Changes:</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                Do we need to support some cultural or behavioral changes? <br>
+                <textarea name="" id="chienluoc4" class="form-control" rows="7"></textarea>
+            </div>
+            <div class="col-md-6">
+                What are the suggestion of training? <br>
+                <textarea name="" id="goiy4" class="form-control" rows="7"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <b>5.Staff needs & Expectations:</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                What are the main staff needs/ expectations in terms of development (PDP)? <br>
+                <textarea name="" id="chienluoc5" class="form-control" rows="7"></textarea>
+            </div>
+            <div class="col-md-6">
+                What are the suggestion of training? <br>
+                <textarea name="" id="goiy5" class="form-control" rows="7"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                Do you see any obvious training needs for key positions?
+                <br>
+                <textarea name="" id="chienluoc6" class="form-control" rows="7"></textarea>
+            </div>
+            <div class="col-md-6">
+                What are the suggestion of training? <br>
+                <textarea name="" id="goiy6" class="form-control" rows="7"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <br>
+                <button type="button" class="btn btn-success" onclick="savedata()">Submit</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="col-md-12 hidden_table">
+
+    <table id="tableData" class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>id</th>
+                <th>Strategic</th>
+                <th>StrategicSuggestion</th>
+                <th>Problems</th>
+                <th>ProblemsSuggestion</th>
+                <th>JobEvolution</th>
+                <th>JobEvolutionSuggestion</th>
+                <th>StaffNeedsKey</th>
+                <th>StaffNeedsKeySuggestion</th>
+                <th>DeptID</th>
+                <th>CreateDate</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyData"></tbody>
+    </table>
+
+</div>
+
+@section scripts
+{
+    @*  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>*@
+    <script src="~/Scripts/excelexportjs.js"></script>
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+    <script>
+
+        function getNowYear() {
+            var d = new Date();
+            $("#txtTest").val(d.getFullYear());
+            //console.log("năm nay là " + d.getFullYear());
+        }
+        getNowYear();
+        function getYear() {
+            var d = new Date();
+            var n = d.getFullYear();
+            var arr = [];
+            var text;
+            for (var i = n; i <= n + 3; i++) {
+                arr.push(i);
+            }
+
+            for (var i = 0; i < arr.length; i++) {
+                $("#showYear").append("<option value=" + arr[i] + ">" + arr[i] + "</option>");
+            };
+
+            document.getElementById("txtTest").value = n;
+        }
+        getYear();
+
+        function loadYear(value) {
+            var i = document.getElementById("txtTest").value;
+            $('#txtTest').val(value);
+            console.log("load " + i);
+            ReportingTest();
+        }
+
+        function convertYear(data) {
+            var a = data;
+            var getdate = parseInt(a.replace("/Date(", "").replace(")/", ""));
+            var ConvDate = new Date(getdate);
+
+            return ConvDate.getFullYear();
+        }
+
+        function convertDate(data) {
+            var a = data;
+            var getdate = parseInt(a.replace("/Date(", "").replace(")/", ""));
+            var ConvDate = new Date(getdate);
+            var month = parseInt(ConvDate.getMonth()) + 1;
+            return ConvDate.getDate() + "/" + month + "/" + ConvDate.getFullYear();
+        }
+
+        function ReportingTest() {
+            var i = document.getElementById("txtTest").value;
+            //console.log("hạn năm là " + i);
+            $.get("/RegisterTraining/getAll", function (data) {
+
+                $("#tbodyData").html("");
+                var tt = 1;
+                $.each(data, function (j, val) {
+
+                    if (convertYear(val.CreateDate) == i) {
+                        $("#tbodyData").append("<tr>\
+                                <td>"+ tt + "</td> \
+                                <td>"+ val.id + "</td> \
+                                <td>"+ val.Strategic + "</td> \
+                                <td>"+ val.StrategicSuggestion + "</td> \
+                                <td>"+ val.Problems + "</td> \
+                                <td>"+ val.ProblemsSuggestion + "</td> \
+                                <td>"+ val.JobEvolution + "</td> \
+                                <td>"+ val.JobEvolutionSuggestion + "</td> \
+                                <td>"+ val.StaffNeedsKey + "</td> \
+                                <td>"+ val.StaffNeedsKeySuggestion + "</td> \
+                                <td>"+ val.DeptID + "</td> \
+                                <td>"+ convertDate(val.CreateDate) + "</td> \
+                                </tr>");
+                    }
+                    tt++;
+                });
+            });
+        }
+
+
+        ReportingTest();
+
+        function savedata() {
+            var phongban = $("#phongban").val();
+            var ldteam = $("#ldteam").val();
+            var chienluoc1 = $("#chienluoc1").val();
+            var goiy1 = $("#goiy1").val();
+            var chienluoc2 = $("#chienluoc2").val();
+            var goiy2 = $("#goiy2").val();
+            var chienluoc3 = $("#chienluoc3").val();
+            var goiy3 = $("#goiy3").val();
+            var chienluoc4 = $("#chienluoc4").val();
+            var goiy4 = $("#goiy4").val();
+            var chienluoc5 = $("#chienluoc5").val();
+            var goiy5 = $("#goiy5").val();
+            var chienluoc6 = $("#chienluoc6").val();
+            var goiy6 = $("#goiy6").val();
+
+            if (chienluoc1 == "" || goiy1 == "" || chienluoc2 == "" || goiy2 == "" || chienluoc3 == "" || goiy3 == "" || chienluoc4 == "" || goiy4 == "" || chienluoc5 == "" || goiy5 == "" || chienluoc6 == "" || goiy6 == "") {
+                $("#showWarn").html("Vui lòng nhập đủ thông tin yêu cầu cho 5 mục!");
+                $("#myModalWarning").modal("show");
+            }
+            else {
+                $.post("/RegisterTraining/AddTraining", { phongban: phongban, ldteam: ldteam, chienluoc1: chienluoc1, chienluoc2: chienluoc2, chienluoc3: chienluoc3, chienluoc4: chienluoc4, chienluoc5: chienluoc5, chienluoc6: chienluoc6, goiy1: goiy1, goiy2: goiy2, goiy3: goiy3, goiy4: goiy4, goiy5: goiy5, goiy6: goiy6 }, function (data) {
+                    alert(data.msg);
+                    window.location.assign("/RegisterTraining/Index");
+
+                });
+
+            }
+        }
+
+        function sendemail() {
+            $.get("/RegisterTraining/SendEmail", {}, function (data) {
+                console.log(data);
+                //  alert(data.msg);
+
+            });
+        }
+
+        //export a excel file
+        $('#exportHTML').on('click', function () {
+            var x = document.getElementById("tableData").rows.length;
+            if (x >= 2) {
+                $("#tableData").excelexportjs({
+                    containerid: "tableData",
+                    datatype: 'table'
+                });
+            }
+            else alert("Năm bạn chọn không có dữ liệu!");
+
+        });
+
+    </script>
+
+
+}
+
+<!-- Modal -->
+<div class="modal fade" id="myModalWarning" role="dialog">
+    <div class="modal-dialog modal-small">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="color: #000;"> <span class="glyphicon glyphicon-remove-sign"> </span> Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                <p id="showWarn"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

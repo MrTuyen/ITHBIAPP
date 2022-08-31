@@ -1,0 +1,601 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using ProductionApp.Models;
+@model dynamic
+@{
+    UserModels user = (UserModels)Session["SignedInUser"];
+
+}
+
+
+@section styles{
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="~/Content/themes/assets/css/KPI.css" rel="stylesheet" />
+    
+    
+}
+<div class="container-fluid firstbox">
+    <div class="col-md-2 boxLeft">
+        <img src="~/img/HBI.jpg" /> <input type="hidden" id="user_role" value="@user.Role" />
+    </div>
+    <div class="col-md-8"><p class="titleKPI">KPI SETTING</p></div>
+    <div class="col-md-2 boxRight">
+        <p>HYS-F-HR-019</p>
+        <p>Revision:  02</p>
+        <p>Date of revision:4/2/2020</p>
+        <p>Page: 1/1</p>
+
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>I. EMPLOYEE DATA</b></div>
+    @foreach (KPI_Setting p in Model.getOneInfor)
+    {
+        <div class="panel-body">
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    ID & Name:
+                </div>
+                <div class="col-md-3">
+                     <input type="text" class="form-control" value="@ViewBag.EmpID - @ViewBag.EmpName" disabled />
+                    <input type="hidden" id="txtIDName" class="form-control" value="@p.EmpID" disabled />
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Superior/ Evaluator: <input type="hidden" id="txtEvaluatorID" class="form-control" value="@p.SupervisorID" />
+                </div>
+                <div class="col-md-3">
+                    @foreach (TBL_USERS_MST m in Model.TBL_Users)
+                    {
+                        if (@p.SupervisorID == m.USERNAME.ToString())
+                        {
+                            <input type="text" id="txtEvaluatorName" class="form-control" value="@m.FULLNAME" disabled />
+                        }
+                    }
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    Department:  <input type="hidden" id="txtDepartmentID" class="form-control"   />
+                </div> 
+                <div class="col-md-3">
+                    <input type="text" id="txtIDDep" class="form-control" value="@p.DeptName" disabled />
+                </div>
+
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Manager: <input type="hidden" id="txtManagerID" class="form-control" value="@p.ManagerID" />
+                </div>
+
+                <div class="col-md-3">
+
+                    @foreach (TBL_USERS_MST m in Model.TBL_Users)
+                    {
+                        if (@p.ManagerID == m.USERNAME.ToString())
+                        {
+                            <input type="text" class="form-control" value="@m.FULLNAME" disabled />
+                        }
+                    }
+
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    Position:
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="txtPosition" class="form-control" value="@p.Position" disabled />
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Evaluation period:
+                </div>
+                <div class="col-md-3">
+
+                    <input type="text" id="txtPeriod" class="form-control" value="@p.Period" disabled />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    }
+    </div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>II. KPI</b></div>
+    <div class="panel-body">
+
+        <div class="row marginTable">
+
+            <table class="table  tblKPISetting" id="tableId" onkeyup="Sum()">
+                <thead>
+                    <tr>
+                        <td colspan="9"><b>1. Individual KPIs</b></td>
+                    </tr>
+
+                </thead>
+                <tbody id="list">
+                    <tr style="background-color:#ddd">
+                        <th rowspan="2">No.</th>
+                        <th rowspan="2">KPI Items (%)</th>
+                        <th rowspan="2">Year KPI (%)</th>
+                        <th colspan="4">Quarter KPI (%)</th>
+                        <th rowspan="2">KPI Weight (%)</th>
+                        <th rowspan="2">Note</th>
+                    </tr>
+                    <tr style="background-color:#ddd">
+                        <th>Q1</th>
+                        <th>Q2</th>
+                        <th>Q3</th>
+                        <th>Q4</th>
+
+                    </tr>
+                    @{var stt = 0;}
+                    @foreach (KPI_Setting KPI in Model.KPISetting)
+                    {
+                        if (KPI.Level == "1")
+                        {
+                            stt = stt + 1;
+                            <tr>
+                                <td>@stt</td>
+                                <td class="calculateKPI td" contenteditable="true">@KPI.KPIitems</td>
+                                <td class="calculateKPI td" contenteditable="true" align="center">@KPI.KPIYear</td>
+                                <td contenteditable="true" class="td">@KPI.Q1</td>
+                                <td contenteditable="true" class="td">@KPI.Q2</td>
+                                <td contenteditable="true" class="td">@KPI.Q3</td>
+                                <td contenteditable="true" class="td">@KPI.Q4</td>
+                                <td class="calculateKPI td" contenteditable="true" align="center">@KPI.KPIweight</td>
+                                <td contenteditable="true" class="td">@KPI.Note</td>
+                                <td class="tdLevel">@KPI.Level</td>
+                            </tr>
+                        }
+                    }
+                    @foreach (KPI_Setting p in Model.getOneInfor)
+                    {
+                        if (stt < 15 && user.Username == ViewBag.Username)
+                        {
+                            for (var i = stt; i < 15; i++)
+                            {
+                                stt = stt + 1;
+                                <tr>
+                                    <td>@stt</td>
+                                    <td class="calculateKPI td" contenteditable="true"></td>
+                                    <td class="calculateKPI td" align="center" contenteditable="true"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td class="calculateKPI td" contenteditable="true"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td class="tdLevel">1</td>
+                                </tr>
+                            }
+                        }
+                        <tr>
+                            <td colspan="10"><b>2. Organizational Development (for team leading roles) </b></td>
+                        </tr>
+                        var count = 0;
+                        foreach (KPI_Setting KPI in Model.KPISetting)
+                        {
+                            if (KPI.Level == "2")
+                            {
+                                count = count + 1;
+                                <tr>
+                                    <td>@count</td>
+                                    <td class="calculateKPI td" contenteditable="true">@KPI.KPIitems</td>
+                                    <td class="calculateKPI td" contenteditable="true" align="center">@KPI.KPIYear</td>
+                                    <td contenteditable="true" class="td">@KPI.Q1</td>
+                                    <td contenteditable="true" class="td">@KPI.Q2</td>
+                                    <td contenteditable="true" class="td">@KPI.Q3</td>
+                                    <td contenteditable="true" class="td">@KPI.Q4</td>
+                                    <td class="calculateKPI td" contenteditable="true" align="center">@KPI.KPIweight</td>
+                                    <td contenteditable="true" class="td">@KPI.Note</td>
+                                    <td class="tdLevel">@KPI.Level</td>
+                                </tr>
+                            }
+                        }
+                        if (count < 5 && user.Username == ViewBag.Username)
+                        {
+                            for (var i = count; i < 5; i++)
+                            {
+                                count = count + 1;
+                                <tr>
+                                    <td>@count</td>
+                                    <td class="calculateKPI td" contenteditable="true"></td>
+                                    <td class="calculateKPI td" align="center" contenteditable="true"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td class="calculateKPI td" contenteditable="true"></td>
+                                    <td contenteditable="true" class="td"></td>
+                                    <td class="tdLevel">2</td>
+                                </tr>
+                            }
+                        }
+                            } </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7" align="center"><b>Sum</b></td>
+                        <td id="SumKPI_Weight" align="center"></td>
+                        <td ></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+@foreach (KPI_Setting p in Model.getOneInfor)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>III. CORE VALUES</b></div>
+        <div class="panel-body">
+            <div class="row Firstpart">
+                @if (user.Username == ViewBag.Username && p.EmpSubmitted == 0)
+                {
+                    if (p.CoreValues.IndexOf("1") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="1" checked  /> Team work</div>
+                    }
+                    if (p.CoreValues.IndexOf("1") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="1"  /> Team work</div>
+                    }
+                    if (p.CoreValues.IndexOf("2") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="2" checked  /> Respect for indivisuals</div>
+                    }
+                    if (p.CoreValues.IndexOf("2") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="2"  /> Respect for indivisuals</div>
+                    }
+                    if (p.CoreValues.IndexOf("3") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="3" checked  /> Commiment</div>
+                    }
+                    if (p.CoreValues.IndexOf("3") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="3"  /> Commiment</div>
+                    }
+                    if (p.CoreValues.IndexOf("4") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="4" checked  /> Continuous Improvement</div>
+                    }
+                    if (p.CoreValues.IndexOf("4") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="4"  /> Continuous Improvement</div>
+                    }
+                }
+                else
+                {
+                    if (p.CoreValues.IndexOf("1") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="1" checked disabled /> Team work</div>
+                    }
+                    if (p.CoreValues.IndexOf("1") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="1" disabled /> Team work</div>
+                    }
+                    if (p.CoreValues.IndexOf("2") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="2" checked disabled /> Respect for indivisuals</div>
+                    }
+                    if (p.CoreValues.IndexOf("2") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="2" disabled /> Respect for indivisuals</div>
+                    }
+                    if (p.CoreValues.IndexOf("3") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="3" checked disabled /> Commiment</div>
+                    }
+                    if (p.CoreValues.IndexOf("3") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="3" disabled /> Commiment</div>
+                    }
+                    if (p.CoreValues.IndexOf("4") != -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="4" checked disabled /> Continuous Improvement</div>
+                    }
+                    if (p.CoreValues.IndexOf("4") == -1)
+                    {
+                        <div class="col-md-3"><input type="checkbox" name="checkValue" value="4" disabled /> Continuous Improvement</div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+@foreach (KPI_Setting p in Model.getOneInfor)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>IV. SIGNATURE & COMPLETION</b></div>
+        <div class="panel-body">
+            <div class="row" style="margin-top: -15px">
+                <div class="row">
+                    <div class="col-md-12 comment">
+                        <b>Comment Employee</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (user.Username == ViewBag.Username && p.EmpSubmitted == 0)
+                        {<textarea id="cmtEmp" class="form-control"  rows="7">@p.CmtEmp</textarea>}
+                        else
+                        {
+                            <textarea   class="form-control" rows="7" disabled>@p.CmtEmp</textarea>
+                        }
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-12 comment">
+                        <b>Comment Manager</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (user.Role == "3")
+                        {
+                            <textarea id="CmtManager" class="form-control" rows="7">@p.CmtManager</textarea>
+                        }
+                        else
+                        { <textarea class="form-control" rows="7" disabled>@p.CmtManager</textarea>}
+                    </div>
+
+                </div>
+            </div>
+            <div class="row marginTable"><input type="hidden" value="@p.EmpSubmitted" id="EmpSubmitted" />
+                <table class="table  tblKPISetting">
+                    <tbody id="list">
+                        <tr>
+                            <td style="background-color:#ddd">Date, Signature Employee:</td>
+                            <td>@p.SubmittedDate</td> 
+                            @if (p.EmpSubmitted == 0 && user.Role == "5")
+                            {
+                                <td align="center"><button type="submit" class="btn btn-danger btn-sm" onclick="savedata()" > Submit</button></td>
+                            }
+                            else
+                            {
+                                <td align="center"> <button disabled class="btn btn-danger btn-sm">Submited</button></td>
+                            }
+
+
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:#ddd">Date, Signature Superior/Evaluator:</td>
+                            <td>@p.ReviewedDate</td>
+                            @if (p.EvaluatorReviewed == 1 || user.Role != "1002")
+                            {
+                                <td align="center"><button type="button" class="btn btn-primary btn-sm" onclick="Review()" id="btnReview" disabled> Reviewed</button></td>
+                            }
+                            else
+                            {
+                               <td align="center"><button type="button" class="btn btn-primary btn-sm" onclick="Review()" > Review</button></td>
+                            }
+
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:#ddd">Date, Signature Manager:</td>
+                            <td>@p.ApprovedDate </td>
+
+                            @if (p.EvaluatorReviewed == 1 && p.ManagerApproved !=1 && user.Role == "3")
+                            {
+                                <td align="center"><button type="button" class="btn btn-info btn-sm" onclick="Approve()" id="btnApprove"> Approve</button></td>
+                            }
+                            else
+                            {
+                                <td align="center"><button type="button" disabled class="btn btn-info btn-sm" id="btnApprove"> Approved</button></td>
+                            }
+                            @if (p.ManagerApproved == 1 && user.Role == "3")
+                            {
+                                <td align="center"><button type="button" class="btn btn-warning btn-sm" onclick="Revise()" id="btnRevise"> Revise KPI</button></td>
+                            }
+                            else
+                            {
+                                <td align="center"><button type="button" class="btn btn-warning btn-sm" disabled id="btnRevise"> Revise KPI</button></td>
+                            }
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="~/Scripts/excelexportjs.js"></script>
+   
+    <script>
+     
+        $(".tdLevel").addClass("hide");
+        var EmpSubmitted = $("#EmpSubmitted").val();
+        if (@user.Role!= 5 || EmpSubmitted != 0) {
+           $(".td").removeAttr("contenteditable");
+        }
+        var SumKPI_Weight = 0;
+    
+        function Sum() {
+            var SumKPI_Weight = 0;
+            var table = document.getElementById("tableId");
+            for (var i = 0; i < table.rows.length; i++) {
+                var countCols = table.rows[i].cells.length;
+                if (countCols == 10) {
+                    var KPI_Weight = table.rows[i].cells[7].innerHTML.trim();
+                    if (KPI_Weight == "" || KPI_Weight == null) {
+                        KPI_Weight = 0;
+                    }
+                    SumKPI_Weight = SumKPI_Weight + parseInt(KPI_Weight);
+                }
+            }
+            document.getElementById('SumKPI_Weight').innerHTML = SumKPI_Weight;
+        }
+        Sum()
+      
+        var Period = document.getElementById("txtPeriod").value;
+        var EmpID = document.getElementById("txtIDName").value;
+
+        function Review() {
+            var EvaluatorID = document.getElementById("txtEvaluatorID").value;
+            var txtManagerID = document.getElementById("txtManagerID").value;
+            $.get("/KPISetting/Review", { EmpID: EmpID, Period: Period, txtManagerID: txtManagerID }, function (data) {
+                alert("Successfully!");
+                reload();
+                $.get("/KPISetting/SendMailToManager", { type:"Setting", EmpID: EmpID, Period: Period, ManagerID: ManagerID, EvaluatorID: EvaluatorID }, function (data) {
+                    console.log(data);
+                });
+            });
+            
+        }
+
+        function Approve() {
+            var txtManagerID = document.getElementById("txtManagerID").value;
+            var CmtManager = "";
+            $.get("/KPISetting/Approve", { EmpID: EmpID, Period: Period, CmtManager: CmtManager }, function (data) {
+                alert("Successfully!");
+                reload();
+                $.get("/KPISetting/SendMailToEmployee", { EmpID: EmpID, Period: Period, ManagerID: ManagerID, CmtManager: CmtManager }, function (data) {
+                    console.log(data);
+                });
+            });
+        }
+
+        function Revise() {
+            var ManagerID = document.getElementById("txtManagerID").value;
+            var CmtManager = $("#CmtManager").val().trim();
+            console.log(CmtManager);
+            if (CmtManager == "" || CmtManager == null) {
+                alert("Please comment the reason why this employee must edit again! ");
+            }
+            else {
+                $.get("/KPISetting/Revise", { EmpID: EmpID, Period: Period, CmtManager: CmtManager }, function (data) {
+                    alert("Successfully!");
+                    reload();
+                    $.get("/KPISetting/SendMailToEmployee", { EmpID: EmpID, Period: Period, ManagerID: ManagerID, CmtManager: CmtManager }, function (data) {
+                        console.log(data);
+                    });
+                });
+               
+            }
+        }
+
+        function reload() {
+            window.location.assign("/KPISetting/getKPISettingByEmp/?EmpID=" + EmpID + "&Period=" + Period + "");
+        }
+
+        function savedata() {
+            var EmpID = document.getElementById("txtIDName").value;
+            var EvaluatorID = document.getElementById("txtEvaluatorID").value;
+            var ManagerID = document.getElementById("txtManagerID").value;
+            var Position = document.getElementById("txtPosition").value;
+            var Period = document.getElementById("txtPeriod").value;
+            var DepartmentID = document.getElementById("txtIDDep").value;
+            var CmtEmployee = document.getElementById("cmtEmp").value;
+            var checkbox = document.getElementsByName('checkValue');
+            var CoreValue = '';
+            if (EmpID == "" || EmpID == null || Position == "" || Position == null) {
+                var message = "EmployeeID and Position fields are not null.";
+                showError(message);
+            }
+            else {
+                $.get("/KPISetting/checkKPI", { EmpID: EmpID, Period: Period }, function (data) {
+                    if (data == 1) {
+                        var message = "Your KPI in this year existed. Please do not submit again!";
+                        alert(message);
+                    }
+
+                    else {
+                        for (var i = 0; i < checkbox.length; i++) {
+                            if (checkbox[i].checked === true) {
+                                CoreValue = CoreValue + "#" + checkbox[i].value;
+                            }
+                        }
+                        console.log(CoreValue);
+
+                        var table = document.getElementById("tableId");
+                        if (loopTable() > 0) {
+                            var message = "Vui lòng nhập các cột  Q1, Q2, Q3, Q4, KPI Weight, Year KPI là ký tự số! / Please input Q1, Q2, Q3, Q4, KPI Weight, Year KPI columns are numbers!";
+                            alert(message);
+                        }
+
+                        else {
+                            for (var i = 0; i < table.rows.length; i++) {
+                                var countCols = table.rows[i].cells.length;
+                                if (countCols == 10) {
+                                   
+                                    var KPIitems = table.rows[i].cells[1].innerHTML.trim();
+                                    var YearKPI = table.rows[i].cells[2].innerHTML.trim();
+                                    var Q1 = table.rows[i].cells[3].innerHTML.trim();
+                                    var Q2 = table.rows[i].cells[4].innerHTML.trim();
+                                    var Q3 = table.rows[i].cells[5].innerHTML.trim();
+                                    var Q4 = table.rows[i].cells[6].innerHTML.trim();
+                                    var KPI_Weight = table.rows[i].cells[7].innerHTML.trim();
+                                    var Note = table.rows[i].cells[8].innerHTML.trim();
+                                    var Level = table.rows[i].cells[9].innerHTML.trim();
+                                    $.post("/KPISetting/AddKpiSetting",  {
+                                            EmpID: EmpID, EvaluatorID: EvaluatorID, ManagerID: ManagerID, Position: Position, Period: Period,
+                                            DepartmentID: DepartmentID, CmtEmployee: CmtEmployee, CoreValue: CoreValue,
+                                            KPIitems: KPIitems, YearKPI: YearKPI, Q1: Q1, Q2: Q2, Q3: Q3, Q4: Q4, KPI_Weight: KPI_Weight, Note: Note, Level: Level
+                                    }, function (data) { });
+                                }
+                            }
+                            alert("Successfully!");
+                            $.get("/KPISetting/SendMailToEvaluator", { EmpID: EmpID, EvaluatorID: EvaluatorID, Period: Period }, function (data) {
+                                console.log(data);
+                            });
+                        }
+
+                    }
+                });
+            }
+
+        }
+
+        function loopTable() {
+            var table = document.getElementById("tableId");
+            var count = 0;
+            for (var i = 0; i < table.rows.length; i++) {
+                var countCols = table.rows[i].cells.length;
+                if (countCols == 10) {
+                    var KPIitems = table.rows[i].cells[1].innerHTML.trim();
+                    var YearKPI = table.rows[i].cells[2].innerHTML.trim();
+                    var Q1 = table.rows[i].cells[3].innerHTML.trim();
+                    var Q2 = table.rows[i].cells[4].innerHTML.trim();
+                    var Q3 = table.rows[i].cells[5].innerHTML.trim();
+                    var Q4 = table.rows[i].cells[6].innerHTML.trim();
+                    var KPI_Weight = table.rows[i].cells[7].innerHTML.trim();
+
+                    if ((YearKPI != "" && isNaN(YearKPI)) || (Q1 != "" && isNaN(Q1)) || (Q2 != "" && isNaN(Q2)) ||
+                        (Q3 != "" && isNaN(Q3)) || (Q4 != "" && isNaN(Q4)) || (KPI_Weight != "" && isNaN(KPI_Weight))) {
+                        count++;
+                    }
+
+                }
+            }
+            return count;
+        }
+        
+    </script>
+
+
+}
+
+

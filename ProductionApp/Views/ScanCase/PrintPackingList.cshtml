@@ -1,0 +1,407 @@
+﻿@{
+    ViewBag.Title = "Print Packing List";
+}
+@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model PackingList
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Print Packing List
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12"><p id="uploadmss" class="message">@Html.Raw(ViewBag.mess)</p> </div>
+</div>
+<div class="row">
+    <div class="col-md-8" style="border-right: 1px solid #d3d3d3">
+        <div class="panel panel-default" id="panel-option">
+            <div class="panel-heading">Option Packing</div>
+            <div class="panel-body">
+                <form class="" id="frm-option" method="get">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span class="col-input">Group:</span>
+                            <select class="form-control search-select" id="GROUP_ID" name="GROUP_ID" onchange="GetWLByGroup(this.value)">
+                                <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                                @foreach(var item in ViewBag.Group as List<TBL_GROUP_MST>) {
+                                    <option @(Model != null && Model.Group.GROUP_ID == item.GROUP_ID ? "selected" : "") value="@item.GROUP_ID">@item.GROUP_NAME</option>
+                                }
+
+
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="col-input">WL:</span>
+                            <select class="form-control search-select" id="wlId" name="wlId" onchange="this.form.submit()">
+                                <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                                @if(ViewBag.listWL != null) {
+                                    foreach(var item in ViewBag.listWL as List<string>) {
+                                        <option @(Model != null && Model.Wl == item ? "selected" : "") value="@item">@item</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        @*<div class="col-md-3">
+                                <span class="col-input"></span>
+                                <input type="submit" name="" class="btn btn-primary" value="Load" />
+                            </div>*@
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">List Packing in WL <span style="font-weight: bold" id="viewWlID">@(Model != null ? "#" + Model.Wl : "")</span></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="" class="tbl-packing  table table-active table-disabled table-bordered table-hover align-center">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">Label ID</th>
+                                    <th class="text-center">Ngày </th>
+                                    <th class="text-center">Ca </th>
+                                    <th class="text-center">Nhóm hàng </th>
+                                    <th class="text-center">Line </th>
+                                    <th class="text-center"> Style </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(ViewBag.listCase != null) {
+                                    var dem = 1;
+                                    foreach(var item in ViewBag.listCase as List<TBL_CASE_LABEL>) {
+                                        <tr @Html.Raw(item.PalletID != null ? " class='disabled' " : " data-value='" + item.LABEL_ID + "' data-line='" + item.LINE + "' data-qty='" + item.QUANTITY + "' title='Chọn/ Bỏ chọn' ")>
+                                            <td class="text-center">@(dem++)</td>
+                                            <td class="text-center">@item.LABEL_ID</td>
+                                            <td class="text-center">@Utilities.GetMMDDYYYY(item.TS_1.ToString())</td>
+                                            <td class="text-center">@Utilities.GetTT(item.TS_1.ToString()) </td>
+                                            <td class="text-center">@item.TBL_GROUP_MST.TBL_BUSINESS_MST.BIZ_NAME</td>
+                                            <td class="text-center">@item.TBL_GROUP_MST.GROUP_NAME </td>
+                                            <td class="text-center"> @item.PkgStyle </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div> @if(ViewBag.listCaseOdd != null) {
+            <div class="panel panel-default">
+                <div class="panel-heading">List Packing in WL <span style="font-weight: bold" id="viewWlID">#Odd</span></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="" class="tbl-packing  table table-active table-disabled table-bordered table-hover align-center">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">Label ID</th>
+                                        <th class="text-center">Ngày </th>
+                                        <th class="text-center">Ca </th>
+                                        <th class="text-center">Nhóm hàng </th>
+                                        <th class="text-center">Line </th>
+                                        <th class="text-center"> Style </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(ViewBag.listCaseOdd != null) {
+                                        var dem = 1;
+                                        foreach(var item in ViewBag.listCaseOdd as List<TBL_CASE_LABEL>) {
+                                            <tr @Html.Raw(item.PalletID != null ? " class='disabled' " : " data-value='" + item.LABEL_ID + "' data-qty='" + item.QUANTITY + "' title='Chọn/ Bỏ chọn' ")>
+                                                <td class="text-center">@(dem++)</td>
+                                                <td class="text-center">@item.LABEL_ID</td>
+                                                <td class="text-center">@Utilities.GetMMDDYYYY(item.TS_1.ToString())</td>
+                                                <td class="text-center">@Utilities.GetTT(item.TS_1.ToString()) </td>
+                                                <td class="text-center">@item.TBL_GROUP_MST.TBL_BUSINESS_MST.BIZ_NAME</td>
+                                                <td class="text-center">@item.TBL_GROUP_MST.GROUP_NAME </td>
+
+                                                <td class="text-center"> @item.PkgStyle </td>
+                                            </tr>
+                                        }
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+    <div class="col-md-4" style="border-left: 1px solid #d3d3d3">
+        <div id="panel-save" class="panel panel-default">
+            <div class="panel-heading">Print</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <span class="col-input">Carton:</span>
+                        <select id="Carton" class="form-control select" onchange="  $('#tbl-print #CartonID').html(this.value);">
+                            <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                            @foreach(var item in ViewBag.Carton as List<TBL_Carton_Mst>) {
+                                <option value="@item.Remarks">@item.Remarks</option>
+                            }
+
+
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <span class="col-input"></span>
+                        <input type="button" id="btn-pdf" name="" class="btn btn-success" value="(1)Save to File" />
+                        <input type="button" id="btn-print" name="" class="btn btn-primary" value="(2)Print" />
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @if(Model != null) {
+            <div id="panel-print" class="panel panel-default" style="background: #f2f6f9">
+                <div class="panel-body" id="print-panel">
+                    <table id="tbl-print" style="max-width: 259px; border: 2px solid #333; font-size: 12px; border-spacing: 0; border-collapse: collapse; background: #fff;font-family: arial">
+                        <tr>
+
+                            <td style="width: 10%;  font-weight: bold; border: 1px solid #444; padding: 5px 2px">PACKING LIST</td>
+                            <td style="width: 25%; border: 1px solid #444; padding: 5px 2px;font-weight: bold">
+                                <span style="font-size: 18px">HANES</span>
+                                <span style="font-size: 11px">Brands Inc</span>
+                            </td>
+                            <td colspan="2" style="width: 65%; font-weight: bold;    border: 1px solid #444; padding: 5px 2px; font-size: 11px">
+                                HYC-F-SEW-001<br />
+                                Lần sửa đổi/rev: 00<br />
+                                Ngày sửa đổi/revised:<br />
+                                10/10/2020<br />
+                                Trang/Page: 1/1
+                            </td>
+                        </tr>
+                        <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px; text-align: center"> <img src="@Model.Barcode" /></td></tr>
+                        <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Số pallet:</span> @Model.PalletId</td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Tuần:</span> @Model.wk</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">WL:</span> @Model.Wl</td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Ngày:</span> @Model.Ts1</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Size:</span> @Model.Size</td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Tổ:</span> <span id="Line"></span></td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Màu:</span> @Model.Color</td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">WC:</span> @Model.Business.BIZ_NAME</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã bán hàng:</span> @Model.SellStyle</td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Số thùng xuất: </span><span id="QtyCarton"></span> </td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã sản xuất:</span> @Model.MnfStyle</td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã thùng: </span><span id="CartonID"></span> </td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã đóng gói:</span> @Model.PkgStyle</td></tr>
+                        <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Số Case Chạy</td></tr>
+                        <tr><td style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold; text-align: center">STT</td><td style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold; text-align: center">Item</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold; text-align: center">Qty(dz)</td></tr>
+
+
+
+
+                        <tr id="lastItem"><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Total</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold;text-align: center" id="sum">0</td></tr>
+                        <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">@Model.Priority</td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Tổ trưởng <br /><br /><br /><br /></td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Nhân viên đóng gói<br /><br /><br /><br /></td></tr>
+                        <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Nhân viên QA<br /><br /><br /><br /></td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Nhân viên kho<br /><br /><br /><br /></td></tr>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    #tbl-print {
+        margin: 0 auto;
+    }
+</style>
+
+@section Scripts{
+
+ 
+
+    <script>
+
+        function GetWLByGroup(value) {
+            App.blockUI($("#panel-option"));
+            $.ajax({
+                url: "/Scancase/GetWLByGroup",
+                data: { GROUP_ID: value },
+                method: "Get",
+                success: function (data) {
+                    $('#wlId').html("");
+                    $("#wlId")
+                        .append($(
+                            '<option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>'));
+                    for (var k in data) {
+                        $("#wlId").append($('<option></option>').val(data[k]).html(data[k]));
+                    }
+                    App.unblockUI($("#panel-option"));
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                    App.unblockUI($("#panel-option"));
+                    alert('Error! Please retry or contact to IT team.');
+                }
+            });
+
+        }
+
+        $('#btn-print').on('click',
+            function () {
+
+
+                if (document.getElementById('CartonID').textContent == "") {
+                    $('#Carton').focus();
+                    alert("Chưa chọn thùng Carton!");
+                    return false;
+                }
+                var d = 0;
+
+                if ($('#tbl-print tr.PrintItem').length == 0) {
+                    alert("Chưa chọn tem case!");
+                    return false;
+                }
+
+
+
+                $.ajax({
+                    url: "/Scancase/CheckPalletID",
+                    data: { PalletID: '@(Model != null ? Model.PalletId : "-")' },
+                    method: "Get",
+                    success: function (data) {
+                        if (data) {
+                            var printed = "tbl-print";
+                            var tableToPrint = document.getElementById(printed);
+                            var newWin = window;
+                            newWin.document.write(tableToPrint.outerHTML);
+                            newWin.focus();
+                            newWin.print();
+                            newWin.close();
+                            location.reload();
+                        } else
+                            alert("Không thể in do chưa lưu file packing");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+
+
+
+            });
+        $('#btn-pdf').on('click',
+            function () {
+                if (document.getElementById('CartonID').textContent == "") {
+                    $('#Carton').focus();
+                    alert("Chưa chọn thùng Carton!");
+                    return false;
+                }
+
+
+                if ($('#tbl-print tr.PrintItem').length == 0) {
+                    alert("Chưa chọn tem case!");
+                    return false;
+                }
+                var listCase = "";
+                $('#tbl-print tr.PrintItem').each(function (index, elem) {
+                    listCase += (listCase === "" ? "" : ",") + "'" + $(this).data('value') + "'";
+                });
+                $.ajax({
+                    url: "/Scancase/UpdatePalletID",
+                    data: { LABEL_ID: listCase, PalletID: '@(Model != null ?Model.PalletId : "-")' },
+                    method: "Get",
+                    success: function (data) {
+                        if (data) {
+
+                            var elHtml = document.getElementById('print-panel').innerHTML;
+                            var link = document.createElement('a');
+                            mimeType = 'text/plain';
+
+                            link.setAttribute('download', "packinglist-@(Model != null ? Utilities.GetYYYYMMDDLog(DateTime.Now) + "-" + Model.Wl + "-" + Model.PalletId : "").html");
+                            elHtml = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"><\/script>' +
+                                '<input type="button" id="btn-print" style=\'color: #fff;  background-color: #3276b1;  border-color: #285e8e;width:100px;height:30px\'  value="Print"><br/>' +
+                                '<div>' +
+                                ' <div class="panel-body">' +
+                                elHtml +
+                                '</div>' +
+                                '</div>' +
+                                '<script>' +
+                                '$(\'#btn-print\').on(\'click\',' +
+                                'function () {' +
+                                'var printed = "tbl-print";' +
+                                'var tableToPrint = document.getElementById(printed);' +
+                                'var newWin = window;' +
+                                'newWin.document.write(tableToPrint.outerHTML);' +
+                                'newWin.focus();' +
+                                'newWin.print();' +
+                                'newWin.close();' +
+                                'location.reload();' +
+                                '});' +
+                                '<\/script>';
+                            link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
+                            link.click();
+
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                        alert('Error! Please retry or contact to IT team.');
+                    }
+                });
+
+            });
+
+        $(document).ready(function () {
+        
+            $('#Carton').select2();
+            $('#GROUP_ID').select2();
+            $('#wlId').select2();
+
+            $('.tbl-packing').on('click',
+                'tbody tr',
+                function (event) {
+                    var value = $(this).data("value");
+                    var qty = $(this).data("qty");
+                    var line = $(this).data("line");
+                    var dz = parseInt(qty / 12);
+                    var chiec = qty % 12;
+                    if (value != null) {
+                        var action;
+                        if ($(this).hasClass('active')) {
+                            $('#tbl-print tr#' + value).remove();
+                            $(this).removeClass('active');
+                        } else {
+                            var str =
+                                '<tr class="PrintItem" id="' + value + '"  data-value="' + value + '" ><td style="   border: 1px solid #444; padding: 5px 2px; text-align: center">1</td><td style="   border: 1px solid #444; padding: 5px 2px; text-align: center">' +
+                                    value +
+                                    '</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px; text-align: center" data-value="' + qty + '" data-line="' + line + '">' +
+                                    dz + '/' + chiec +
+                                    '</td></tr>';
+                            $(str).insertBefore('#tbl-print #lastItem');
+                            $(this).addClass('active');
+                        }
+
+                        var tong = 0;
+                        var d = 0;
+                        var line = '';
+                        $('#tbl-print tr.PrintItem').each(function (index, elem) {
+                            $(this).find('td:first').html(index + 1);
+                            tong += $(this).find('td:last').data('value');
+                            line = $(this).find('td:last').data('line');
+                            d++;
+                        });
+
+                        $('#tbl-print #Line').html(line);
+                        $('#tbl-print #sum').html(parseInt(tong / 12) + '/' + tong % 12);
+                        $('#tbl-print #QtyCarton').html(d);
+
+                    }
+                });
+        });
+
+
+    </script>
+}

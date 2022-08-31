@@ -1,0 +1,140 @@
+﻿@using ProductionApp.Models
+@using ProductionApp.Helpers
+@model List<PROC_GET_WIP_CONTROL_BY_GROUP_DATE_Result>
+@{
+
+    IEnumerable<PROC_GET_ALL_GROUP_2_Result> LstWC = ViewBag.LstWC;
+    ViewBag.Title = "WIP Control";
+    var Date = ViewBag.Date;
+    var LstWcID = ViewBag.LstWCID;
+}
+
+
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            <small>WIP Control</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("WIPControl", "WIPControl", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+        <!-- END PAGE HEADER-->
+    <div class="portlet box gray ">
+        <div class="portlet-title">
+        </div>
+        <div class="portlet-body ">
+            <div class="row margin-bottom-10">
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Tổ/Group:
+                </div>
+                <div class="col-md-2 margin-top-10">
+                    @Html.ListBox("listWC", null, new { @class = "form-control multi-select margin-bottom-10", @multiple = "multiple", size = 6 })
+                </div>
+                <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                    Date
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name="txtDate" id="txtDate" class="form-control isdate"  autocomplete="off" />
+                </div>
+                <div class="col-md-1">
+                    <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit">
+                </div>
+            </div>
+            <div class="row margin-bottom-10 margin-top-20">
+                <div class="row">
+                    <div class="table-responsive" style="align-items: center; width: 55%; margin-left:40px">
+                        <table class="table table-striped table-bordered table-hover align-center" id="example">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center; width: 25px">Group</th>
+                                    <th style="text-align:center; width: 100px">Actual</th>
+                                    <th style="text-align:center; width: 100px">Target</th>
+                                    <th style="text-align:center; width: 100px; ">Actual - Target</th>
+                                </tr>
+                            </thead>
+                            @if (Model.Count > 0)
+                            {
+                                <tbody>
+                                    @for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td style="text-align: center; height:15px;"><b>@Model[i].GROUP_NAME</b></td>
+                                            <td style="text-align: center; height: 15px;">@Model[i].ACTUAL</td>
+                                            <td style="text-align: center; height: 15px;">@Model[i].TARGET</td>
+                                            <td style="text-align:center">
+                                                @if ((@Model[i].ACTUAL - @Model[i].TARGET) >= 0)
+                                                {
+                                                    <p class="changecolortogreen">@(Model[i].ACTUAL - Model[i].TARGET)</p>
+                                                }
+                                                @if ((@Model[i].ACTUAL - @Model[i].TARGET) < 0)
+                                                {
+                                                    <p class="changecolortored">@(Model[i].ACTUAL - Model[i].TARGET)</p>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                            else
+                            {
+
+                            }
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@using (Html.BeginForm("ExportExcelWIPControlRpt", "WIPControl", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    if (Date != null && Date.ToString() != "1/1/00001 12:00:00 AM")
+    {
+        <div class="row margin-bottom-10 margin-top-0">
+            <div class="row">
+                <div class="table-responsive" style="align-items: center; width: 54.5%; margin-left:50px">
+                    <table class="table table-striped table-bordered table-hover align-center">
+                        <tr>
+                            <td align="right"><input type="text" name="txtDate" value="@Date" hidden="hidden" /></td>
+                            <td align="right"><input type="text" name="TxtWc" value="@LstWcID" hidden="hidden" /></td>
+                            <td colspan="8" align="right"><input type="submit" value="Export To Excel" class="btn purple fa fa-download" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+  
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        $("#Submit").click(function (e) {
+            var From = $('#txtDate').val();
+            var lst = $('listWC').val();
+            if (From == "") {
+                alert('Please select date!');
+                $('#txtDate').focus();
+                e.preventDefault();
+                return 0;
+            }
+            if (lst == "") {
+                alert('Please select Group!');
+                $('#listWC').focus();
+                e.preventDefault();
+                return 0;
+            }
+        });
+    </script>
+}

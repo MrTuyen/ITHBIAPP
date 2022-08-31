@@ -1,0 +1,218 @@
+﻿@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model  TBL_LTS_Details
+@{
+    var LTS_Details = Model;
+    ViewBag.Title = "LTS Approve";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            LTS ONLINE
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">  Details</div>
+    <div class="panel-body">
+        <table id="tbltstmp" class="table table-striped table-bordered table-hover align-center" style="width:100%;">
+            <thead>
+                <tr>
+                    <th style="text-align:center">Asst_WL</th>
+                    <th style="text-align:center">Rec_Qty</th>
+                    <th style="text-align:center">FQ_Qty</th>
+                    <th style="text-align:center">Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(LTS_Details != null) {
+                    <tr>
+                        <td class="text-center">@LTS_Details.Asst_WL</td>
+                        <td class="text-center">@LTS_Details.Rec_Qty</td>
+                        <td class="text-center">@LTS_Details.FQ_Qty</td>
+                        <td id="rate" class="text-center" style="color: red">@( Math.Round((double)(LTS_Details.TBL_LTS_Items.Sum(a => a.TBL_LTS_Details.FQ_Qty) / LTS_Details.Rec_Qty * 100 * 1.0) ,2))%</td>
+                    </tr>
+                } else {
+                    <tr>
+                        <td colspan="5" class="text-left"><i>There are no data records to display!</i></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table id="tbcomwl" class="table table-bordered align-center" style="width:100%;">
+            <thead>
+                <tr>
+                    <th style="text-align:center">Comp_WL</th>
+                    <th style="text-align:center">Style</th>
+                    <th style="text-align:center">Size</th>
+                    <th style="text-align:center">Odd</th>
+                    <th style="text-align:center">IRR</th>
+                    <th style="text-align:center">ThrowOut</th>
+                    <th style="text-align:center">Sample</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model != null) {
+                    foreach(var item in LTS_Details.TBL_LTS_Items) {
+
+                        <tr>
+                            <td class="text-center">@item.Comp_WL</td>
+                            <td class="text-center">@item.Selling_Style</td>
+                            <td class="text-center">@item.Size</td>
+                            <td style="background: #fffacd" class="text-center">@item.Odd_Qty</td>
+                            <td style="background: #fffacd" class="text-center">@item.Irr_Qty</td>
+                            <td style="background: #fffacd" class="text-center">@item.ThrowOut_Qty</td>
+                            <td style="background: #fffacd" class="text-center">@item.Sample_Qty</td>
+                        </tr>
+
+                    }
+                } else {
+                    <tr>
+                        <td colspan="8" class="text-left"><i>There are no data records to display!</i></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">  Approve</div>
+    <div class="panel-body">
+
+        <table id="tbcomwl" class="table table-bordered align-center" style="width:auto">
+            <thead>
+                <tr>
+                    <th style="text-align:center">Department</th>
+                    <th style="text-align:center">Date</th>
+                    <th style="text-align:center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-left">Tổ Trưởng / Sup </td>
+                    <td class="text-center">@LTS_Details.Submitted_date</td>
+                    <td style="background: #008000;color:  #fff" class="text-center">Submitted </td>
+
+                </tr>
+                <tr>
+                    <td class="text-left">Quản Đốc/ Supt </td>
+
+                    <td class="text-center">@LTS_Details.Prod_Date</td>
+                    <td style="@(LTS_Details.status > 2 || LTS_Details.status < -2 ? " background: #008000;color:  #fff" : "") @(LTS_Details.status ==-2?" background: red;color:  #fff":"")  @((LTS_Details.status < 2 && LTS_Details.status > 0) || (LTS_Details.Prod_mail.ToLower() != ViewBag.ltskey && LTS_Details.status == 2) ? " background yellow" : "") " class=" text-center">
+                        @{
+                            if(LTS_Details.Prod_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 2) {
+                                <input type="button" value="Approve" name="approve" class="btn btn-primary" onclick="approve('approve', '3')" />
+                                <input type="button" value="Reject" name="reject" class="btn btn-danger" onclick="approve('reject', '-2')" />
+                            } else {
+                                @LTS_Details.Prod_Status
+                            }
+                        }
+
+                    </td>
+                    @if(LTS_Details.Prod_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 2) {
+                        <td>
+                            <input type="text" value="" name="ReasonReject" placeholder=" Reject Reason" style="min-width: 300px;" class="form-control" />
+                        </td>
+                    }
+
+                </tr>
+                @if(LTS_Details.PM_Status != "None") {
+                    <tr>
+                        <td class="text-left">Trưởng BP / Manager</td>
+
+                        <td class="text-center">@LTS_Details.PM_Date</td>
+                        <td style="@(LTS_Details.status > 3 || LTS_Details.status < -3 ? " background: #008000;color:  #fff" : "") @(LTS_Details.status ==-3?" background: red;color:  #fff":"")  @((LTS_Details.status < 3 && LTS_Details.status > 0) || (LTS_Details.PM_mail.ToLower() != ViewBag.ltskey && LTS_Details.status == 3) ? " background: yellow;" : "") " class="text-center">
+                            @{
+                    if(LTS_Details.PM_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 3) {
+                        <input type="button" value="Approve" name="approve" class="btn btn-primary" onclick="approve('approve', '4')" />
+                                <input type="button" value="Reject" name="reject" class="btn btn-danger" onclick="approve('reject', '-3')" />
+                    } else {
+                        @LTS_Details.PM_Status
+                    }
+                            }
+
+
+                        </td>
+                        @if(LTS_Details.PM_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 3) {
+                            <td>
+                                <input type="text" value="" name="ReasonReject" placeholder=" Reject Reason" style="min-width: 300px;" class="form-control" />
+                            </td>
+                        }
+                    </tr>
+                }
+                <tr>
+                    <td class="text-left">Kho tạm / Odd room</td>
+
+                    <td class="text-center">@LTS_Details.Odd_Date</td>
+                    <td style="@(LTS_Details.status > 4 || LTS_Details.status < -4 ? " background: #008000;color:  #fff" : "") @(LTS_Details.status ==-4?" background: red;color:  #fff":"")  @((LTS_Details.status < 4 && LTS_Details.status > 0) || (LTS_Details.Odd_mail.ToLower() != ViewBag.ltskey && LTS_Details.status == 4) ? " background: yellow" : "") " class=" text-center">
+                        @{
+                            if(LTS_Details.Odd_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 4) {
+                                <input type="button" value="Confirm" name="approve" class="btn btn-primary" onclick="approve('approve', '5')" />
+                                <input type="button" value="Reject" name="reject" class="btn btn-danger" onclick="approve('reject', '-4')" />
+                            } else {
+
+                                @LTS_Details.Odd_Status
+                            }
+                        }
+
+                    </td>
+                    @if(LTS_Details.Odd_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 4) {
+                        <td>
+                            <input type="text" value="" name="ReasonReject" placeholder=" Reject Reason" style="min-width: 300px;" class="form-control" />
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <td class="text-left">Kế Toán / Finance</td>
+                    <td class="text-center">@LTS_Details.IA_Date</td>
+                    <td style="@(LTS_Details.status > 5 || LTS_Details.status < -5 ? " background: #008000;color:  #fff" : "") @(LTS_Details.status ==-5?" background: red;color:  #fff":"") @((LTS_Details.status < 5 && LTS_Details.status > 0) || (LTS_Details.IA_mail.ToLower() != ViewBag.ltskey && LTS_Details.status == 5) ? " background: yellow" : "") " class="text-center">
+                        @{
+                            if(LTS_Details.IA_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 5) {
+                                <input type="button" value="Process" name="approve" class="btn btn-primary" onclick="approve('approve', '6')" />
+                                <input type="button" value="Reject" name="reject" class="btn btn-danger" onclick="approve('reject', '-5')" />
+                            } else {
+                                @LTS_Details.IA_Status
+                            }
+                        }
+                    </td>
+                    @if(LTS_Details.IA_mail.ToLower() == ViewBag.ltskey && LTS_Details.status == 5) {
+                        <td>
+                            <input type="text" value="" name="ReasonReject" placeholder=" Reject Reason" style="min-width: 300px;" class="form-control" />
+                        </td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function approve(ac, sta) {
+            // if (!confirm('Bạn chắc chắn về hành động này?')) return false;
+            App.blockUI($("body"));
+            $.ajax({
+                url: "/ScanCase/LtsApproveSubmit",
+                data: {
+                    ltsNumber: @ViewBag.ltsid,
+                    sta: sta,
+                    ac: ac,
+                    ReasonReject: document.getElementsByName('ReasonReject')[0].value
+                },
+                success: function (data) {
+                    alert(data);
+                    window.location.href="/scanCase/LtsOnline";
+                },
+                error: function () {
+                    App.unblockUI($("#tbcomwl"));
+                }
+            });
+        }
+
+
+    </script>
+}

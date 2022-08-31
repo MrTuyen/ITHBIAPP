@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Đổi ca /ShiftChange";
+}
+
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+    var rq = (HR_CS_ShiftChange_Request)ViewData["request"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var List = (List<HR_CS_ShiftChange_Items>)ViewData["item"];
+    var manager = (OL_User_Approver)ViewData["manager"];
+    var hrmanager = (TBL_USERS_MST)ViewData["hrmanager"];
+    var hrteam = (TBL_SYSTEM)ViewData["hrteam"];
+    UserModels user = (UserModels)Session["SignedInUser"];
+
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            PHIẾU ĐĂNG KÝ ĐỔI CA
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+@Html.Raw(TempData["msg"])
+<div class="panel panel-default" id="panel1">
+    <div class="panel-heading">Thông tin</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="hidden" id="id" name="id" />
+                <span class="col-input">Phòng ban:</span>
+                <select class="form-control" id="dept" name="dept">
+                    <option value="@dept.DEPT_ID">@dept.NAME</option>
+                </select>
+            </div>
+
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table  table-bordered " id="table1">
+                    <tr style="background-color: #f5f5f5">
+                        <td>No.</td>
+                        <td>Mã Nhân Viên</td>
+                        <td>Họ Tên</td>
+                        <td>Ca Trước Khi Thay Đổi</td>
+                        <td>Ca Sau Khi Thay Đổi</td>
+
+                        <td>From</td>
+                        <td>To</td>
+                        <td>Lý Do Đổi Ca</td>
+                    </tr>
+                    @{ int i = 0;}
+                    @foreach(HR_CS_ShiftChange_Items item in List) {
+                        i++;
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.Employee_ID</td>
+                            <td>@item.NAME</td>
+                            <td>@item.OldShift </td>
+                            <td>@(item.NewShift) </td>
+                            <td>@string.Format("{0:MM/dd/yyyy}" ,item.DateStart)</td>
+                            <td>@string.Format("{0:MM/dd/yyyy}" ,item.DateEnd)</td>
+                            <td>@item.Detail</td>
+
+
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default" id="panel1">
+    <div class="panel-heading">Trạng thái phê duyệt</div>
+    <div class="panel-body">
+        <style>
+            #table2 td {
+                padding: 3px;
+            }
+        </style>
+        <table id="table2" style="width: auto">
+
+            <tr>
+                <td>Approver</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="manager">
+                        <option value="@manager.EmpID">@manager.ApproverName</option>
+                    </select>
+                </td>
+                @if(Model.Status == 1) {
+                    <td>
+                        @using(Html.BeginForm("Approve" ,"ShiftChange" ,FormMethod.Post ,new { @class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@Model.ID" />
+
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Approve" class="btn btn-info " />
+                            <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#MrgReject">Reject</a>
+                        }
+                    </td>
+                } else if(Model.Status >= 2 || Model.Status < -2) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(Model.Status == -2) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected: </span>
+                        <span style="color: red; font-weight: bold">@Model.ReasonReject</span>
+                    </td>
+                }
+            </tr>
+            <tr>
+                <td>HR Team</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="hrteam">
+
+                        <option value="@hrteam.id">@hrteam.fullname</option>
+                    </select>
+                </td>
+                @if(Model.Status == 2) {
+                    <td>
+                        @using(Html.BeginForm("HRteam_Approve" ,"ShiftChange" ,FormMethod.Post ,new { @class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@Model.ID" />
+
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Process" class="btn btn-info " />
+                        }
+                    </td>
+                } else if(Model.Status >= 3 || Model.Status < -3) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Processed</span>
+
+                    </td>
+                }
+            </tr>
+
+        </table>
+    </div>
+
+    <div id="MrgReject" class="modal fade in" role="dialog">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h5 class="modal-title">Lý do không chấp nhận</h5>
+                </div>
+                @using(Html.BeginForm("ManagerReject" ,"ShiftChange" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {       <input type="hidden" id="id" name="id" value="@rq.ID" />
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-body">
+                        <fieldset>
+
+                            <div class="form-group">
+                                <label>Lý do</label>
+                                <textarea class="form-control" name="body"></textarea>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <input class="btn btn-primary" type="submit" name="GiaUD" value="Submit">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

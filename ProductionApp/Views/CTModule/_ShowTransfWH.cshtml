@@ -1,0 +1,63 @@
+﻿@using ProductionApp.Models;
+@model List<ViewTransWHModel>
+
+@{
+    int Count = Convert.ToInt16((Session["Count_TransfWH"]));
+    string status = ViewBag.Status;
+    string color = null;
+    if (status == "Trùng Lặp/ Đã được pass!")
+    {
+        color = "deepskyblue";
+    }
+    else if (status == "Không đủ chi tiết !")
+    {
+        color = "red";
+    }
+
+    else if (status == "Không đủ số lượng !")
+    {
+        color = "red";
+    }
+}
+
+<table class="table-hover table"  style="width:30%; border:0px none; float: left; margin-top:15px;" cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <td style="width:15%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Scanned WO#</div>
+            </td>
+            <td style="width:10%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Qty</div>
+            </td>
+            <td style="width:35%;">
+                <div style="height:30px; margin-bottom:10px; border-bottom-width:2px; border-bottom-color:lightcoral; border-bottom-style:solid; font:bold 13px arial;">Status</div>
+            </td>
+        </tr>
+    </thead>
+    @if (Model != null)
+    { 
+        for(int i =0; i< Model.Count; i++)
+        {
+                <tr>
+                    <td>
+                        @Model[i].WO
+                    </td>
+                    <td >
+                        @Model[i].Quantity
+                    </td>
+                    <td>
+                        @Model[i].Status
+                    </td>
+                </tr>
+            }
+    }
+</table>
+<table  style="width:40%; border:1px; float:left" cellpadding="0" cellspacing="0">
+
+    <tr>
+
+        <td style="text-align:center; font-size:400px; border-right:0px; color:@(color != null ? color: null)">
+            <div style="text-align:center; color: red; font-size:20px;">@status</div> @Count
+        </td>
+   </tr>
+</table>

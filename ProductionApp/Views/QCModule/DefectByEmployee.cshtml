@@ -1,0 +1,213 @@
+﻿@using ProductionApp.Models
+@model List<DefectByEmployeeView>
+@{
+    ViewBag.Title = "DEFECT BY EMPLOYEE";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+             <small>Defects by Employee</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("GetDefectByEmployee", "QCModule", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+
+    </div>
+    <div class="portlet-body ">
+        <div class="row margin-bottom-10">
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                Workshop:
+            </div>
+            <div class="col-md-1 " style="line-height: 32px; text-align: right">
+                @Html.DropDownList("LstWS", null, new { @class = "form-control bs-select", @data_width = "100%", @id = "dlWs", name = "dlWs" })
+            </div>
+
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                Group:
+            </div>
+            <div class="col-md-1 " style="line-height: 60px; text-align: right">
+                <select multiple='multiple' name="LstGroup" id="LstGroup" size='7' class = "form-control bs-select">
+                </select> 
+            </div>
+
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                From
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtFrom" id="txtFrom" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                To
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="txtTo" id="txtTo" class="form-control isdate" autocomplete="off" />
+            </div>
+            <div class="col-md-1">
+                <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit" >
+            </div>
+        </div>
+        <div class="row margin-bottom-10 margin-top-20" id="DivShowData">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:80%;">
+                    @if (Model != null)
+                    {
+                        <thead >
+                            <tr style="border:0px dotted white">
+                                <td style="border:0px dotted white"></td>
+                                <td style="border:0px dotted white"></td>
+                                <td style="border:0px dotted white"></td>
+                                <td style="border:0px dotted white"></td>
+                                <td style="border:0px dotted white"></td>
+                                @*<td style="border:0px dotted white"></td>
+                                <td style="border:0px dotted white"></td>*@
+                                <td style="border:0px dotted white"></td>
+                                @*<td style="border:0px dotted white"></td>
+                                <td style="border:0px dotted white"></td>*@
+                                <td style="border:1px dotted ; color:red; font:italic 10px arial" align="center">Weekly</td>
+                                <td style="border:1px dotted ; color:red; font:italic 10px arial" align="center">Weekly, leadtime 4 days</td>
+                            </tr>
+                            <tr style="background-color:darkseagreen;">
+                                <th style="text-align:center">No.</th>
+                                <th style="text-align:center">Worker ID</th>
+                                <th style="text-align:center">Full Name</th>
+                                <th style="text-align:center">Group</th>
+                                <th style="text-align:center">Defect Qty'</th>
+                                @*<th style="text-align:center">Sample</th>
+                                <th style="text-align:center">Rate(%)</th>*@
+                                <th style="text-align:center">OTFQ</th>
+                                @*<th style="text-align:center">Rework Sample</th>
+                                <th style="text-align:center">Rework Rate(%)</th>*@
+                                <th style="text-align:center">Process Audit</th>
+                                <th style="text-align:center">Efficiency</th>
+                                @*<th style="text-align:center">Detail</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                <tr>
+                                    <td>@(i+1)</td>
+                                    <td>@Model[i].WorkerID</td>
+                                    <td>@Model[i].FullName</td>
+                                    <td>@Model[i].Group </td>
+                                    <td>@Model[i].Defect_Qty  </td>
+                                    @*<td>@Model[i].Total_Sample </td>
+                                    <td>@((Model[i].Rate)==0? "0" : (Model[i].Rate * 100).ToString("#.##")) </td>*@
+                                    <td>@Model[i].Rework_Qty </td>
+                                    @*<td>@Model[i].Rework_Samp </td>
+                                    <td>@( Model[i].Rework_Rate ==0? "0": (Model[i].Rework_Rate * 100).ToString("#.##")) </td>*@
+                                    <td>@Model[i].PAudit_Qty</td>
+                                    <td>@Model[i].Efficiency</td>
+                                    @*<td> </td>*@
+                                </tr>
+                                }
+                        </tbody>
+                        }else
+                                    {
+
+                                    }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@*@using (Html.BeginForm("ExportExcelWorkcentralRpt", "Report", FormMethod.Post))
+{
+    if (ToDate != null && ToDate.ToString() != "1/1/00001 12:00:00 AM")
+    {
+        <div class="row margin-bottom-10 margin-top-0">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:80%;">
+                        <tr>
+                            <td align="right"><input type="text" name="TxtFrom" value="@FromDate" hidden="hidden" /></td>
+                            <td align="right"><input type="text" name="TxtTo" value="@ToDate" hidden="hidden" /></td>
+                            <td align="right"><input type="text" name="TxtWc" value="@LstWcID" hidden="hidden" /></td>
+                            <td colspan="8" align="right"><input type="submit" value="Export To Excel" class="btn purple fa fa-download" /></td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}*@
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+        //$('#DivShowData').hide();
+        $("#Submit").click(function (e) {
+            var From = $('#txtFrom').val();
+            var To = $('#txtTo').val();
+            var Group = $('#LstGroup').val();
+            if (From == "") {
+                    alert('Please select date!');
+                    $('#txtFrom').focus();
+                    e.preventDefault();
+                    return 0;
+            }
+            if (To == "") {
+                alert('Please select date!');
+                $('#txtTo').focus();
+                e.preventDefault();
+                return 0;
+            }
+            if (Group == "" || Group == null) {
+                alert('Please select Group!');
+                $('#LstGroup').focus();
+                e.preventDefault();
+                return 0;
+            }
+            //$(function(){
+        });
+
+        $(document).ready(function (){
+            $.get("/QCModule/GetGroup", { ID: $("#dlWs").val() }, function (data) {
+                $("#LstGroup").empty();
+                $.each(data, function (index, row) {
+                    $("#LstGroup").append("<option value='" + row.GROUP_NAME + "'>" + row.GROUP_NAME + "</option>")
+                });
+            });
+        });
+ 
+        $("#dlWs").change(function () {
+            //alert('nam');
+            $.get("/QCModule/GetGroup", { ID: $("#dlWs").val() }, function (data) {
+                $("#LstGroup").empty();
+                $.each(data, function (index, row) {
+                    $("#LstGroup").append("<option value='" + row.GROUP_NAME + "'>" + row.GROUP_NAME + "</option>")
+                });
+            });
+        });
+    </script>
+}

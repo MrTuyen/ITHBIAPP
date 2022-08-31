@@ -1,0 +1,103 @@
+﻿@*@model List<ECN_System.Models.Ecn_Menu>*@
+@using ProductionApp.Models;
+@{
+    UserModels user = (UserModels)Session["SignedInUser"];
+    ProductionAppEntities db = new ProductionAppEntities();
+}
+
+<!-- BEGIN TOP NAVIGATION BAR -->
+<div class="header-inner">
+    <!-- BEGIN LOGO -->
+    @*@<a class="navbar-brand" href="/" style="height:45px">*@
+    @*@<img src="~/Content/themes/assets/img/logo.png" alt="logo" class="img-responsive" />*@
+    @*@</a>*@
+    <!-- END LOGO -->
+    <!-- BEGIN HORIZANTAL MENU hidden-sm hidden-xs-->
+    <div class="hor-menu ">
+        @{Html.RenderAction("RenderMobileMenu", "Shared");}
+        @if (Session["permission"] != null && Session["permission"].ToString() == "0")
+        {
+            Session["permission"] = null;
+
+            <script>
+                window.location.href = "@Url.Action("NonPermission","Notification")";
+
+            </script>
+        }
+
+
+    </div>
+    <!-- END HORIZANTAL MENU -->
+    <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+    <a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <img src="~/Content/themes/assets/img/menu-toggler.png" alt="" />
+    </a>
+    <!-- END RESPONSIVE MENU TOGGLER -->
+    <!-- BEGIN TOP NAVIGATION MENU -->
+    <ul class="nav navbar-nav pull-right">
+
+        <!-- BEGIN USER LOGIN DROPDOWN -->
+        <li class="dropdown user">
+            @if (user != null)
+            {
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <img alt="" src="/Content/themes/assets/img/avatar.png" style="height: 29px;" />
+                    @*<img alt="" src="~/Content/themes/assets/img/avatar.png" />*@
+                    <span class="username">@user.Fullname</span>
+                    <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+
+                    <li>
+                        <a href="~/Account/ChangePassword"><i class="fa fa-key"></i> Change Password</a>
+                    </li>
+                    <li>
+                        <a href="~/Account/LogOff"><i class="fa fa-key"></i> Log Out</a>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <a href="/Account/Login" class="dropdown-toggle" data-close-others="true">
+                    <img alt="" src="/Content/themes/assets/img/avatar.png" style="height: 29px;" />
+                    <span class="username">Login</span>
+
+                </a>
+            }
+        </li>
+        <!-- END USER LOGIN DROPDOWN -->
+    </ul>
+
+    <!-- END TOP NAVIGATION MENU -->
+</div>
+<!-- END TOP NAVIGATION BAR -->
+@*@helper RenderSubMenu(IEnumerable<ECN_System.Models.Ecn_Menu> pageList, ECN_System.Models.Ecn_Menu currPage)
+    {
+        if (Model.Count(p => p.Parent_Id == currPage.Menu_Id) > 0)
+        {
+            if (currPage.Parent_Id == null)
+            {
+                <a data-hover="dropdown" data-close-others="true" class="dropdown-toggle" href="javascript:;" style="text-transform: uppercase">
+                    @currPage.Menu_Name
+                    <i class="fa fa-angle-down"></i>
+                </a>
+            }
+            else
+            {
+                <a href="javascript:;" style="text-transform: uppercase">@currPage.Menu_Name</a>
+            }
+            <ul class="dropdown-menu">
+                @foreach (var item in pageList.Where(p => p.Parent_Id == currPage.Menu_Id))//.OrderBy(p => p.Order))
+                {
+
+                    <li class="@(pageList.Any(p => p.Parent_Id == item.Menu_Id) ? "dropdown-submenu" : "")">
+                        @RenderSubMenu(pageList, item)
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <a href="@("/" + currPage.Controller_Name + "/" + currPage.Action_Name)" target="_self" style="text-transform: uppercase">@currPage.Menu_Name</a>
+        }
+    }*@

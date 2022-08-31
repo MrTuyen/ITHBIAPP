@@ -1,0 +1,20 @@
+﻿@using ProductionApp.Models
+@model NotificationModel
+@{
+    ViewBag.Title = "Error";
+}
+<meta http-equiv="refresh" content="3;url=/" />
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+             <small>Error Notification</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="row" style="align-content:center; text-align:center">
+    <div class="err" style="color:red; font-style:italic; align-content:center; font-size:17px">@(Model != null ? Model.content : "N/A") </div>
+</div>

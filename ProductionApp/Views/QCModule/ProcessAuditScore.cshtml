@@ -1,0 +1,181 @@
+﻿@using ProductionApp.Models
+@model List<PROC_GET_QC_PAUDIT_SCORE_BY_WS_DATE_Result>
+    @{
+        
+        ViewBag.Title = "PROCESS AUDIT SCORE";
+        List<PROC_GET_QC_PAUDIT_EMPLOYEE_BY_WS_DATE_Result> PauditEmpRecord = ViewBag.PauditEmpRecord;
+    }
+    @section Styles {
+        <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+        <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+        <!-- END PAGE LEVEL PLUGIN STYLES -->
+    }
+    <!-- BEGIN PAGE HEADER-->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+            <h3 class="page-title">
+                 <small>Process Audit</small>
+            </h3>
+            <!-- END PAGE TITLE & BREADCRUMB-->
+        </div>
+    </div>
+    <!-- END PAGE HEADER-->
+    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+    @using (Html.BeginForm("GetProcessAuditScore", "QCModule", FormMethod.Post, new { name = "frmProcessAuditScore", id = "frmProcessAuditScore" }))
+    {
+        <div class="portlet box gray">
+            <div class="portlet-title">
+
+            </div>
+            <div class="portlet-body ">
+                <div class="row margin-bottom-10">
+                    <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                        Workshop:
+                    </div>
+                    <div class="col-md-1 " style="line-height: 32px; text-align: right">
+                        @Html.DropDownList("LstWS", null, new { @class = "form-control bs-select", @data_width = "100%", @id = "dlWs", name = "dlWs" })
+                    </div>
+                    <div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+                        Date of Week
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" name="txtDate" id="txtDate" class="form-control isdate" autocomplete="off" />
+                    </div>
+                    @*<div class="col-md-1 bold" style="line-height: 32px; text-align: right">
+
+                    </div>
+                    <div class="col-md-1">
+                        <label id="lblWeek" style="color:black; font-style:italic; font:bold 12px; text-align:right; width:100% "></label>
+                    </div>*@
+                    <div class="col-md-1">
+                        <input type="submit" name="Submit" value="Submit" class="btn blue purple-stripe" id="Submit">
+                    </div>
+                </div>
+
+                <div class="row margin-bottom-10">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
+                        <label id="lblGr" style="color:red; font-style:italic; font:bold 12px; text-align:right; width:100% "></label>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="table-responsive" style="align-items:center; margin-top:15px;">
+                        <table class="table table-striped table-bordered table-hover align-center" style="width:90%;">
+                            <thead class="portlet-body">
+                                <tr>
+                                    <th style="text-align:center">No.</th>
+                                    <th style="text-align:center">Tổ</th>
+                                    <th style="text-align:center">Ngày</th>
+                                    <th style="text-align:center">8 SP tem xanh</th>
+                                    <th style="text-align:center">Phân loại IRR</th>
+                                    <th style="text-align:center">FML Đóng túi</th>
+                                    <th style="text-align:center">FML Đóng Thùng</th>
+                                    <th style="text-align:center">FML Sản phẩm</th>
+                                    <th style="text-align:center">Phân tách hàng</th>
+                                    <th style="text-align:center">SD đồ gá</th>
+                                    <th style="text-align:center">Bảng GetTT đúng</th>
+                                    <th style="text-align:center">Thảo luận VĐ CL</th>
+                                    <th style="text-align:center">SD máy dò kim</th>
+                                    <th style="text-align:center">QC ID</th>
+                                    <th style="text-align:center">Tổng điểm</th>
+                                </tr>
+                            </thead>
+                            @if (Model != null)
+                            {
+                                <tbody>
+                                    @for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i+1)</td>
+                                            <td>@Model[i].LINE_ID</td>
+                                            <td>@(Model[i].AUDIT_DATE.Value.ToString("MM/dd/yyyy")) </td>
+                                            <td>@Model[i].GREEN_LABEL</td>
+                                            <td>@Model[i].IRR</td>
+                                            <td>@Model[i].FML_PACKAGES</td>
+                                            <td>@Model[i].FML_CASE</td>
+                                            <td>@Model[i].FML_GARMENT</td>
+                                            <td>@Model[i].LAYOUT</td>
+                                            <td>@Model[i].USING_TOOL</td>
+                                            <td>@Model[i].USING_INFO_TABLE</td>
+                                            <td>@Model[i].PROBLEM_DISCUSS</td>
+                                            <td>@Model[i].METAL_SCAN</td>
+                                            <td>@Model[i].QC_ID</td>
+                                            <td>@Model[i].SCORE</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="table-responsive" style="align-items:center; margin-top:15px;">
+                        <table class="table table-striped table-bordered table-hover align-center" style="width:40%;">
+                            <thead class="portlet-body">
+                                <tr>
+                                    <th style="text-align:center">No.</th>
+                                    <th style="text-align:center">Tổ</th>
+                                    <th style="text-align:center">Ngày</th>
+                                    <th style="text-align:center">Mã CN</th>
+                                    <th style="text-align:center">Mã CĐ</th>
+                                    <th style="text-align:center">Mã Lỗi</th>
+                                </tr>
+                            </thead>
+                            @if (PauditEmpRecord != null)
+                            {
+                                <tbody>
+                                    @for (int i = 0; i < PauditEmpRecord.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i+1)</td>
+                                            <td>@PauditEmpRecord[i].LINE_ID</td>
+                                            <td>@(PauditEmpRecord[i].TS_1.Value.ToString("MM/dd/yyyy"))</td>
+                                            <td>@PauditEmpRecord[i].WORKER_ID</td>
+                                            <td>@PauditEmpRecord[i].PROCESS_ID</td>
+                                            <td>@PauditEmpRecord[i].DEFECT_ID</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @section Scripts {
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+        <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+        <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+        <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script>
+            $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+            $("#frmProcessAuditScore").validate();
+            jQuery(document).ready(function () {
+                $(function () {
+                    $(document).on('keypress', function (e) {
+                        var that = document.activeElement;
+                        if (e.which == 13) {
+                            e.preventDefault();
+                            $('[tabIndex=' + (+that.tabIndex + 1) + ']')[0].focus();
+                        }
+                    });
+                });
+            });
+        </script>
+    }

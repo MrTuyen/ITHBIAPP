@@ -1,0 +1,56 @@
+﻿.name {
+    font-weight: bold;
+}
+
+.Firstpart {
+    margin-bottom: 30px;
+}
+
+.calculateKPI {
+    background-color: antiquewhite;
+  
+}
+
+.tblKPISetting, tr, th, td {
+    border: 1px solid #000;
+}
+
+.marginTable {
+    margin-top: -15px;
+}
+
+.comment {
+    height: 40px;
+    line-height: 40px;
+    background-color: #ddd;
+    margin-left: 14px;
+    width: 1483px;
+}
+
+.firstbox {
+    border: 1px solid black;
+    margin-bottom: 20px;
+}
+
+.titleKPI {
+    font-family: 'Times New Roman';
+    font-size: 50px;
+    text-align: center;
+    font-weight: bold;
+    height: 110px;
+    line-height: 110px;
+}
+
+.boxLeft {
+    border-right: 1px solid black;
+    height: 123px;
+    line-height: 120px;
+}
+
+.boxRight {
+    border-left: 1px solid black;
+}
+
+    .boxRight > p {
+        margin-left: 30px;
+    }

@@ -1,0 +1,101 @@
+﻿@using ProductionApp.Models
+@model List<PROC_GET_OUTPUT_BY_WL_Result>
+@{
+    ViewBag.Title = "Location";
+}
+@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+             <small>Worklot Scanned Case</small>
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+@using (Html.BeginForm("MisMatchWhProd","Report", FormMethod.Post))
+{
+<div class="portlet box gray">
+    <div class="portlet-title">
+
+    </div>
+    <div class="portlet-body ">    
+        <div class="row margin-bottom-10 margin-top-20" id="DivShowData">
+            <div class="row">
+                <div class="table-responsive" style="align-items:center">
+                    <table class="table table-striped table-bordered table-hover align-center" style="width:70%;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">No.</th>
+                                <th style="text-align:center">Worklot</th>
+                                <th style="text-align:center">Multi WL</th>
+                                <th style="text-align:center">Case ID</th>
+                                <th style="text-align:center">Style</th>
+                                <th style="text-align:center">Color</th>
+                                <th style="text-align:center">Size</th>
+                                <th style="text-align:center">Quantity</th>
+                                <th style="text-align:center">GroupName</th>
+                                <th style="text-align:center">Date Scan</th>
+                                <th style="text-align:center">User Scan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            @if(Model != null)
+                            {
+                                double total = 0;
+                                for (int i = 0; i < Model.Count; i++)
+                                {
+                                    total += Convert.ToDouble(Model[i].QUANTITY/ Model[i].MultiWL_Qty);
+                                    <tr>
+                                        <td>@(i+1)</td>
+                                        <td>@Model[i].WL_ID</td>
+                                        <td>@Model[i].MultiWL_Qty</td>
+                                        <td>@Model[i].LABEL_ID</td>
+                                        <td>@Model[i].STYLE</td>
+                                        <td>@Model[i].COLOR</td>
+                                        <td>@Model[i].SIZE</td>
+                                        <td>@( Convert.ToDouble(Model[i].QUANTITY / Model[i].MultiWL_Qty).ToString("#.##")) </td>
+                                        @*@(((Model[i].QUANTITY/Model[i].MultiWL_Qty) * 100).ToString("#.##"))%*@
+                                        <td>@Model[i].GROUP_NAME</td>
+                                        <td>@Model[i].TS_2</td>
+                                        <td>@Model[i].TS_2_USER</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="7" style="text-align:right; font:bold 12px arial; background-color:lightsteelblue">TOTAL: </td>
+                                    <td colspan="1" style="text-align:center; font:bold 12px arial; background-color:lightsteelblue">@total.ToString("#.##")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+</div>
+}
+
+@section Scripts {
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/themes/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/themes/assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <script src="~/Content/themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+}

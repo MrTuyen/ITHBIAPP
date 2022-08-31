@@ -1,0 +1,1009 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+
+}
+@model dynamic
+
+@section styles{
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <style>
+        .css1 {
+            background-color: #66CC99;
+        }
+
+        .css2 {
+            background-color: #99CCFF;
+        }
+
+        .css3 {
+            background-color: #FFCC99;
+        }
+
+        .css4 {
+            background-color: #FF9999;
+        }
+
+        .css5 {
+            background-color: #E8E8E8;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        .muccha, .muccon {
+            text-align: left;
+        }
+
+
+        .muccha {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .muccon {
+            background-color: #C6E2FF;
+        }
+
+        .tieude {
+            background-color: #fff;
+        }
+
+        .muccon1 {
+            margin-left: 30px;
+            font-weight: bold;
+        }
+
+        .hiddenRow {
+            padding: 0 !important;
+        }
+
+        .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid #000;
+        }
+
+        .table > thead:first-child > tr:first-child > th {
+            border: 1px solid #000;
+            text-align: center;
+        }
+
+        table {
+            width: auto;
+        }
+
+        .cssRotate {
+            margin-bottom: 20px;
+            margin-left: 0px;
+            -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+            font-weight: normal;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .cssRotate1 {
+            margin-bottom: 20px;
+            margin-left: 0px;
+            -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .table-bordered > tbody > tr > td {
+            text-align: left;
+        }
+
+        .page-content {
+            width: 2500px
+        }
+
+        .title {
+            margin-top: -10px;
+        }
+
+        .showmore {
+            font-weight: bold;
+        }
+
+        img {
+            display: none;
+            width: 30px;
+            height: 30px;
+            margin: 0px;
+        }
+
+        .form-control {
+            display: inline;
+            width: 90%
+        }
+
+        .glyphicon {
+            display: inline;
+        }
+
+        .btnreport {
+            margin-bottom: 20px;
+        }
+
+        #suatt {
+            margin-left: 300px;
+        }
+
+        .cssMonthRow {
+            background-color: antiquewhite;
+        }
+
+        #thongbao {
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            margin-left: 700px;
+        }
+    </style>
+}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var table = document.getElementById("tableId");
+
+        var state = 0;
+        $("#check").click(function () {
+
+            if (state == 0) {
+                $('#the').removeClass("fa-angle-double-down");
+                $('#the').addClass('fa-angle-double-up');
+                state = 1;
+            } else if (state == 1) {
+                $('#the').removeClass("fa-angle-double-up");
+                $('#the').addClass('fa-angle-double-down');
+                state = 0;
+            }
+
+            // for(var i =0; i<=  table.rows.length; i++){
+            // 	var c= "#demo"+i;
+            // 	console.log(c);
+            // 	document.getElementById("check").style.href = c;
+            // }
+
+
+        });
+    })
+</script>
+
+
+<div>
+    <h3 class="title"><b>MANAGEMENT OF TRAINING COURSES</b></h3>
+    <div class="row">
+        <div class="col-md-2">
+            <button type="button" class="btn btn-danger btnreport" id="upload" data-toggle="modal" data-target="#modalUpload">Upload File</button>
+        </div>
+        <div class="col-md-4" id="thongbao">
+
+        </div>
+        <div class="col-md-6"></div>
+
+    </div>
+    <table class="table table-bordered " id="tableId" style="border-collapse:collapse;">
+        <thead>
+            <tr class="css5">
+                <th colspan="8" class="tieude">
+                    <h4><b>Hbi KIM DONG Training Plan</b></h4>
+                    <p>
+                        R = Required, ■ = Delivery time,   Version 1: Updated Jan, CY19
+                    </p>
+                </th>
+                <th colspan="5">Target Category</th>
+                <th rowspan="4"> <p class="cssRotate1">Estimated Pax </p></th>
+                <th rowspan="4"> <p class="cssRotate1">Duration</p></th>
+                <th rowspan="4"> <p class="cssRotate1">Total Hour</p></th>
+                <th colspan="12">Timeline</th>
+                <th rowspan="3">Year</th>
+                <th rowspan="3">Cost</th>
+                <th rowspan="3">Explanation</th>
+                <th rowspan="3">Update</th>
+            </tr>
+            <tr class="css5">
+                <th rowspan="2">No.</th>
+                <th rowspan="2" colspan="2">Course name</th>
+                <th rowspan="2">Trainer</th>
+                <th colspan="2">Type</th>
+                <th rowspan="2">Requested</th>
+                <th rowspan="2">Target Audience</th>
+                <th rowspan="3" class="css1 "><p class="cssRotate1">Direct</p></th>
+                <th rowspan="3" class="css2 "><p class="cssRotate1">Indirect</p></th>
+                <th rowspan="3" class="css3 "><p class="cssRotate1">Office staff</p></th>
+                <th rowspan="3" class="css4 "><p class="cssRotate1">Supervisor</p></th>
+                <th rowspan="3" class="css5 "><p class="cssRotate1">Manager</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">January</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">February</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">March</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">April</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">May</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">Jun</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">July</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">August</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">September</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">October</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">November</p></th>
+                <th rowspan="3" class="cssMonthRow"><p class="cssRotate">December</p></th>
+            </tr>
+            <tr class="css5">
+
+                <th>Internal</th>
+                <th>External</th>
+
+            </tr>
+            <tr></tr>
+
+        </thead>
+        <tbody id="tbodyData">
+            <tr>
+                <td colspan="35" class="muccha">A. Mandatory training</td>
+            </tr>
+            <tr>
+                <td colspan="35" class="muccon"><span class="muccon1">I. New Hire Orientation</span></td>
+            </tr>
+            @{ var n = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "A" && p.Level2 == "I")
+                {
+                    n = n + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@n</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Jan
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Feb
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Mar
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Apr
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.May
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Jun
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Jul
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Aug
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Sep
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Oct
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Nov
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Dec
+                        </td>
+                        <td>@p.Year</td>
+                        <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                        @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                        <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="35" class="muccon"><span class="muccon1">II. Compliance</span></td>
+            </tr>
+            @{ var a = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "A" && p.Level2 == "II")
+                {
+                    a = a + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@a</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Jan
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Feb
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Mar
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Apr
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.May
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Jun
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Jul
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Aug
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Sep
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Oct
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Nov
+                        </td>
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @p.Dec
+                        </td>
+                        <td>@p.Year</td>
+                        <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                        @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                        <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="35" class="muccon"><span class="muccon1">III. Refresh training</span></td>
+            </tr>
+            @{ var b = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "A" && p.Level2 == "III")
+                {
+                    b = b + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@b</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @*@if (p.Jan == "T")
+                        {<i class='fas fa-stop' style='font-size:10px'></i>}
+                        else { }*@ @p.Jan
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Feb
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Mar
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Apr
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.May
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jun
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jul
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Aug
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Sep
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Oct
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Nov
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Dec
+                    </td>
+                    <td>@p.Year</td>
+                    <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                    @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                    <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                </tr>
+            }
+        }
+            <tr>
+                <td colspan="35" class="muccha">B. Leadership/ Management/ Soft skills</td>
+            </tr>
+            <tr>
+                <td colspan="35" class="muccon"><span class="muccon1">I. Entry Leadership Program (ELP)*</span></td>
+            </tr>
+            @{ var c = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "B" && p.Level2 == "I")
+                {
+                    c = c + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@c</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @*@if (p.Jan == "T")
+                        {<i class='fas fa-stop' style='font-size:10px'></i>}
+                        else { }*@ @p.Jan
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Feb
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Mar
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Apr
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.May
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jun
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jul
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Aug
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Sep
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Oct
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Nov
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Dec
+                    </td>
+                    <td>@p.Year</td>
+                    <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                    @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                    <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                </tr>
+            }
+        }
+            <tr>
+                <td colspan="35" class="muccon"><span class="muccon1">II. Professional Leadership Program (PLP)*</span></td>
+            </tr>
+            @{ var dem = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "B" && p.Level2 == "II")
+                {
+                    dem = dem + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@dem</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @*@if (p.Jan == "T")
+                        {<i class='fas fa-stop' style='font-size:10px'></i>}
+                        else { }*@ @p.Jan
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Feb
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Mar
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Apr
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.May
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jun
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jul
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Aug
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Sep
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Oct
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Nov
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Dec
+                    </td>
+                    <td>@p.Year</td>
+                    <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                    @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                    <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                </tr>
+            }
+        }
+            <tr>
+                <td colspan="35" class="muccon"><span class="muccon1">III. Professional skills 101 *</span></td>
+            </tr>
+            @{ var e = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "B" && p.Level2 == "III")
+                {
+                    e = e + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@e</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @*@if (p.Jan == "T")
+                        {<i class='fas fa-stop' style='font-size:10px'></i>}
+                        else { }*@ @p.Jan
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Feb
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Mar
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Apr
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.May
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jun
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jul
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Aug
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Sep
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Oct
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Nov
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Dec
+                    </td>
+                    <td>@p.Year</td>
+                    <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                    @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                    <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                </tr>
+            }
+        }
+            <tr>
+                <td colspan="35" class="muccon"><span class="muccon1">IV. Others</span></td>
+            </tr>
+            @{ var f = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "B" && p.Level2 == "IV")
+                {
+                    f = f + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@f</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @*@if (p.Jan == "T")
+                        {<i class='fas fa-stop' style='font-size:10px'></i>}
+                        else { }*@ @p.Jan
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Feb
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Mar
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Apr
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.May
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jun
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jul
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Aug
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Sep
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Oct
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Nov
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Dec
+                    </td>
+                    <td>@p.Year</td>
+                    <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                    @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                    <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                </tr>
+            }
+        }
+            <tr>
+                <td colspan="35" class="muccha">C.  Functional/Technical & Manufacturing Training</td>
+            </tr>
+
+            @{ var k = 0; }
+            @foreach (HR_Training_Plan p in Model.Course)
+            {
+
+                if (p.Level1 == "C" && p.Level2 == "I")
+                {
+                    k = k + 1;
+                    <tr class="clickable" data-toggle="collapse" id="table2" data-target=".table2">
+                        <td>@k</td>
+                        <td colspan="2">@p.CourseName</td>
+                        <td>@p.Trainer</td>
+
+                        <td>
+                            @if (p.Internal == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>
+                            @if (p.External == "T")
+                            {<i class='fas fa-check' style='font-size:20px;color:red'></i>}
+                            else { }
+                        </td>
+                        <td>@p.Category</td>
+                        <td>@p.TargetAudience</td>
+                        <td class="css1">@p.Direct</td>
+                        <td class="css2">@p.Indirect</td>
+                        <td class="css3">@p.OfficeStaff</td>
+                        <td class="css4">@p.Supervisor</td>
+                        <td class="css5">@p.Manager</td>
+                        <td>@p.EstimatedPax</td>
+                        <td>@p.Duration</td>
+                        <td>@p.TotalHours</td>
+
+
+                        <td contenteditable="true" class="cssMonthRow ">
+                            @*@if (p.Jan == "T")
+                        {<i class='fas fa-stop' style='font-size:10px'></i>}
+                        else { }*@ @p.Jan
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Feb
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Mar
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Apr
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.May
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jun
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Jul
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Aug
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Sep
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Oct
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Nov
+                    </td>
+                    <td contenteditable="true" class="cssMonthRow ">
+                        @p.Dec
+                    </td>
+                    <td>@p.Year</td>
+                    <td>$@p.Cost</td>
+                        <td contenteditable="true">@p.Explanation</td>
+                    @*<td><button type="button" class="btn btn-danger" onclick='getInfor("@p.id")'>Details</button></td>*@
+                    <td><button type="button" class="btn btn-danger" onclick='SaveChanges("@p.id")'>Save</button></td>
+                </tr>
+            }
+        }
+            <tr>
+                <td colspan="14"><span class="muccon1"><b>Total</b></span></td>
+                <td><b>@ViewBag.duration</b></td>
+                <td><b>@ViewBag.totalHour</b></td>
+                <td colspan="13"></td>
+                <td><b>$@ViewBag.cost</b></td>
+                <td colspan="2"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalUpload" role="dialog">
+        <div class="modal-dialog">
+
+            @using (Html.BeginForm("UploadCourse", "TrainingCourse", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {<!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                    </div>
+                    <div class="modal-body">
+                        <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="Submit" class="btn btn-primary" value="Submit" />
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <!-- End Modal -->
+
+</div>
+
+
+<script>
+
+    function SaveChanges(id) {
+        var table = document.getElementById("tableId"), rIndex;
+        for (var i = 1; i < table.rows.length; i++) {
+            table.rows[i].onclick = function () {
+                rIndex = this.rowIndex;
+                var Jan = table.rows[rIndex].cells[15].innerHTML.trim();
+                var Feb = table.rows[rIndex].cells[16].innerHTML.trim();
+                var Mar = table.rows[rIndex].cells[17].innerHTML.trim();
+                var Apr = table.rows[rIndex].cells[18].innerHTML.trim();
+                var May = table.rows[rIndex].cells[19].innerHTML.trim();
+                var Jun = table.rows[rIndex].cells[20].innerHTML.trim();
+                var Jul = table.rows[rIndex].cells[21].innerHTML.trim();
+                var Aug = table.rows[rIndex].cells[22].innerHTML.trim();
+                var Sep = table.rows[rIndex].cells[23].innerHTML.trim();
+                var Oct = table.rows[rIndex].cells[24].innerHTML.trim();
+                var Nov = table.rows[rIndex].cells[25].innerHTML.trim();
+                var Dec = table.rows[rIndex].cells[26].innerHTML.trim();
+                var Explanation = table.rows[rIndex].cells[29].innerHTML.trim();
+                // console.log(month1, month2);
+                if ((Jan == "X" || Jan == "") && (Feb == "X" || Feb == "") && (Mar == "X" || Mar == "") && (Apr == "X" || Apr == "") && (May == "X" || May == "")
+                    && (Jun == "X" || Jun == "") && (Jul == "X" || Jul == "") && (Aug == "X" || Aug == "") && (Sep == "X" || Sep == "") && (Oct == "X" || Oct == "") && (Nov == "X" || Nov == "")
+                    && (Dec == "X" || Dec == "")) {
+                    $.post("/TrainingCourse/EditCourse", {
+                        id: id, Jan: Jan, Feb: Feb, Mar: Mar, Apr: Apr, May: May, Jun: Jun, Jul: Jul, Aug: Aug, Sep: Sep, Oct: Oct, Nov: Nov, Dec: Dec, Explanation: Explanation
+                    }, function (data) {
+                        //alert(data.msg);
+                        //window.location.assign("/TrainingCourse/Index");
+                        $("#thongbao").html("");
+                        document.getElementById("thongbao").style.backgroundColor = "#99ff99";
+                        $("#thongbao").append("Sửa thông tin thành công!");
+                    });
+                 
+                }
+                else {
+                    $("#thongbao").html("");
+                    document.getElementById("thongbao").style.backgroundColor = "#ffb3b3";
+                    $("#thongbao").append("Vui lòng nhập X vào 12 cột tháng cho các khóa học đã đào tạo!");
+                    //$("#thongbao").append("Vui lòng nhập T hoặc F vào 12 cột tháng! (T: True / F: False)");
+                }
+            }
+        }
+    }
+
+</script>
+

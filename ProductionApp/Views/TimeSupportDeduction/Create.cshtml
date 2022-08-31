@@ -1,0 +1,142 @@
+﻿@{ ViewBag.Title = "Đăng ký thời gian hỗ trợ/ Support Time Request"; }
+@using ProductionApp.Models
+@{
+    var user = (TBL_USERS_MST)ViewData["user"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    //var app = (OL_User_Approver)ViewData["app"];
+
+    //var item = (TBL_SYSTEM)ViewData["item"];
+
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Đăng ký thời gian hỗ trợ/ Support Time Request
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<div class="message" id="mss">@Html.Raw(TempData["msg"])</div>
+<!-- END PAGE HEADER-->
+@using(Html.BeginForm("Create" ,"TimeSupportDeduction" ,FormMethod.Post ,new {
+    enctype = "multipart/form-data"
+})) {
+
+    <div id="info3">
+       
+        <div class="row">
+            @*<div class="col-md-2">
+                <div class="form-group">
+                    <label>Requester Name</label>
+                    <br />
+                    <input type="text" name="name" value="@user.FULLNAME" readonly class="form-control" />
+                    <input type="text" name="mail" value="@user.EMAIL" readonly class="form-control" />
+                </div>
+            </div>*@
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Superintendent</label>
+                    <br />
+                    <select name="" class="form-control" id="" onchange="SuperintendentChange(this.value)">
+                        <option value="-1" selected="selected" disabled="disabled" class="Italic ">Chọn quản đốc</option>
+                        @foreach(TDS_UserApprover item in ViewBag.proSup) {
+                            <option value="@item.id">@item.FullName</option>
+                        }
+                    </select>
+                    <input type="hidden" name="Superintendent" value="" id="Superintendent" />
+                    <input type="text" name="SuperintendentMail" value="" id="SuperintendentMail" readonly class="form-control" />
+                    
+                    <input type="hidden" name="name" value="@user.FULLNAME" readonly class="form-control" />
+                    <input type="hidden" name="mail" value="@user.EMAIL" readonly class="form-control" />
+
+                    
+                   @* <input type="hidden" name="SuperintendentMail" value="" id="SuperintendentMail" />*@
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Line Manager</label>
+                    <br />
+                    <input type="text" name="approver" value="" id="approver" readonly class="form-control" />
+                    <input type="text" name="approverMail" value="" id="approverMail" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Operation Manager</label>
+                    <br />
+                    <input type="text" name="opsManager" value="" id="opsManager" readonly class="form-control" />
+                    <input type="text" name="opsManagerMail" value="" id="opsManagerMail" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>HR C&B</label>
+                    <br />
+                    <input type="text" name="HRCB" value="@ViewBag.hrsup.FullName" id="HRCB" readonly class="form-control" />
+                    <input type="text" name="HRCBMail" value="@ViewBag.hrsup.Email" id="HRCBMail" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Authorized by HR Manager</label>
+                    <br />
+                    <input type="text" name="HRMgr" value="@ViewBag.hrMgr.FullName" id="approver" readonly class="form-control" />
+                    <input type="text" name="HRMgrMail" value="@ViewBag.hrMgr.Email" id="approverMail" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Payroll Sup</label>
+                    <br />
+                    <input type="text" name="payroll" value="@ViewBag.payroll.FullName" id="approver" readonly class="form-control" />
+                    <input type="text" name="payrollMail" value="@ViewBag.payroll.Email" id="approverMail" readonly class="form-control" />
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-5">
+                <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" id="UploadedFile" /></p>
+            </div>
+            <div class="col-md-3" style="margin-top: 20px;">
+                <input type="Submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </div>
+       
+    </div>
+}
+@section scripts
+{
+
+    <script>
+       // $(document).ready(function() {
+
+            function SuperintendentChange(id) {
+             
+                $.get("/TimeSupportDeduction/LoadLineMgr/",
+                    { id: id },
+                    function (data) {
+                        //console.log(data);
+                        $("#approver").val(data.ApproverName);
+                        $("#approverMail").val(data.ApproverEmail);
+                        $("#Superintendent").val(data.EmpName);
+                        $("#SuperintendentMail").val(data.EmpEmail);
+
+                        $("#opsManager").val(data.operName);
+                        $("#opsManagerMail").val(data.operMail);
+                    });
+            }
+
+      //  })
+
+    </script>
+
+}
+
+
+

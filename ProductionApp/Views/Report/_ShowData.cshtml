@@ -1,0 +1,70 @@
+﻿@using ProductionApp.Models;
+@model List<PROC_DAILY_REPORT_Result>
+    <div class="row">
+        <div class="table-responsive" style="align-items:center">
+            <table class="table table-striped table-bordered table-hover align-center" style="width:70%;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">No.</th>
+                        <th style="text-align:center">Plant</th>
+                        <th style="text-align:center">Work Shop</th>
+                        <th style="text-align:center">Total Case</th>
+                        <th style="text-align:center">Total Quantity</th>
+                        @*<th style="text-align:center">Detail</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+
+                        @if (Model.Count > 0)
+                        {
+                            for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>@(i+1)</td>
+                                    <td>@Model[i].PLANT_ID</td>
+                                    <td class="WS">@Model[i].NAME <label class="lblWID" hidden="hidden">@Model[i].WSHOP_ID</label></td>
+                                    <td>@Model[i].TOTAL_CASE</td>
+                                    <td>@Model[i].TOTAL_QTY</td>
+                                    @*<td><a href="~/Report/" name="download" class="dload btn btn-xs purple"><i class="fa fa-download"></i> Download</a></td>*@
+                                    @*<td style="white-space: nowrap">
+                                            <a href="~/edit" name="editbtn" class="btn btn-xs purple"><i class="fa fa-edit"></i> Edit</a>
+                                            <a href="~/delete" name="deletebtn" class="btn btn-xs red"><i class="fa fa-trash-o"></i> Delete</a>
+                                        </td>*@
+                                </tr>
+                            }
+                            <tr><td colspan="6" align="right"><input type="submit" name="export" id="export" value="Export To Excel" class="btn purple fa fa-download" /></td></tr>
+                        }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+       @*jQuery(document).ready(function () {
+        $("a.dload").click(function (e) {
+            //e.preventDefault();
+            var date = $('#txtDate').val();
+            var $row = $(this).closest("tr");
+            var $wID = $row.find(".lblWID").text();
+            var url = 'localhost:55404/report/exportExcel/datestr=' + date + '?ws=' + $wID;
+            //var windowSize = $this.data("popup");
+            window.open(url, '', "width=200,height=200");
+            @*$.ajax({
+                type: 'GET',
+                url: '@Url.Content("/Report/ExportExcel/")',
+                cache: false,
+                data: { datestr: date, ws: $wID },
+                success: function (response, status, XHR) {
+                    //window.open('data:application/vnd.ms-excel');
+                    //e.preventDefault();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //window.open('data:application/vnd.ms-excel');
+                    //e.preventDefault();
+                    //alert('Cannot');
+                }
+           });
+        });
+    });*@
+</script>

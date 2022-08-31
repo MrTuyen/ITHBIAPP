@@ -1,0 +1,192 @@
+﻿@{
+    ViewBag.Title = "PR_Request";
+}
+
+@using ProductionApp.Models
+
+@{string status = ViewBag.Status;}
+
+<h3 style="text-align: center;margin-bottom: 40px;">DANH SÁCH ĐĂNG KÝ ĐỔI CA</h3>
+<a class="btn btn-primary btn-sm" href="@Url.Action("ShiftChange", "ShiftChange")" style="margin-bottom: 10px">Upload Request</a>
+
+@if(ViewBag.per > 1) {
+    <a href="#" class="btn btn-primary btn-sm" style="text-align: right; margin-bottom: 10px" data-toggle="modal" data-target="#ExportRequest">Export Request</a>
+}
+@*@if(ViewBag.per > 1) {
+    <a href="#" class="btn btn-primary btn-sm" style="text-align: right; margin-bottom: 10px" data-toggle="modal" data-target="#myModal2">Export Pending Request</a>
+}*@
+
+
+@*<span>@(status == null ? "" : status.ToString())</span>*@
+<div id="ExportRequest" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Xuất file Excel</h5>
+            </div>
+            <form action="@Url.Action("ExportRequest" ,"ShiftChange")" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12"><p>Từ ngày:<input type="text" name="date" id="txtFromDate" class="form-control  isdate" autocomplete="off" required> </p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"><p>Đến ngày:<input type="text" name="date1" id="txtToDate" class="form-control  isdate" autocomplete="off" required> </p></div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info" value="Thực Hiện" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@*<span>@(status == null ? "" : status.ToString())</span>
+<div id="myModal2" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Xuất file Excel</h5>
+            </div>
+            <form action="@Url.Action("Export2", "ShiftChange")" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12"><p>Từ ngày:<input type="text" name="date" id="txtFromDate" class="form-control  isdate" autocomplete="off" required> </p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"><p>Đến ngày:<input type="text" name="date1" id="txtToDate" class="form-control  isdate" autocomplete="off" required> </p></div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info" value="Thực Hiện" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>*@
+
+
+
+<div>
+    <div class="message" id="mss">@Html.Raw(TempData["msg"])</div>
+    <table class="table table-bordered">
+        <tr style="background-color:#f5f5f5;border:1px solid #ddd">
+            <th>No#</th>
+            <th>Dept</th>
+            <th>Create Date</th>
+            <th>ReqName</th>
+            <th>Approve</th>
+            <th>HR Team</th>
+            <th>Detail</th>
+        </tr>
+        <tr>
+
+            @foreach(HR_CS_ShiftChange_Request rq in ViewBag.list ?? new List<HR_CS_ShiftChange_Request>()) {
+
+            <tr style="border:1px solid #ddd">
+
+
+                <td>@rq.ID</td>
+                <td>@(rq.TBL_DEPARTMENT_MST == null ? "" : rq.TBL_DEPARTMENT_MST.NAME)</td>
+
+                <td>@string.Format("{0:MM/dd/yyyy}" ,rq.RequestDate)</td>
+                <td>@(rq.TBL_USERS_MST != null ? rq.TBL_USERS_MST.FULLNAME : "")</td>
+
+                @*manager*@
+                @if(rq.Status == 1) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 2 || rq.Status < -2) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                    </td>
+                } else if(rq.Status == -2) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                @* HR *@
+                @if(rq.Status <= 2 && rq.Status >= -2) {
+                    <td>
+                        <span style="color:#ff0000;font-weight:bold">Pending</span>
+                    </td>
+                } else if(rq.Status >= 3 || rq.Status < -3) {
+                    <td>
+                        <span style="color:#5b9b0a;font-weight:bold">Processed</span>
+
+                    </td>
+                } else if(rq.Status == -3) {
+                    <td>
+                        <span style="color: #0000ff; font-weight: bold">Rejected</span>
+                    </td>
+                }
+                <td><a href="@Url.Action("Edit_ShiftChange", "ShiftChange", new { id = rq.ID })" class="btn btn-info">Detail</a></td>
+            </tr>
+            }
+        </table>
+    </div>
+    @*<div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog">
+
+            @using(Html.BeginForm("Upload_ShiftChange" ,"ShiftChange" ,FormMethod.Post ,new { enctype = "multipart/form-data" })) {
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                    </div>
+                    <div class="modal-body">
+                        <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="Submit" class="btn btn-primary" value="Submit" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>*@
+
+    @*<div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h5 class="modal-title">Xuất file Excel</h5>
+                </div>
+                <form action="@Url.Action("Export1", "ShiftChange")" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Ngày bắt đầu</label>
+                            <input type="date" name="date" id="date1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày kết thúc</label>
+                            <input type="date" name="date1" id="date" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <input name="submit1" type="submit" class="btn btn-info" value="Thực Hiện" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>*@
+
+    @section scripts
+{
+        <script>
+            $(document).ready(function () {
+                $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+            });
+        </script>
+    }

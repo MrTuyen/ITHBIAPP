@@ -1,0 +1,426 @@
+﻿@{
+    ViewBag.Title = "Transportation Request";
+}
+@model List<ProductionApp.Models.HR_Tran_Request>
+@{
+    var user = (ProductionApp.Models.UserModels)ViewData["User"];
+    var hr = (user.DeptID == 5 || user.Username.ToLower() == "admin" || user.Username.ToLower() == "hradm") ? "" : "disabled";
+    var listVans = (List<ProductionApp.Models.HR_Tran_Van_MST>)ViewData["ListVan"];
+}
+@section styles{
+    <link href="~/Content/themes/assets/plugins/bootstrap-clockpicker/bootstrap-clockpicker.min.css" rel="stylesheet" />
+    <style>
+     textarea {
+         resize: vertical;
+     }
+
+     .clockpicker-popover {
+         z-index: 99999;
+     }
+
+     .transportation-request-area #formTRReport {
+         width: 300px;
+     }
+
+     .transportation-request-area #txtRDManager, .transportation-request-area #txtRDHrName {
+         width: 260px;
+     }
+
+     .transportation-request-area .modal-footer {
+         border-top: 0;
+     }
+
+     .select2-container--open {
+         z-index: 99999;
+     }
+
+     .select2-container {
+         width: 79.5% !important;
+         padding: 0;
+     }
+
+     .onscrollbar::-webkit-scrollbar {
+         width: 8px;
+         background-color: #dee2e6;
+     }
+    </style>
+}
+
+<div class="transportation-request-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title text-center">
+                <small><strong class="text-uppercase"> yêu cầu phương tiện /transportation request</strong></small>
+            </h3>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="d-none d-sm-block">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 float-left form-inline">
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddRequest"><i class="fa fa-plus"></i> &nbsp;Add</button>
+                            <div class="btn-group btn-filter">
+                                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown">
+                                    <span class="fa fa-download"></span> Report
+                                </button>
+                                <div class="dropdown-menu p-3">
+                                    <form class="form-inline" id="formTRReport">
+                                        <div style="display: flex;">
+                                            <div class="">
+                                                <p class="mb-1">From date</p>
+                                                <input type="text" class="form-control w-100 isDate" id="txtReportFrom" />
+                                            </div>
+                                            <div class="ml-2">
+                                                <p class="mb-1">To date</p>
+                                                <input type="text" class="form-control w-100 isDate" id="txtReportTo" />
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-3 text-right">
+                                            <button type="button" class="btn btn-success btn-sm" onclick="Report()">Download</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-light btn-sm" onclick="Refresh()"><i class="fa fa-refresh"></i>&nbsp;Refresh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body overflow-auto pt-0">
+                    <table class="table table-responsive table-hover table-bordered table-scrollable">
+                        <thead>
+                            <tr>
+                                <th>No#</th>
+                                <th>Mã nhân viên <br /><i>Employee ID</i></th>
+                                <th>Họ tên <br /> <i>Fullname</i></th>
+                                <th>Phòng ban <br /><i>Department</i></th>
+                                <th>Ngày sử dụng <br /><i>Usage date</i></th>
+                                <th>Mục đích <br /><i>Purposes</i></th>
+                                <th>Giờ đi <br /><i>Time</i></th>
+                                <th>Điểm đi <br /><i>Departure</i></th>
+                                <th>Điểm đến <br /><i>Arrival</i></th>
+                                <th>Thông tin xe <br /> <i>Van's info</i></th>
+                                <th>Quản lý <br /><i>Approver</i></th>
+                                <th>Nhân sự <br /><i>HR Team</i></th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transportation-table-body">
+                            @foreach (var item in Model)
+                            {
+                                <tr id="trans-@item.ID">
+                                    <td>#@item.ID</td>
+                                    <td>@item.EmpID</td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.TBL_DEPARTMENT_MST.NAME</td>
+                                    <td>@item.UsageDate</td>
+                                    <td>@item.Purposes</td>
+                                    <td>@item.DepartureTime</td>
+                                    <td>@item.Departure</td>
+                                    <td>@item.Arrival</td>
+                                    <td>
+                                        @{
+                                            var vanInfo = "";
+                                            var van = listVans.Where(x => x.ID == item.Van).FirstOrDefault();
+                                            if (van != null)
+                                            {
+                                                vanInfo = string.Format("Biển số: {0} <br> Tài xế: {1} <br> Điện thoại: {2}", van.NumberPlate, van.DriverName, van.DriverPhone);
+                                            }
+                                        }
+                                        @Html.Raw(vanInfo)
+                                    </td>
+                                    <td id="mgr-@item.ID">
+                                        @if (item.MgrApproved == (int)ProductionApp.Helpers.EnumHelper.Manager_Action.None)
+                                        {
+                                            <label class="text-danger bold">Pending</label>
+                                        }
+                                        else if (item.MgrApproved == (int)ProductionApp.Helpers.EnumHelper.Manager_Action.Approve)
+                                        {
+                                            <label class="text-success bold">Approved</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="text-danger bold">Reject</label>
+                                        }
+                                    </td>
+                                    <td id="hr-@item.ID">
+                                        @if (item.HRApproved == (int)ProductionApp.Helpers.EnumHelper.HR_Action.None)
+                                        {
+                                            <label class="text-danger bold">Pending</label>
+                                        }
+                                        else if (item.HRApproved == (int)ProductionApp.Helpers.EnumHelper.HR_Action.Approve)
+                                        {
+                                            <label class="text-success bold">Approved</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="text-danger bold">Reject</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class='btn btn-primary btn-sm' onclick="GetRequestDetail(@item.ID)">Detail</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal add new request -->
+    <div id="modalAddRequest" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Thêm yêu cầu/ Add Request</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtPurpose">Mục đích/ Purpose</label>
+                            <textarea class="form-control" id="txtPurpose" placeholder="" autofocus autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtUsageDate">Ngày sử dụng/ Usage date</label>
+                            <input type="text" class="form-control isDate" id="txtUsageDate" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtTime">Giờ đi/ Departure time</label>
+                            <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                                <input type="text" class="form-control" id="txtTime" autocomplete="off">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtDeparture">Điểm đi/ Departure</label>
+                            <input type="text" class="form-control" id="txtDeparture" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtArrival">Điểm đến/ Arrival</label>
+                            <input type="text" class="form-control" id="txtArrival" placeholder="" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" onclick="AddNewRequest(event)">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal update request -->
+    <div id="modalUpdateRequest" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Chi tiết yêu cầu/ Request Detail</b></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="txtRequestId" placeholder="">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDEmpId">Mã nhân viên/ Employee Id</label>
+                            <input type="text" class="form-control" id="txtRDEmpId" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDFullname">Họ tên/ Fullname</label>
+                            <input type="text" class="form-control" id="txtRDFullname" placeholder="" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRDPurpose">Mục đích/ Purpose</label>
+                            <textarea class="form-control" id="txtRDPurpose" placeholder="" autofocus disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDUsageDate">Ngày sử dụng/ Usage date</label>
+                            <input type="text" class="form-control isDate" id="txtRDUsageDate" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDTime">Giờ đi/ Departure time</label>
+                            <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                                <input type="text" class="form-control" id="txtRDTime" disabled>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDDeparture">Điểm đi/ Departure</label>
+                            <input type="text" class="form-control" id="txtRDDeparture" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDArrival">Điểm đến/ Arrival</label>
+                            <input type="text" class="form-control" id="txtRDArrival" placeholder="" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDDepartment">Phòng ban/ Department</label>
+                            <input type="text" class="form-control" id="txtRDDepartment" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDManager">Quản lý/ Manager</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control" id="txtRDManager" placeholder="" disabled>
+                                <button class="btn btn-success btnApprove" onclick="Approve()">Approve</button>
+                                <button class="btn btn-danger btnReject" data-toggle="modal" data-target="#modalReason" >Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDVan">Xe/ Van</label>
+                            <div class="form-inline">
+                                <select id="txtRDVan" class="form-control" @hr>
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in (List<ProductionApp.Models.HR_Tran_Van_MST>)ViewData["ListVan"])
+                                    {
+                                        <option value="@item.ID">@item.NumberPlate - @item.DriverName</option>
+                                    }
+                                </select>
+                                <button class="btn btn-light" @hr onclick="BindSelect()"><i class="fa fa-refresh" title="Lấy dữ liệu mới nhất/ Get latest data"></i></button>
+                                <button class="btn btn-light" @hr data-toggle="modal" data-target="#modalVan" onclick="GetListVan()" title="Thêm mới/ Add new"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDHrName">Nhân sự/ HR Team</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control" id="txtRDHrName" placeholder="" disabled>
+                                <button class="btn btn-success" @hr onclick="Process()">&nbsp;Process</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="">Lý do/ Reason</label>
+                            <textarea class="form-control" id="txtRDReason" placeholder="" autofocus disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Van -->
+    <div id="modalVan" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Thông tin xe/ Van Information</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" id="txtVanId" placeholder="">
+                        <div class="form-group col-md-4 pl-0">
+                            <label for="txtNumberPlate">Biển số/ Number plate</label>
+                            <input type="text" class="form-control" id="txtNumberPlate" placeholder="" autofocus autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtDriverName">Tên lái xe/ Driver name</label>
+                            <input type="text" class="form-control" id="txtDriverName" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-4 pr-0">
+                            <label for="txtPhone">Số điện thoại/ Phone number</label>
+                            <input type="text" class="form-control" id="txtPhone" placeholder="" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-light btn-sm" onclick="ClearForm()">Clear</button>
+                        <button class="btn btn-success btn-sm" onclick="AddVan()">Add</button>
+                        <button class="btn btn-success btn-sm" onclick="UpdateVan()">Update</button>
+                    </div>
+                    <div>
+                        <table class="table table-responsive table-hover table-bordered mb-0 mt-3">
+                            <thead>
+                                <tr>
+                                    <th width="29.7%">Biến số/ Number plate</th>
+                                    <th width="29.7%">Tên lái xe/ Driver name</th>
+                                    <th width="29.7%">Số điện thoại/ Phone number</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="onscrollbar" style="height: 165px; overflow: auto;">
+                        <table class="table table-responsive table-hover table-bordered mb-0">
+                            <tbody id="van-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal add reason -->
+    <div id="modalReason" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Reason</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtReason">Name</label>
+                            <input type="text" class="form-control" id="txtReason" placeholder="Reason" autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success btn-sm" onclick="Reject()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script src="~/Content/themes/assets/plugins/bootstrap-clockpicker/bootstrap-clockpicker.min.js"></script>
+
+    <script type="text/javascript">
+
+        var $user = '@user.Email.ToLower()';
+        var $username = '@user.Username.ToLower()';
+
+        $('.clockpicker').clockpicker({
+            placement: 'bottom',
+            align: 'left',
+            donetext: 'Done',
+            default: 'now'
+        });
+    </script>
+
+    <script src="~/Scripts/HBI/Controller/TransportationRequest.js"></script>
+}

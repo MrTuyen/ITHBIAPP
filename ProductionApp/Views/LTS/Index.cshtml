@@ -1,0 +1,340 @@
+﻿@using ProductionApp.Helpers
+@using ProductionApp.Models
+@model List<TBL_LTS_NONREC_LOT_DTO>
+@{
+    ViewBag.Title = "LTS ONLINE";
+    var userLogin=(UserModels)ViewBag.userLogin;
+}
+
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            LTS ONLINE
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box gray">
+
+    @{
+
+        var me = (TBL_LTS_APPROVE)ViewBag.me;
+        if(me != null) {
+            var ls = new List<TBL_LTS_NONREC_LOT_DTO>();
+            switch(me.MemberOf) {
+                case "QD":
+                    ls = Model.Where(a => a.LtsDetails != null && a.LtsDetails.status == 2 && a.LtsDetails.Prod_mail.ToLower() == me.Mail.ToLower()).ToList();
+                    break;
+                case "Manager":
+                    ls = Model.Where(a => a.LtsDetails != null && a.LtsDetails.status == 3 && a.LtsDetails.PM_mail.ToLower() == me.Mail.ToLower()).ToList();
+                    break;
+                case "KhoTam":
+                    ls = Model.Where(a => a.LtsDetails != null && a.LtsDetails.status == 4 && a.LtsDetails.Odd_mail.ToLower() == me.Mail.ToLower()).ToList();
+                    break;
+                case "Finance":
+                    ls = Model.Where(a => a.LtsDetails != null && a.LtsDetails.status == 5 && a.LtsDetails.IA_mail.ToLower() == me.Mail.ToLower()).ToList();
+                    break;
+                default:
+                    ls = Model.Where(a => a.LtsDetails != null && a.LtsDetails.CreateBy.ToLower() == userLogin.Email.ToLower()).ToList();
+                    break;
+            }
+            <div class="panel panel-default">
+                <div class="panel-heading">Pending </div>
+                <div class="panel-body">
+                    <table id="tbltspending" class="table table-striped table-bordered table-hover align-center" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Loc_Name</th>
+                                <th style="text-align: center">Asst_WL</th>
+                                <th style="text-align: center">Asst_SKU</th>
+                                <th style="text-align: center">Selling_Style</th>
+                                <th style="text-align: center">Size</th>
+                                <th style="text-align: center">Rec_Qty</th>
+                                <th style="text-align: center">FQ_Qty</th>
+                                <th style="text-align: center">LTS</th>
+                                <th style="text-align: center">Pending</th>
+                                <th style="text-align: center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in ls) {
+                                //  var link = item.LtsDetails == null || item.LtsDetails.status <= 0 ? " ShowCompWL('" + item.Asst_WL + "')" : "";
+                                var mail = "";
+                                //if(item.LtsDetails != null && item.LtsDetails.status > 0) {
+                                var link = "/lts/Ltsapprove?ltsid=" + item.LtsDetails.ID + "";
+                                //2:Quản Đốc pendding| -2 quản đốc reject
+                                //3:Trưởng BP pendding| -3 Trưởng BP reject
+                                //4:Kho tạm  pendding| -4 Kho tạm reject
+                                //5:Kế Toán  pendding| -5 Kế Toán reject
+                                //6 done
+                                switch(item.LtsDetails.status) {
+                                    case 2:
+                                        mail = "Quản đốc: " + item.LtsDetails.Prod_mail;
+                                        break;
+                                    case 3:
+                                        mail = "Trưởng BP: " + item.LtsDetails.PM_mail;
+                                        break;
+                                    case 4:
+                                        mail = "Kho tạm: " + item.LtsDetails.Odd_mail;
+                                        break;
+                                    case 5:
+                                        mail = "Kế toán: " + item.LtsDetails.IA_mail;
+                                        break;
+                                }
+                                // }
+
+                                <tr>
+
+                                    <td class="text-center">@item.Loc_Name</td>
+                                    <td class="text-center">@item.Asst_WL</td>
+                                    <td class="text-center">@item.Asst_SKU</td>
+                                    <td class="text-center">@item.Selling_Style</td>
+                                    <td class="text-center">@item.Size</td>
+
+                                    <td class="text-center">@item.Rec_Qty</td>
+                                    <td class="text-center">@item.FQ_Qty</td>
+                                    <td class="text-center">@(item.LTS)%</td>
+                                    <td class="text-center">@mail</td>
+                                    <td class="text-center" style="color: red"><a href="@link">Detail</a></td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        } else {
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">List LTS</div>
+                <div class="panel-body">
+
+                    <div class="row margin-bottom-10">
+                        <div class="col-md-2   col-xs-12 ">
+                            Group/ Tổ:
+                            <select class="form-control search-select" id="GROUP_ID" name="GROUP_ID" onchange="location.href = '/lts/index?groupId=' + this.value;">
+                                <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                                @foreach(var item in ViewBag.Group as List<TBL_GROUP_MST>) {
+                                    <option @(ViewBag.fgroupId == item.GROUP_ID ? "selected" : "") value="@item.GROUP_ID">@item.GROUP_NAME</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <table id="tblts" class="table table-striped table-bordered table-hover align-center" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Loc_Name</th>
+                                <th style="text-align: center">Asst_WL</th>
+                                <th style="text-align: center">Asst_SKU</th>
+                                <th style="text-align: center">Selling_Style</th>
+                                <th style="text-align: center">Size</th>
+
+                                <th style="text-align: center">Rec_Qty</th>
+                                <th style="text-align: center">FQ_Qty</th>
+                                <th style="text-align: center">LTS</th>
+                                <th style="text-align: center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(Model != null) {
+                                var ls1 = Model.Where(a => a.LtsDetails == null);
+                                foreach(var item in ls1) {
+
+                                    <tr>
+                                        <td class="text-center">@item.Loc_Name</td>
+                                        <td class="text-center">@item.Asst_WL</td>
+                                        <td class="text-center">@item.Asst_SKU</td>
+                                        <td class="text-center">@item.Selling_Style</td>
+                                        <td class="text-center">@item.Size</td>
+
+                                        <td class="text-center">@item.Rec_Qty</td>
+                                        <td class="text-center">@item.FQ_Qty</td>
+                                        <td class="text-center">@(item.LTS)%</td>
+                                        @if(item.LTS != 100) {
+                                            <td class="text-center" style="color: red"><input type="button" onclick="Confirm('@item.Asst_WL')" value="Điều chỉnh" class="btn btn-primary" /></td>
+                                        } else {
+                                            <td class="text-center" style="color: red"><input type="button" onclick="ShowCompWL('@item.Asst_WL')" value="Xác nhận" class="btn btn-success" /></td>
+                                        }
+                                    </tr>
+                                }
+                            } else {
+                                <tr>
+                                    <td colspan="10" class="text-left"><i>There are no data records to display!</i></td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        }
+
+    }
+</div>
+<div id="modal"></div>
+
+@section styles {
+    <style>
+        #tblts tr {
+            /*cursor: pointer;*/
+        }
+    </style>
+
+}
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#GROUP_ID').select2();
+        });
+
+        function ShowCompWL(Asst_WL) {
+            App.blockUI($("#tblts"));
+            $.ajax({
+                url: "/LTS/LoadCompByAsst",
+                data: { Asst_WL: Asst_WL },
+                success: function (data) {
+                    $('#modal').html(data);
+                    App.unblockUI($("#tblts"));
+                },
+                error: function () {
+                    App.unblockUI($("#tblts"));
+                }
+            });
+        }
+
+        var ltsprocess = false;
+
+        function LTSonBlur() {
+            App.blockUI($("#tbcomwl"));
+            ChangeLTS();
+        }
+
+        function LTSonChange() { if (ltsprocess == false) ChangeLTS(); }
+
+        function ChangeLTS() {
+            ltsprocess = true;
+            var request = "";
+            $('#tbcomwl tbody tr').each(function (index, elem) {
+                Comp_WL = $(this).data('value');
+                request += (request == "" ? "" : "|") +
+                    Comp_WL +
+                    ";" +
+                    document.getElementById("Odd-" + Comp_WL).value +
+                    ";" +
+                    document.getElementById("IRR-" + Comp_WL).value +
+                    ";" +
+                    document.getElementById("ThrowOut-" + Comp_WL).value +
+                    ";" +
+                    document.getElementById("Sample-" + Comp_WL).value;
+            });
+
+            $.ajax({
+                url: "/ScanCase/LoadRate",
+                data: {
+                    Asst_WL: Asst_WL,
+                    Rec_Qty: Rec_Qty,
+                    FQ_Qty: FQ_Qty,
+                    requestLTS: request
+                },
+                success: function (data) {
+                    $('#rate').html(data + "%");
+                    App.unblockUI($("#tbcomwl"));
+                    ltsprocess = false;
+                },
+                error: function () {
+                    App.unblockUI($("#tbcomwl"));
+                }
+            });
+
+        }
+
+
+        function LtsSubmit() {
+            if (!confirm('Bạn chắc chắn muốn gửi yêu cầu?')) return false;
+            var supApprove = document.getElementById("SupApprove").value;
+            if (supApprove == "-1") {
+                alert("Chưa nhập thông tin quản đốc");
+                return false
+            }
+
+            var request = "";
+            App.blockUI($("#tbcomwl"));
+            $('#tbcomwl tbody tr').each(function (index, elem) {
+                Comp_WL = $(this).data('value');
+                request += (request == "" ? "" : "|") +
+                    Comp_WL +
+                    ";" +
+                    document.getElementById("Odd-" + Comp_WL).value +
+                    ";" +
+                    document.getElementById("IRR-" + Comp_WL).value +
+                    ";" +
+                    document.getElementById("ThrowOut-" + Comp_WL).value +
+                    ";" +
+                    document.getElementById("Sample-" + Comp_WL).value;
+
+
+            });
+
+            $.ajax({
+                url: "/ScanCase/LtsSubmit",
+                data: {
+                    Approve: supApprove,
+                    Asst_WL: Asst_WL,
+                    Rec_Qty: Rec_Qty,
+                    FQ_Qty: FQ_Qty,
+                    requestLTS: request
+                },
+                success: function (data) {
+                    alert(data);
+                    window.location.reload();
+                },
+                error: function () {
+                    App.unblockUI($("#tbcomwl"));
+                }
+            });
+
+        }
+        function LtsConfirm() {
+            if (!confirm('Bạn chắc chắn muốn xác nhận?')) return false;
+
+            var request = "";
+            var request = "";
+            App.blockUI($("#tbcomwl"));
+            $('#tbcomwl tbody tr').each(function (index, elem) {
+                Comp_WL = $(this).data('value');
+                request += (request == "" ? "" : "|") + Comp_WL;
+
+
+            });
+            App.blockUI($("#tbcomwl"));
+            $.ajax({
+                url: "/ScanCase/LtsConfirm",
+                data: {
+                    Asst_WL: Asst_WL,
+                    Rec_Qty: Rec_Qty,
+                    FQ_Qty: FQ_Qty,
+                    requestLTS: request
+                },
+                success: function (data) {
+                    alert(data);
+                    window.location.reload();
+                },
+                error: function () {
+                    App.unblockUI($("#tbcomwl"));
+                }
+            });
+
+        }
+
+    </script>
+}

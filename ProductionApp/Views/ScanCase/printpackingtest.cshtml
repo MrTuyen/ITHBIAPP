@@ -1,0 +1,350 @@
+﻿
+
+
+                    <div class="col-md-12">
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                                <h3 class="page-title">
+                                    Print Packing List
+                                </h3>
+                                <!-- END PAGE TITLE & BREADCRUMB-->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8" style="border-right: 1px solid #d3d3d3">
+                                <div class="panel panel-default" id="panel-option">
+                                    <div class="panel-heading">Option Packing</div>
+                                    <div class="panel-body">
+                                        <form class="" id="frm-option" method="get">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <span class="col-input">Group:</span>
+                                                    <select class="form-control search-select" id="GROUP_ID" name="GROUP_ID" onchange="GetWLByGroup(this.value)">
+                                                        <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                                                        <option selected value="56">A1</option>
+                                                        <option value="57">A2</option>
+                                                        <option value="58">A3</option>
+                                                        <option value="59">A4</option>
+                                                        <option value="60">A5</option>
+                                                        <option value="61">A6</option>
+                                                        <option value="62">B1</option>
+                                                        <option value="63">B2</option>
+                                                        <option value="64">B3</option>
+                                                        <option value="65">B4</option>
+                                                        <option value="66">B5</option>
+                                                        <option value="67">B6</option>
+                                                        <option value="74">D1</option>
+
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span class="col-input">WL:</span>
+                                                    <select class="form-control search-select" id="wlId" name="wlId" onchange="">
+                                                        <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                                                        <option value="9512134601">9512134601</option>
+                                                        <option value="9512134901">9512134901</option>
+                                                        <option selected value="9512135801">9512135801</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <span class="col-input"></span>
+                                                    <input type="submit" name="" class="btn btn-primary" value="Load" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">List Packing in WL <span style="font-weight: bold" id="viewWlID">#9512135801</span></div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table id="" class="tbl-packing  table table-active table-disabled table-bordered table-hover align-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">No</th>
+                                                            <th class="text-center">Label ID</th>
+                                                            <th class="text-center">Ngày </th>
+                                                            <th class="text-center">Ca </th>
+                                                            <th class="text-center">Nhóm hàng </th>
+                                                            <th class="text-center">Line </th>
+                                                            <th class="text-center"> Style </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">1</td>
+                                                            <td class="text-center">95B245005</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">2</td>
+                                                            <td class="text-center">95B245006</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">3</td>
+                                                            <td class="text-center">95B245007</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">4</td>
+                                                            <td class="text-center">95B245008</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">5</td>
+                                                            <td class="text-center">95B245009</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">6</td>
+                                                            <td class="text-center">95B245010</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">7</td>
+                                                            <td class="text-center">95B245011</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr class='disabled'>
+                                                            <td class="text-center">8</td>
+                                                            <td class="text-center">95B245012</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr data-value='95B245013' data-qty='28' title='Chọn/ Bỏ chọn'>
+                                                            <td class="text-center">9</td>
+                                                            <td class="text-center">95B245013</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr data-value='95B245014' data-qty='28' title='Chọn/ Bỏ chọn'>
+                                                            <td class="text-center">10</td>
+                                                            <td class="text-center">95B245014</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr data-value='95B245015' data-qty='28' title='Chọn/ Bỏ chọn'>
+                                                            <td class="text-center">11</td>
+                                                            <td class="text-center">95B245015</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr data-value='95B245016' data-qty='28' title='Chọn/ Bỏ chọn'>
+                                                            <td class="text-center">12</td>
+                                                            <td class="text-center">95B245016</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+                                                        <tr data-value='95B245017' data-qty='28' title='Chọn/ Bỏ chọn'>
+                                                            <td class="text-center">13</td>
+                                                            <td class="text-center">95B245017</td>
+                                                            <td class="text-center">03/09/2020</td>
+                                                            <td class="text-center">PM </td>
+                                                            <td class="text-center">US-BRA</td>
+                                                            <td class="text-center">A1 </td>
+                                                            <td class="text-center"> PHW507     </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>             <div class="panel panel-default">
+                                    <div class="panel-heading">List Packing in WL <span style="font-weight: bold" id="viewWlID">#Odd</span></div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table id="" class="tbl-packing  table table-active table-disabled table-bordered table-hover align-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">No</th>
+                                                            <th class="text-center">Label ID</th>
+                                                            <th class="text-center">Ngày </th>
+                                                            <th class="text-center">Ca </th>
+                                                            <th class="text-center">Nhóm hàng </th>
+                                                            <th class="text-center">Line </th>
+                                                            <th class="text-center"> Style </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="border-left: 1px solid #d3d3d3">
+                                <div id="panel-save" class="panel panel-default">
+                                    <div class="panel-heading">Print</div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <span class="col-input">Carton:</span>
+                                                <select id="Carton" class="form-control" onchange="  $('#tbl-print #CartonID').html(this.value);">
+                                                    <option value="-1" selected="selected" disabled="disabled" class="Italic">Chose / Chọn .....</option>
+                                                    <option value="AC6088">AC6088</option>
+                                                    <option value="AC6089">AC6089</option>
+                                                    <option value="AC6090">AC6090</option>
+                                                    <option value="AC6240">AC6240</option>
+                                                    <option value="AC6245">AC6245</option>
+                                                    <option value="AC6317">AC6317</option>
+                                                    <option value="AC6318">AC6318</option>
+                                                    <option value="EC0058">EC0058</option>
+                                                    <option value="EC0059">EC0059</option>
+
+
+                                                </select>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <span class="col-input"></span>
+                                                <input type="button" id="btn-pdf" name="" class="btn btn-success" value="(1)Save to PDF" />
+                                                <input type="button" id="btn-print" name="" class="btn btn-primary" value="(2)Print" />
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="panel-print" class="panel panel-default" style="background: #f2f6f9">
+                                    <div class="panel-body">
+                                        <table id="tbl-print" style="max-width: 259px; border: 2px solid #333; font-size: 12px; border-spacing: 0; border-collapse: collapse; background: #fff;font-family: arial">
+                                            <tr>
+
+                                                <td style="width: 10%;  font-weight: bold; border: 1px solid #444; padding: 5px 2px">PACKING LIST</td>
+                                                <td style="width: 25%; border: 1px solid #444; padding: 5px 2px;font-weight: bold">
+                                                    <span style="font-size: 18px">HANES</span>
+                                                    <span style="font-size: 11px">Brands Inc</span>
+                                                </td>
+                                                <td colspan="2" style="width: 65%; font-weight: bold;    border: 1px solid #444; padding: 5px 2px; font-size: 11px">
+                                                    HYC-F-SEW-001<br />
+                                                    Lần sửa đổi/rev: 00<br />
+                                                    Ngày sửa đổi/revised:<br />
+                                                    10/10/2020<br />
+                                                    Trang/Page: 1/1
+                                                </td>
+                                            </tr>
+                                            <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px; text-align: center"> <img src="data:image/png;base64,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" /></td></tr>
+                                            <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Số pallet:</span> 20016281</td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Tuần:</span> 36</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">WL:</span> 9512135801</td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Ngày:</span> 03/09/2020</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Size:</span> XL        </td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Tổ:</span> A1-2</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Màu:</span> 100       </td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">WC:</span> US-BRA</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã bán hàng:</span> MHW507    </td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Số thùng xuất: </span><span id="QtyCarton"></span> </td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã sản xuất:</span> PHW507    </td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã thùng: </span><span id="CartonID"></span> </td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px"><span style="  font-weight: bold;">Mã đóng gói:</span> PHW507    </td></tr>
+                                            <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Số Case Chạy</td></tr>
+                                            <tr><td style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold; text-align: center">STT</td><td style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold; text-align: center">Item</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold; text-align: center">Qty(dz)</td></tr>
+
+
+
+
+                                            <tr id="lastItem"><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Total</td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;font-weight: bold;text-align: center" id="sum">0</td></tr>
+                                            <tr><td colspan="4" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Ký xác nhận(Ghi rõ họ tên)</td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Tổ trưởng <br /><br /><br /><br /></td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Nhân viên đóng gói<br /><br /><br /><br /></td></tr>
+                                            <tr><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Nhân viên QA<br /><br /><br /><br /></td><td colspan="2" style="   border: 1px solid #444; padding: 5px 2px;text-align:center;  font-weight: bold;">Nhân viên kho<br /><br /><br /><br /></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <style>
+                            #tbl-print {
+                                margin: 0 auto;
+                            }
+                        </style>
+
+
+                    </div>
+          
+
+@section scripts
+{
+    
+
+
+<script>
+
+
+    $('#btn-print').on('click',
+        function () {
+
+
+            var printed = "tbl-print";
+            var tableToPrint = document.getElementById(printed);
+            var newWin = window;
+            newWin.document.write(tableToPrint.outerHTML);
+            newWin.focus();
+            newWin.print();
+            newWin.close();
+            location.reload();
+
+
+
+        });
+
+
+
+
+
+</script>
+
+
+
+
+}
+

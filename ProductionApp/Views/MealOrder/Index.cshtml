@@ -1,0 +1,343 @@
+﻿@{
+    //ViewBag.Title = "Meals Order";
+}
+@model List<ProductionApp.Models.HR_Meals_Order>
+@{
+    var user = (ProductionApp.Models.UserModels)ViewData["User"];
+    var hr = (user.DeptID == 5 || user.Username.ToLower() == "admin" || user.Username.ToLower() == "hradm") ? "" : "disabled";
+    var shift = (List<ProductionApp.Models.TBL_SHIFT_MST>)ViewData["Shift"];
+}
+@section styles{
+    <style>
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+    .meal-order-area .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+     textarea {
+         resize: vertical;
+     }
+
+     .clockpicker-popover {
+         z-index: 99999;
+     }
+
+     .meal-order-area #formTRReport {
+         width: 300px;
+     }
+
+     .meal-order-area .modal-footer {
+         border-top: 0;
+     }
+
+    </style>
+}
+
+<div class="meal-order-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title text-center">
+                <small><strong class="text-uppercase"> đề nghị suất ăn/ meal order</strong></small>
+            </h3>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="d-none d-sm-block">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 float-left form-inline">
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddRequest"><i class="fa fa-plus"></i> &nbsp;Add</button>
+                            <div class="btn-group btn-filter">
+                                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown">
+                                    <span class="fa fa-download"></span> Report
+                                </button>
+                                <div class="dropdown-menu p-3">
+                                    <form class="form-inline" id="formTRReport">
+                                        <div style="display: flex;">
+                                            <div class="">
+                                                <p class="mb-1">From date</p>
+                                                <input type="text" class="form-control w-100 isDate" id="txtReportFrom" />
+                                            </div>
+                                            <div class="ml-2">
+                                                <p class="mb-1">To date</p>
+                                                <input type="text" class="form-control w-100 isDate" id="txtReportTo" />
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-3 text-right">
+                                            <button type="button" class="btn btn-success btn-sm" onclick="Report()">Download</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-light btn-sm" onclick="Refresh()"><i class="fa fa-refresh"></i>&nbsp;Refresh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body overflow-auto pt-0">
+                    <table class="table table-responsive table-hover table-bordered table-scrollable">
+                        <thead>
+                            <tr>
+                                <th>No#</th>
+                                <th>Mã nhân viên <br /><i>Employee ID</i></th>
+                                <th>Họ tên <br /> <i>Fullname</i></th>
+                                <th>Phòng ban <br /><i>Dept</i></th>
+                                <th>Ca làm việc <br /><i>Shift</i></th>
+                                <th>SL suất ăn <br /><i>Qty of meals</i></th>
+                                <th>SL bánh sữa <br /><i>Qty of milk</i></th>
+                                <th>SL nước <br /><i>Qty of water</i></th>
+                                <th>Tổng SL <br /><i>Total</i></th>
+                                <th>Nhân sự <br /><i>HR Team</i></th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mealorder-table-body">
+                            @foreach (var item in Model)
+                            {
+                                <tr id="meal-@item.ID">
+                                    <td>#@item.ID</td>
+                                    <td>@item.EmpID</td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.TBL_DEPARTMENT_MST.NAME</td>
+                                    <td>@item.TBL_SHIFT_MST.NAME</td>
+                                    <td>@item.QtyMeal</td>
+                                    <td>@item.QtyMilk</td>
+                                    <td>@item.QtyWater</td>
+                                    <td>@(item.QtyMeal + item.QtyMilk + item.QtyWater)</td>
+                                    <td id="hr-@item.ID">
+                                        @if (item.HRApproved == (int)ProductionApp.Helpers.EnumHelper.HR_Action.None)
+                                        {
+                                            <label class="text-danger bold">Pending</label>
+                                        }
+                                        else if (item.HRApproved == (int)ProductionApp.Helpers.EnumHelper.HR_Action.Approve)
+                                        {
+                                            <label class="text-success bold">Approved</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="text-danger bold">Reject</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class='btn btn-primary btn-sm' onclick="GetRequestDetail(@item.ID)">Detail</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal add new request -->
+    <div id="modalAddRequest" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Thêm yêu cầu/ Add Request</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtShift">Ca làm việc/ Shift</label>
+                            <select class="form-control" id="txtShift">
+                                @foreach (var item in shift)
+                                {
+                                    <option value="@item.SHIFT_ID">@item.NAME</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtQtyMeal">Số lượng suất ăn/ Quantity of meals</label>
+                            <input type="number" class="form-control" id="txtQtyMeal" min="0" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtQtyMilk">Số lượng bánh sữa/ Quantity of milk cakes</label>
+                            <input type="number" class="form-control" id="txtQtyMilk" min="0" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtAttachMilk">Tệp đính kèm bánh sữa/ Milk cakes attachment file</label>
+                            <table class="w-100">
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <div class="upload-btn-wrapper">
+                                                        <button class="btn btn-light">Upload a file</button>
+                                                        <input type="file" name="UploadedFile" id="fileMilkUpload" onchange="UploadFile(Enum_Type.Milk)" accept=".xlsx, .xls, .docx, .doc, .pdf" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>File: </td>
+                                                <td><span class="label label-warning ml-3 fileUploadNameMilk"></span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtQtyWater">Số lượng nước/ Quantity of water</label>
+                            <input type="number" class="form-control" id="txtQtyWater" min="0" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtArrival">Tệp đính kèm nước/ Water attachment file</label>
+                            <table class="w-100">
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <div class="upload-btn-wrapper">
+                                                        <button class="btn btn-light">Upload a file</button>
+                                                        <input type="file" name="UploadedFile" id="fileWaterUpload" onchange="UploadFile(Enum_Type.Water)" accept=".xlsx, .xls, .docx, .doc, .pdf" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>File: </td>
+                                                <td><span class="label label-warning ml-3 fileUploadNameWater"></span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" onclick="AddNewRequest(event)">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal update request -->
+    <div id="modalUpdateRequest" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Chi tiết yêu cầu/ Request Detail</b></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="txtRequestId" placeholder="">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDEmpId">Mã nhân viên/ Employee Id</label>
+                            <input type="text" class="form-control" id="txtRDEmpId" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDFullname">Họ tên/ Fullname</label>
+                            <input type="text" class="form-control" id="txtRDFullname" placeholder="" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDDepartment">Phòng ban/ Department</label>
+                            <input type="text" class="form-control" id="txtRDDepartment" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDShift">Ca làm việc/ Shift</label>
+                            <div class="form-inline">
+                                <select id="txtRDShift" class="form-control" @hr>
+                                    @foreach (var item in shift)
+                                    {
+                                        <option value="@item.SHIFT_ID">@item.NAME</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDQtyMilk">Số lượng bánh sữa/ Quantity of milk cake</label>
+                            <input type="text" class="form-control" id="txtRDQtyMilk" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">File bánh sữa đính kèm/ Attachment file of milk cake</label>
+                            <div style="height: 34px; padding-top: 4px;" id="txtMilkFilePath">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDQtyWater">Số lượng nước/ Quantity of water</label>
+                            <input type="text" class="form-control" id="txtRDQtyWater" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">File nước đính kèm/ Attachment file of water</label>
+                            <div style="height: 34px; padding-top: 4px;" id="txtWaterFilePath">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDQtyMeal">Số lượng suất ăn/ Quantity of meal</label>
+                            <input type="text" class="form-control" id="txtRDQtyMeal" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDQtyTotal">Tổng số lượng/ Total</label>
+                            <input type="text" class="form-control" id="txtRDQtyTotal" placeholder="" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRDHrName">Nhân sự/ HR Team</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control" id="txtRDHrName" placeholder="" disabled style="width: 79.5%">
+                                <button class="btn btn-success" @hr onclick="Process()">&nbsp;Process</button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRDComment">Ghi chú/ Comment</label>
+                            <input type="text" class="form-control" id="txtRDComment" placeholder="" @hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        var $user = '@user.Email.ToLower()';
+        var $username = '@user.Username.ToLower()';
+    </script>
+    <script src="~/Scripts/HBI/Controller/MealOrderController.js"></script>
+}

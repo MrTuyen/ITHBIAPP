@@ -1,0 +1,47 @@
+﻿@using ProductionApp.Models
+@model List<ProductionApp.Models.HR_ABN_Items>
+
+
+@if(Model != null) {
+    var i = 2;
+    var db = new MyContext();
+    foreach(var item in Model) {
+
+        <tr>
+            <td class="text-left">@item.Division</td>
+            <td class="text-left">@( db.TBL_DEPARTMENT_MST.Find(item.DeptID).NAME).</td>
+            <td class="text-left">@item.Shift</td>
+            <td class="text-left">@item.Line</td>
+            <td class="text-left">@item.EmpID</td>
+            <td class="text-left">@item.Name</td>
+            <td class="text-left">@item.Operation</td>
+            <td>@string.Format("{0:MM/dd/yyyy}" ,item.uploaddate)</td>
+            <td class="text-left">@item.ShiftStart</td>
+            <td class="text-left">@item.ActualStart</td>
+            <td class="text-left">@item.ShiftEnd</td>
+            <td class="text-left">@item.ActualEnd</td>
+            <td class="text-left">@item.Late</td>
+            <td class="text-left">@item.Soon</td>
+            <td class="text-left">@item.Abnormal</td>
+            @*<td class="text-left tddatepicker" data-td="RequestChangeStart" data-rindex="@i" data-cindex="11" data-empid="@item.EmpID" data-id="@(item.EmpID + "-" + i + "-11")" @Html.Raw("contenteditable=\"false\" placeholder='Enter text here...'")>@Html.Raw(item.RequestChangeStart)</td>
+                <td class="text-left tddatepicker" data-td="RequestChangeEnd" data-rindex="@i" data-cindex="12" data-empid="@item.EmpID" data-id="@(item.EmpID + "-" + i + "-12")" @Html.Raw("contenteditable=\"false\" placeholder=\"Enter text here...\"")>@Html.Raw(item.RequestChangeEnd)</td>*@
+
+
+            <td class="text-left" @Html.Raw("contenteditable='true' placeholder='Enter text here...'")><input autocomplete="off" class=" form-control" id="@(item.EmpID + "-" + item.ID + "-" + i + "-11")" value="@item.RequestChangeStart" onblur="EditItem('@item.EmpID','RequestChangeStart',@i,11 ,@item.ID)" style="display: block;width: 65px;" maxlength="5" /></td>
+            <td class="text-left" @Html.Raw("contenteditable=\"true\" placeholder=\"Enter text here...\"")><input autocomplete="off" class=" form-control" id="@(item.EmpID + "-" + item.ID + "-" + i + "-12")" value="@item.RequestChangeEnd" onblur="EditItem('@item.EmpID','RequestChangeEnd',@i,12,@item.ID)" style="display: block;width: 65px;" maxlength="5" /></td>
+            <td class="text-left" @Html.Raw("contenteditable=\"false\" placeholder=\"Enter text here...\"")><input required autocomplete="off" class=" form-control" id="@(item.EmpID + "-" + item.ID + "-" + i + "-13")" value="@item.Reason" onblur="EditItem('@item.EmpID', 'Reason', @i, 13,@item.ID)" placeholder='Enter text here...' style="display: block;width: auto;" /></td>
+
+            @*<td class="text-left"  @Html.Raw(" onblur =\"EditItem('" + item.EmpID + "','RequestChangeStart'," + i + ",11)\" contenteditable='true' placeholder='Enter text here...'" )>@Html.Raw(item.RequestChangeStart)</td>
+                <td class="text-left" @Html.Raw(" onblur =\"EditItem('" + item.EmpID + "','RequestChangeEnd'," + i + ",12)\" contenteditable=\"true\" placeholder=\"Enter text here...\"")>@Html.Raw(item.RequestChangeEnd)</td>
+                <td class="text-left" @Html.Raw(" onblur =\"EditItem('" + item.EmpID + "','Reason'," + i + ",13)\" contenteditable=\"true\" placeholder=\"Enter text here...\"" )>@Html.Raw(item.Reason)</td>*@
+
+
+            <td class="text-left">@Html.Raw("<button type=\"button\" class=\"btn  btn-danger\" onclick='Remove(\"" + item.ID + "\")'>Xóa</button>")</td>
+
+        </tr>
+        i++;
+    }
+
+}
+
+

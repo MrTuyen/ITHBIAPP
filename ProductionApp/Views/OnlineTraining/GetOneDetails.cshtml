@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "GetOneDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductionApp.Models;
+@model dynamic
+
+@section styles{
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+    <style>
+        td, th {
+            padding: 9px 18px;
+        }
+
+        .hidden_table {
+            display: none;
+        }
+
+
+        .rowUpload {
+            margin-bottom: 20px;
+        }
+
+        #thongbao {
+            width: 960px;
+            margin: 10px 0px 10px 16px;
+            font-weight: bold;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .cssIdAnswer {
+            display: none;
+        }
+    </style>
+}
+
+<h3 class="title"><b>Management Details Of The Question</b></h3>
+<div class="row rowUpload">
+    <div class="col-md-10"> </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalUpload"><span class="glyphicon glyphicon-open"></span> Upload Answers</button>
+    </div>
+
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><b>The detail information of the question</b></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-2">  <h5><b>Khóa đào tạo:</b></h5></div>
+            <div class="col-md-8">
+                <select id="CourseID" style="width: 955px; height: 40px; line-height: 40px; margin-bottom: 20px">
+                    @foreach (var p in (List<HR_Training_Plan>)Model.Course)
+                        {
+                        <option value="@p.id">@p.CourseName</option>
+                        }
+
+                    </select>
+            </div>
+            <div class="col-md-2">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-2">  <h5><b>Câu hỏi</b></h5></div>
+            <div class="col-md-8">
+                @foreach (var p in (List<HR_Question>)Model.Question)
+                    {
+                    <textarea name="editor1" id="ContentQuestion" rows="10" cols="80">@p.Content</textarea>
+                    <script>
+                        CKEDITOR.replace('ContentQuestion');
+                    </script>
+                    }
+            </div>
+            <div class="col-md-2">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-2"><h5><b>Đáp án</b></h5></div>
+            <div class="col-md-7" id="thongbao"></div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <table class="table table-bordered" id="tableId">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" onclick="for(c in document.getElementsByName('CheckDeleteQuestionID')) document.getElementsByName('CheckDeleteQuestionID').item(c).checked = this.checked" /> Select All</th>
+                            <th>STT</th>
+                            <th>Nội dung</th>
+                            <th>Đáp án đúng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var n = 0; }
+                        @if (Model.ds != null)
+                        {
+                        foreach (var p in (List<DetailQuestion>
+    )Model.ds)
+    {
+    n = n + 1;
+    <tr contenteditable="true">
+        <td><input type="checkbox" name="CheckDeleteQuestionID" value="@p.AnswerID" /> </td>
+        <td>@n</td>
+        <td class="cssIdAnswer">@p.AnswerID</td>
+        <td>@p.ContentAns</td>
+        @if (p.State.ToString() == "1")
+        {
+        <td><input type="checkbox" checked id="AnswerCheck_@p.AnswerID" onclick="upDateEditState(@p.AnswerID, @p.QuestionID, @p.State)" /> </td>
+        }
+        else
+        {
+        <td><input type="checkbox" id="AnswerCheck_@p.AnswerID" onclick="upDateEditState(@p.AnswerID, @p.QuestionID, @p.State)" /> </td>
+        }
+
+    </tr>
+    }
+    }
+</tbody>
+                    <tfoot>
+                        <tr>
+                            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#DeleteAll"><span class="glyphicon glyphicon-trash"></span> Xóa</button></td>
+                            <td colspan="3"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <br>
+                <button type="button" class="btn btn-success" onclick="savedata(@ViewBag.maacauhoi)"><span class="glyphicon glyphicon-save"></span> Save changes</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalUpload" role="dialog">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("UploadAnswer", "OnlineTraining", new { @id = ViewBag.maacauhoi }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                    @*<input type="hidden" id="btnIDQuestion" name="btnIDQuestion" />*@
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<!-- End Modal -->
+<!-- Modal -->
+<div class="modal fade" id="DeleteAll" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Xác nhận</b></p>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa các đáp án đã tích chọn không?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger " data-dismiss="modal">Không</button>
+                <button type="button" class="btn btn-info " data-dismiss="modal" onclick=" DeleteAllAnswer(@ViewBag.maacauhoi)">Có</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Modal -->
+
+<script>
+    var macauhoi = @ViewBag.maacauhoi;
+    $.get("/OnlineTraining/getCourseByQuestion", { macauhoi: macauhoi }, function (data) {
+        console.log(data);
+        $("#CourseID").val(data[0].CourseID);
+    });
+
+    function checkedAll() {
+        checkboxes = document.getElementsByName('CheckDeleteQuestionID');
+        for (var checkbox in checkboxes) {
+            checkbox.checked
+            alert(checkbox.value);
+        }
+    }
+
+    function upDateEditState(AnswerID, QuestionID, State) {
+        $.ajax({
+            url: "/OnlineTraining/UpdateEditState",
+            data: { AnswerID: AnswerID, QuestionID: QuestionID, State: State },
+            dataType: 'json',
+            method: "get",
+            success: function (data) {
+                $("#thongbao").html("");
+                document.getElementById("thongbao").style.backgroundColor = "#99ff99";
+                $("#thongbao").append(data.msg);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                $("#thongbao").html("");
+                document.getElementById("thongbao").style.backgroundColor = "#ffb3b3";
+                $("#thongbao").append(data.msg);
+            }
+        });
+    }
+    function savedata(QuestionID) {
+        var CourseID = document.getElementById("CourseID").value;
+        var getContentQues = document.getElementById("ContentQuestion").value;
+        var ContentQuestion = CKEDITOR.instances.ContentQuestion.document.getBody().getText();
+
+        var table = document.getElementById("tableId");
+        for (var i = 1; i < table.rows.length - 1; i++) {
+            var AnswerID = table.rows[i].cells[2].innerHTML.trim();
+            var ContentAnswer = table.rows[i].cells[3].innerHTML.trim();
+
+            $.ajax({
+                url: "/OnlineTraining/UpdateQuestionAnswer",
+                data: { QuestionID: QuestionID, CourseID: CourseID, ContentQuestion: ContentQuestion, AnswerID: AnswerID, ContentAnswer: ContentAnswer },
+                dataType: 'json',
+                method: "POST",
+                success: function (data) {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                }
+            });
+        }
+        $("#thongbao").html("");
+        document.getElementById("thongbao").style.backgroundColor = "#99ff99";
+        $("#thongbao").append("Edited the question information successfully!");
+    }
+
+    function DeleteAllAnswer(idQuestion) {
+        var checkbox = document.getElementsByName('CheckDeleteQuestionID');
+        var result = "";
+        var dem = 0;
+        for (var i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked === true) {
+                dem = dem+1;
+                AnswerID = $.trim(checkbox[i].value);;
+                $.ajax({
+                    url: "/OnlineTraining/DeletetAnswer",
+                    data: { AnswerID: AnswerID },
+                    dataType: 'json',
+                    method: "get",
+                    success: function (data) {
+                       
+                       
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + ": " + errorThrown + "____" + jqXHR);
+                    }
+                });
+            }
+
+        }
+       
+        if (dem == 0) {
+            $("#DeleteAll").modal("hide");
+            alert("Không có câu nào được chọn");
+        }
+        else {
+            alert("Deleted successfully!");
+            window.location.assign("/OnlineTraining/GetOneDetails/" + idQuestion);
+        }
+    }
+
+</script>

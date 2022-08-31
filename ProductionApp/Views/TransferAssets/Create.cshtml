@@ -1,0 +1,189 @@
+﻿@using ProductionApp.Models
+@{
+    var userLogin = (UserModels)ViewBag.userLogin;
+    var appManager =(TBL_USERS_MST)ViewBag.appManager ?? new TBL_USERS_MST();
+    var appFinace =(GRC_UserApprove)ViewBag.appFinace ?? new GRC_UserApprove();
+    var appHR =(GRC_UserApprove)ViewBag.appHR ?? new GRC_UserApprove();
+    var appFac =(GRC_UserApprove)ViewBag.appFac ?? new GRC_UserApprove();
+}
+
+@{
+    ViewBag.Title = "Asset Transfer";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            Asset Transfer
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12"><p id="uploadmss" class="message">@Html.Raw(ViewBag.mss)</p> </div>
+</div>
+@using(Html.BeginForm("Create" ,"TransferAssets" ,FormMethod.Post ,new { enctype = "multipart/form-data" ,id = "fr-upload" })) {   <!-- Modal content-->
+    <div class="panel panel-default" id="panel1" style="max-width: 1336px;margin: 0 auto">
+        <div class="panel-heading">Detail</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Tên người chuyển/Full Name:</span>
+                    <input type="text" readonly="" class="form-control" value="@userLogin.Fullname" />
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Bộ phận/Department:</span>
+                    <input type="text" readonly="" class="form-control" value="@userLogin.TBL_DEPARTMENT_MST.NAME" />
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <span class="col-input">Tên tài sản/ Assets name:</span>
+                    <input type="text" name="Detail" class="form-control" required="" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <span class="col-input">Địa chỉ/Address:</span>
+                    <input type="text" name="Address" class="form-control" required="" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Ngày Chuyển/Date:</span>
+                    <input type="text" name="TransferDate" id="txtToDate" class="form-control  isdate" autocomplete="off" required>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Số lượng/Quantity:</span>
+                    <input type="number" name="Quantity" class="form-control" value="" required="" />
+                </div>
+                <div class="col-md-10 col-xs-12">
+                    <span class="col-input">Upload list(if exist)/Tải danh sách(nếu có):</span>
+                    <input type="file" name="UploadedFile" accept=".xlsx, .xls" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Đơn vị tính/Unit:</span>
+                    <input type="text" name="Unit" class="form-control" required="" />
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <span class="col-input">Chuyển tạm thời/Temporary transfer:</span>
+                    <div class="checkbox  checkbox-primary checkbox-inline">
+                        <input id="TemporaryTransfer" name="Temporary" type="checkbox" onchange="fnTemporaryTransfer(this.checked)">
+                        <label for="TemporaryTransfer">Chuyển tạm thời/Temporary transfer</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="TemporaryTransferDate">
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Từ ngày/Start date:</span>
+                    <input type="text" name="TemporaryStart" id="txtToDate" class="form-control  isdate" autocomplete="off">
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <span class="col-input">Đến ngày/End date:</span>
+                    <input type="text" name="TemporaryEnd" id="txtToDate" class="form-control  isdate" autocomplete="off">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <span class="col-input">Tài sản nội bộ/Internal Transfer:</span>
+                    <div class="checkbox  checkbox-primary checkbox-inline">
+                        <input id="InternalAssets" name="InternalAssets" type="checkbox" onchange="ApproveBy(this.checked)">
+                        <label for="InternalAssets">Tài sản nội bộ/Internal Transfer</label>
+                    </div>
+
+                </div>
+            </div><hr />
+            <div class="row">
+                <div class="col-md-4 col-xs-12 text-center">
+                    <span class="col-input">Approved by:</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-xs-12 text-center">
+                    <span style="font-weight: bold">Manager</span><br />
+                    <span style="font-style: italic">@appManager.FULLNAME</span>
+                </div>
+                <div id="ApproveBy">
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <span style="font-weight: bold">Finance Manager</span><br />
+                        <span style="font-style: italic">@appFinace.FullName</span>
+                    </div>
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <span style="font-weight: bold">HR Manager</span><br />
+                        <span style="font-style: italic">@appHR.FullName</span>
+                    </div>
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <span style="font-weight: bold">Plant Manager</span><br />
+                        <span style="font-style: italic">@appFac.FullName</span>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <span class="col-input"></span>
+                    <input type="submit" value="SUBMIT" class="btn btn-info" />
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+
+@section styles
+{
+    <style>
+        #TemporaryTransferDate {
+            display: none;
+        }
+    </style>
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+
+
+        });
+
+        function fnTemporaryTransfer(checked) {
+            if (checked) {
+                $('#TemporaryTransferDate').show();
+            }
+            else
+                $('#TemporaryTransferDate').hide();
+
+        }
+
+        function ApproveBy(checked) {
+            if (checked) {
+                $('#ApproveBy').hide();
+            }
+            else
+                $('#ApproveBy').show();
+
+        }
+    </script>
+}

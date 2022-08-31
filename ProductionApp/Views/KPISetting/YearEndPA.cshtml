@@ -1,0 +1,558 @@
+﻿
+@{
+    ViewBag.Title = "YearEndPA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductionApp.Models;
+@model dynamic
+@{
+    UserModels user = (UserModels)Session["SignedInUser"];
+
+}
+
+@section styles{
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+        .name {
+            font-weight: bold;
+        }
+
+        .Firstpart {
+            margin-bottom: 30px;
+        }
+
+        .calculateKPI {
+            background-color: antiquewhite;
+        }
+
+        .tblKPISetting, tr, th, td {
+            border: 1px solid #000;
+        }
+
+        .marginTable {
+            margin-top: -15px;
+        }
+
+        #tblRating1 {
+            margin-bottom: -10px;
+        }
+
+        #tblRating2 {
+            margin-bottom: 0px;
+        }
+
+        .showStar {
+            text-align: center;
+        }
+
+        .iconStar {
+            color: orange;
+            margin-right: 13px;
+        }
+
+        .comment {
+            height: 40px;
+            line-height: 40px;
+            background-color: #ddd;
+            margin-left: 14px;
+            width: 1483px;
+        }
+
+        .firstbox {
+            border: 1px solid black;
+            margin-bottom: 20px;
+        }
+
+        .titleKPI {
+            font-family: 'Times New Roman';
+            font-size: 40px;
+            text-align: center;
+            font-weight: bold;
+            height: 110px;
+            line-height: 110px;
+        }
+
+        .boxLeft {
+            border-right: 1px solid black;
+            height: 123px;
+            line-height: 120px;
+        }
+
+        .boxRight {
+            border-left: 1px solid black;
+        }
+
+            .boxRight > p {
+                margin-left: 30px;
+            }
+
+        .Calbonus {
+            background-color: yellow
+        }
+
+        .cssColEdit {
+            background-color: #f1f1f1;
+        }
+    </style>
+}
+<div class="container-fluid firstbox">
+    <div class="col-md-2 boxLeft">
+        <img src="~/img/HBI.jpg" />
+    </div>
+    <div class="col-md-8"><p class="titleKPI"> PERFORMANCE APPRAISAL YEAR</p></div>
+    <div class="col-md-2 boxRight">
+        <p>HYS-F-HR-023</p>
+        <p>Revision:  02</p>
+        <p>Date of revision:4/2/2020</p>
+        <p>Page: 1/1</p>
+
+    </div>
+</div>
+
+    <div class="panel panel-default">
+        <input type="hidden" id="username" value="@user.Username" />
+        <input type="hidden" id="EmpID" />
+        <input type="hidden" id="ManagerID" />
+        <input type="hidden" id="EvaluatorID" />
+        <input type="hidden" id="EvaluatorEmail" />
+        <input type="hidden" id="ManagerEmail" />
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>I. EMPLOYEE DATA</b></div>
+        <div class="panel-body">
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    ID-FullName:
+                </div>
+                <div class="col-md-3"><span id="txtMa"></span> - <span id="txtIDName"></span></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Superior/ Evaluator:
+                </div>
+                <div class="col-md-3"><span id="txtEvaluator"></span></div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    Department:
+                </div> <div class="col-md-3"><span id="DepartmentID"></span></div>
+
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Manager:
+                </div>
+                <div class="col-md-3"><span id="txtManager"></span></div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    Position:
+                </div>
+                <div class="col-md-3"><span id="txtPosition"></span></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Evaluation period:
+                </div>
+                <div class="col-md-3">
+                    <select id="showYear" onchange="loadYear(value)" ></select>
+                    <input type="hidden" id="txtTest" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>II. KPI Result</b></div>
+        <div class="panel-body">
+
+            <div class="row marginTable">
+
+                <table class="table  tblKPISetting" id="tableId" onclick="loadData()" onkeyup="Sum()">
+                    <tbody id="list">
+                        <tr>
+                            <td colspan="13"><b>1. Achievement of Individual KPIs</b></td>
+                        </tr>
+                        <tr style="background-color:#ddd">
+                            <th rowspan="2">No.</th>
+                            <th rowspan="2">KPI Items</th>
+                            <th rowspan="2">Quater KPI</th>
+                            <th colspan="4" class="MonthCol">KPI Results (%)</th>
+                            <th rowspan="2">Quarter  KPI Result (%)</th>
+                            <th rowspan="2">KPI Weight (%)</th>
+                            <th rowspan="2">Actual vs. Target (%)</th>
+                            <th rowspan="2">KPI Bonus (%)</th>
+                            <th rowspan="2">Final Score (%)</th>
+                            <th rowspan="2">Note</th>
+                        </tr>
+                        <tr style="background-color:#ddd">
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+
+                        </tr>
+                        @{var stt = 0;}
+                            @foreach (KPI_Setting KPI in Model.KPISetting)
+                            {
+                                if (KPI.Level == "1")
+                                {
+                                    stt = stt + 1;
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td class="calculateKPI ">@KPI.KPIitems</td>
+                                        <td class="calculateKPI">@KPI.KPIYear</td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="td" align="center"></td>
+                                        <td class="calculateKPI">@KPI.KPIweight</td>
+                                        <td contenteditable="true" class="td"></td>
+                                        <td class="Calbonus"></td>
+                                        <td class="Calbonus"></td>
+                                        <td contenteditable="true" class="td"></td>
+                                        <td class="tdLevel">1</td>
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                <td colspan="13"><b>2. Organizational Development (for team leading roles) </b></td>
+                            </tr>
+                            @{var d = 0;}
+                            @foreach (KPI_Setting KPI in Model.KPISetting)
+                            {
+                                if (KPI.Level == "2")
+                                {
+                                    d = d + 1;
+                                    <tr>
+                                        <td>@d</td>
+                                        <td class="calculateKPI ">@KPI.KPIitems</td>
+                                        <td class="calculateKPI">@KPI.KPIYear</td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="Q1 td"></td>
+                                        <td contenteditable="true" class="td" align="center"></td>
+                                        <td class="calculateKPI">@KPI.KPIweight</td>
+                                        <td contenteditable="true" class="td"></td>
+                                        <td class="Calbonus"></td>
+                                        <td class="Calbonus"></td>
+                                        <td contenteditable="true" class="td"></td>
+                                        <td class="tdLevel">2</td>
+                                    </tr>
+                                }
+                            }
+                       <tr>
+                            <td colspan="11" align="right"><b>Completion Ratio</b></td>
+                            <td id="SumKPI_Weight"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="13"><b><i>*KPI Bonus: 10% KPI Weight for each KPI exceeds target</i></b></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>III. EMPLOYEE'S SELF ASSESSMENT</b></div>
+        <div class="panel-body">
+            <div class="row" style="margin-top: -15px">
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea name="" id="cmtEmp" class="form-control" rows="7">@ViewBag.EmpComments</textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>VI. SIGNATURE & COMPLETION</b></div>
+    <div class="panel-body">
+       <table class="table  tblKPISetting">
+                <tbody id="list">
+
+                    <tr>
+                        <td style="background-color:#ddd" colspan="2">Date, Signature Employee:</td>
+                        <td align="center">
+                            @if (ViewBag.SubmittedByEmp == 1)
+                            {
+                                <button type="submit" class="btn btn-danger btn-sm" disabled> Submited</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="savedata()"> Submit</button>
+                            }
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+       
+    </div>
+</div>
+
+@section scripts
+{
+    @*
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>*@
+    <script src="~/Scripts/excelexportjs.js"></script>
+    @*
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+    <script>
+        var user = '@user.Username';
+            $(".tdLevel").addClass("hide");
+        var username = $("#username").val();
+        
+        if (user !== '@ViewBag.EmpID' || EmpSubmitted == 1 ) {
+        $(".td").removeAttr("contenteditable");
+            document.getElementById("cmtEmp").disabled = true;
+        }
+        var ReviewedByEvaluator = $("#ReviewedByEvaluator").val();
+        if (ReviewedByEvaluator == "1" || @user.Role != "1002") {
+            $(".reviewByEval").removeAttr("contenteditable");
+            }
+       $.get("/KPISetting/getInforLogin", { username: username }, function (data) {
+                console.log(data);
+                $("#txtMa").html(data.Emp.EmpID);
+                $("#txtIDName").html(data.Emp.EmpName);
+                $("#txtEvaluator").html(data.Evaluator.FULLNAME);
+                $("#DepartmentID").html(data.Emp.DeptName);
+                $("#txtManager").html(data.Manager.FULLNAME);
+                $("#txtPosition").html(data.Emp.Position);
+                $("#EvaluatorID").val(data.Evaluator.USERNAME);
+                $("#ManagerID").val(data.Manager.USERNAME);
+                $("#EvaluatorEmail").val(data.Evaluator.EMAIL);
+                $("#ManagerEmail").val(data.Manager.EMAIL);
+            });
+         getNowYear();
+        getYear()
+        
+
+       var EmpSubmitted = $("#EmpSubmitted").val();
+
+       function getNowYear() {
+            var d = new Date();
+            $("#txtTest").val(d.getFullYear());
+            console.log("năm nay là " + d.getFullYear());
+            }
+          
+        function getYear() {
+            var d = new Date();
+            var n = d.getFullYear();
+            var arr = [];
+            var text;
+            for (var i = n; i <= n + 1; i++) {
+                arr.push(i);
+            }
+            for (var i = 0; i < arr.length; i++) {
+                $("#showYear").append("<option value=" + arr[i] + ">" + arr[i] + "</option>");
+            };
+            document.getElementById("txtTest").value = n;
+        }
+     
+        function loadYear(value) {
+            var i = document.getElementById("txtTest").value;
+            $('#txtTest').val(value);
+        }
+         function savedata() {
+
+            var EmpID = username;
+            var EvaluatorID = $("#EvaluatorID").val();
+            var ManagerID = $("#ManagerID").val();
+            var Position = $("#txtPosition").html();
+            var Period = document.getElementById("showYear").value;
+            var DepartmentID = $("#DepartmentID").html();
+            var CmtEmployee = document.getElementById("cmtEmp").value;
+
+            $.get("/KPISetting/checkKPI_YearEndPA", { EmpID: EmpID, Period: Period }, function (data) {
+                if (data == 1) {
+                    var message = "Your KPI in this year existed. Please do not submit again!";
+                    alert(message);
+                }
+
+                else {
+                    if (loopTable() > 0) {
+                        var message = "Failed! Please check your input data again.";
+                        alert(message);
+                    }
+
+                    else {
+                        var table = document.getElementById("tableId");
+                       var result = 0;
+                        for (var i = 0; i < table.rows.length; i++) {
+                            var countCols = table.rows[i].cells.length;
+                            if (countCols == 14) {
+
+                                var KPIs = table.rows[i].cells[1].innerHTML.trim();
+                                var QuarterKPI = table.rows[i].cells[2].innerHTML.trim();
+                                m1 = table.rows[i].cells[3].innerHTML.trim();
+                                m2 = table.rows[i].cells[4].innerHTML.trim();
+                                m3 = table.rows[i].cells[5].innerHTML.trim();
+                                m4 = table.rows[i].cells[6].innerHTML.trim();
+                                KPI_Result = table.rows[i].cells[7].innerHTML.trim();
+                                KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                                ActualTarget = table.rows[i].cells[9].innerHTML.trim();
+                                KPI_Bonus = table.rows[i].cells[10].innerHTML.trim();
+                                if (KPI_Bonus.toString() == "0.0") {
+                                    KPI_Bonus = 0;
+                                }
+                                lastScore = table.rows[i].cells[11].innerHTML.trim();
+                                FinalScore = parseInt(lastScore);
+                                Note = table.rows[i].cells[12].innerHTML.trim();
+                                var Level = table.rows[i].cells[13].innerHTML.trim();
+                                $.post("/KPISetting/AddKpiYearEndPA", {
+                                    EmpID: EmpID, EvaluatorID: EvaluatorID, ManagerID: ManagerID, Position: Position, Period: Period,
+                                    DepartmentID: DepartmentID, CmtEmployee: CmtEmployee, KPIs: KPIs, QuarterKPI: QuarterKPI,
+                                    m1: m1, m2: m2, m3: m3, m4: m4,
+                                    KPI_Weight: KPI_Weight, KPI_Result: KPI_Result, ActualTarget: ActualTarget, KPI_Bonus: KPI_Bonus,
+                                    FinalScore: FinalScore, Note: Note, Level: Level
+                                }, function (data) {
+
+                                });
+                            }
+                        }
+                        alert("Successfully!");
+                        var type = "Year";
+                        $.get("/KPISetting/SendMailToEvaluator", {type:type, EmpID: EmpID, EvaluatorID: EvaluatorID, Period: Period }, function (data) {
+                            console.log(data);
+                        });
+                    }
+                }
+             });
+             window.location.assign("/KPISetting/getOneYearEndKpi/?Type=2&EmpID=" + EmpID + "&Period=" + Period + "");
+        }
+        function loadData() {
+            var table = document.getElementById("tableId"), rIndex;
+           for (var i = 0; i <= table.rows.length; i++) {
+                table.rows[i].onclick = function () {
+                    rIndex = this.rowIndex;
+                    //console.log(rIndex); table.rows[i].cells[6].innerHTML.trim()
+                    KPI_Items = this.cells[1].innerHTML.trim();
+                    KPI_Quarter = this.cells[2].innerHTML.trim();
+                    m1 = this.cells[3].innerHTML.trim() == "" ? 0 : this.cells[3].innerHTML.trim();
+                    m2 = this.cells[4].innerHTML.trim() == "" ? 0 : this.cells[4].innerHTML.trim();
+                    m3 = this.cells[5].innerHTML.trim() == "" ? 0 : this.cells[5].innerHTML.trim();
+                    m4 = this.cells[6].innerHTML.trim() == "" ? 0 : this.cells[6].innerHTML.trim();
+                    KPI_Result = table.rows[i].cells[7].innerHTML.trim();
+                    KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                    ActualTarget = table.rows[i].cells[9].innerHTML.trim();
+                    KPI_Bonus = table.rows[i].cells[10].innerHTML.trim();
+                    FinalScore = table.rows[i].cells[11].innerHTML.trim();
+
+                    if ((m1 != "" && isNaN(m1)) || (m2 != "" && isNaN(m2)) || (m3 != "" && isNaN(m3)) || (m4 != "" && isNaN(m4))) {
+                        alert("Dữ liệu trong các cột Q1, Q2, Q3, Q4 phải là số");
+                    }
+                    else {
+                        KPI_Result = (parseInt(m1) + parseInt(m2) + parseInt(m3) + parseInt(m4)) / 4;
+                    }
+                };
+            }
+
+        }
+
+        var SumKPI_Weight = 0;
+        function Sum() {
+            var SumKPI_Weight = 0;
+            var table = document.getElementById("tableId");
+            for (var i = 0; i < table.rows.length; i++) {
+                var countCols = table.rows[i].cells.length;
+                var QuarterResult;
+                if (countCols == 14) {
+                    KPI_Items = table.rows[i].cells[1].innerHTML.trim();
+                    KPI_Quarter = table.rows[i].cells[2].innerHTML.trim();
+                    m1 = table.rows[i].cells[3].innerHTML.trim() == "" ? 0 : table.rows[i].cells[3].innerHTML.trim();
+                    m2 = table.rows[i].cells[4].innerHTML.trim() == "" ? 0 : table.rows[i].cells[4].innerHTML.trim();
+                    m3 = table.rows[i].cells[5].innerHTML.trim() == "" ? 0 : table.rows[i].cells[5].innerHTML.trim();
+                    m4 = table.rows[i].cells[6].innerHTML.trim() == "" ? 0 : table.rows[i].cells[6].innerHTML.trim();
+                    if (isNaN(m1) || isNaN(m2) || isNaN(m3) || isNaN(m4) ) {
+                       alert("Cột Q1, Q2, Q3, Q4 phải là ký tự số. Vui lòng nhập lại!")
+                    }
+                    QuarterResult = (parseInt(m1) + parseInt(m2) + parseInt(m3) + parseInt(m4)) / 4;
+                     console.log(QuarterResult);
+                    table.rows[i].cells[7].innerHTML = QuarterResult.toFixed(2);
+                    KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                    var Actual = table.rows[i].cells[9].innerHTML.trim();
+                    //  var passQuarterResult = Quarter.toFixed(2);
+                    var Target = (QuarterResult.toFixed(2) / parseFloat(KPI_Quarter)) * 100;
+                    var ActualAndTarget = Target.toFixed(0);
+
+                    var Bonus = ActualAndTarget > 100 ? (KPI_Weight * 0.1) : 0;
+                    var b = Bonus.toFixed(1);
+                    table.rows[i].cells[10].innerHTML = b;
+                    var Score = 0;
+                    // var Score = ActualAndTarget <= 100 ? ((ActualAndTarget * KPI_Weight) / 100) + b : ((100 * KPI_Weight) /100)+b;
+                    if (ActualAndTarget <= 100) {
+                        Score = ((ActualAndTarget * parseInt(KPI_Weight)) / 100) + + parseInt(b);
+                    }
+                    else {
+                        Score = (1 * parseInt(KPI_Weight)) + parseInt(b);
+                    }
+                    //var s = Score.toFixed(1);
+                    table.rows[i].cells[11].innerHTML = Score;
+
+                    if (KPI_Weight == "" || KPI_Weight == null) {
+                        KPI_Weight = 0;
+                    }
+                    SumKPI_Weight = SumKPI_Weight + parseInt(KPI_Weight);
+                }
+                document.getElementById('SumKPI_Weight').innerHTML = SumKPI_Weight;
+            }
+
+        }
+        Sum()
+
+        function loopTable() {
+            var table = document.getElementById("tableId");
+            var count = 0;
+            for (var i = 0; i < table.rows.length; i++) {
+                var countCols = table.rows[i].cells.length;
+                if (countCols == 14) {
+                    m1 = table.rows[i].cells[3].innerHTML.trim();
+                    m2 = table.rows[i].cells[4].innerHTML.trim();
+                    m3 = table.rows[i].cells[5].innerHTML.trim();
+                    m4 = table.rows[i].cells[6].innerHTML.trim();
+                    KPI_Result = table.rows[i].cells[7].innerHTML.trim();
+                    KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                    ActualTarget = table.rows[i].cells[9].innerHTML.trim();
+                    KPI_Bonus = table.rows[i].cells[10].innerHTML.trim();
+                    FinalScore = table.rows[i].cells[11].innerHTML.trim();
+                    if (m1 == "" || isNaN(m1) || m2 == "" || isNaN(m2) || m3 == "" || isNaN(m3) || m4 == "" || isNaN(m4)) {
+                            count++;
+                    }
+                    if (KPI_Result == "" || isNaN(KPI_Result) || KPI_Weight == "" || isNaN(KPI_Weight) ||
+                        ActualTarget == "" || isNaN(ActualTarget) || KPI_Bonus == "" || isNaN(KPI_Bonus) ||
+                        FinalScore == "" || isNaN(FinalScore)) {
+                        count++;
+                    }
+
+                }
+
+            }
+            return count;
+        }
+
+        function reload() {
+            var EmpID = $("#txtIDName").val();
+            var Period = $("#txtPeriod").val();
+            window.location.assign("/KPISetting/getOneYearEndKpi/?Type=2&EmpID=" + EmpID + "&Period=" + Period + "");
+        }
+        
+         
+    </script>
+
+
+}
+

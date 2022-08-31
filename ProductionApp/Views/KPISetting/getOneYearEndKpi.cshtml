@@ -1,0 +1,1285 @@
+﻿
+@{
+    ViewBag.Title = "getOneYearEndKpi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductionApp.Models;
+@model dynamic
+@{
+    UserModels user = (UserModels)Session["SignedInUser"];
+
+}
+
+@section styles{
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+        .name {
+            font-weight: bold;
+        }
+
+        .Firstpart {
+            margin-bottom: 30px;
+        }
+
+        .calculateKPI {
+            background-color: antiquewhite;
+        }
+
+        .tblKPISetting, tr, th, td {
+            border: 1px solid #000;
+        }
+
+        .marginTable {
+            margin-top: -15px;
+        }
+
+        #tblRating1 {
+            margin-bottom: -10px;
+        }
+
+        #tblRating2 {
+            margin-bottom: 0px;
+        }
+
+        .comment {
+            height: 40px;
+            line-height: 40px;
+            background-color: #ddd;
+            margin-left: 14px;
+            width: 1483px;
+        }
+
+        .firstbox {
+            border: 1px solid black;
+            margin-bottom: 20px;
+        }
+
+        .titleKPI {
+            font-family: 'Times New Roman';
+            font-size: 40px;
+            text-align: center;
+            font-weight: bold;
+            height: 110px;
+            line-height: 110px;
+        }
+
+        .boxLeft {
+            border-right: 1px solid black;
+            height: 123px;
+            line-height: 120px;
+        }
+
+        .boxRight {
+            border-left: 1px solid black;
+        }
+
+            .boxRight > p {
+                margin-left: 30px;
+            }
+
+        .Calbonus {
+            background-color: yellow
+        }
+
+        .showStar {
+            text-align: center;
+        }
+
+        .iconStar {
+            color: orange;
+            margin-right: 13px;
+        }
+
+        #txtPeriod {
+            width: 340px;
+        }
+
+        #showQuater {
+            height: 34px;
+        }
+
+        .cssColEdit {
+            background-color: #f1f1f1;
+        }
+
+        #thongbao {
+            height: 100px;
+            line-height: 100px;
+            padding-left: 30px;
+            font-weight: bold;
+            border: 1px solid red;
+        }
+
+        .ttl {
+            background-color: red;
+            color: #fff;
+        }
+
+        #showErr, #showSucc {
+            display: none;
+        }
+
+        .tbTTL {
+            background-color: #0026ff;
+            color: #fff;
+        }
+
+        #tb {
+            height: 100px;
+            line-height: 100px;
+            padding-left: 30px;
+            font-weight: bold;
+            border: 1px solid #0026ff;
+        }
+    </style>
+}
+<div class="container-fluid firstbox">
+    <div class="col-md-2 boxLeft">
+        <img src="~/img/HBI.jpg" />
+    </div>
+    <div class="col-md-8"><p class="titleKPI"> PERFORMANCE APPRAISAL YEAR</p></div>
+    <div class="col-md-2 boxRight">
+        <p>HYS-F-HR-023</p>
+        <p>Revision:  02</p>
+        <p>Date of revision:4/2/2020</p>
+        <p>Page: 1/1</p>
+
+    </div>
+</div>
+@foreach (KPI_Y_Review p in Model.getOneKPI)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>I. EMPLOYEE DATA</b></div>
+        <div class="panel-body">
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    ID & Name:
+                </div>
+                <div class="col-md-3">
+                    <input type="hidden" id="txtIDName" class="form-control" value="@p.EmpID" disabled /> 
+                    <input type="text" id="showInforEmp" class="form-control" disabled />
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Superior/ Evaluator: <input type="hidden" id="txtEvaluatorID" class="form-control" value="@p.EvaluatorID" />
+                </div>
+
+                <div class="col-md-3">
+                   <input type="text" id="EvaluatorName" class="form-control"  disabled />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    Department:  <input type="hidden" id="txtDepartmentID" class="form-control" value="@p.DeptName" />
+                </div> <div class="col-md-3">
+                    <input type="text" id="txtIDDep" class="form-control" value="@p.DeptName" disabled />
+                </div>
+
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Manager: <input type="hidden" id="txtManagerID" class="form-control" value="@p.ManagerID" />
+                </div>
+
+                <div class="col-md-3">
+                    <input type="hidden" class="form-control" value="@p.ManagerID" disabled />
+                    <input type="text" id="ManagerName" class="form-control" disabled />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="row Firstpart">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 name">
+                    Position:
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="txtPosition" class="form-control" value="@p.Position" disabled />
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 name">
+                    Evaluation period:
+                </div>
+
+                <div class="col-md-3">
+                    <input type="text" id="txtPeriod" class="form-control" value="@p.Period" disabled />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>II. KPI Result</b></div>
+        <div class="panel-body">
+
+            <div class="row marginTable">
+
+                <table class="table  tblKPISetting" id="tableId" onclick="loadData()" onkeyup="Sum()">
+                    <tbody id="list">
+                        <tr>
+                            <td colspan="13"><b>1. Achievement of Individual KPIs</b></td>
+                        </tr>
+                        <tr style="background-color:#ddd">
+                            <th rowspan="2">No.</th>
+                            <th rowspan="2">KPI Items</th>
+                            <th rowspan="2">Quater KPI</th>
+                            <th colspan="4" class="MonthCol">KPI Results (%)</th>
+                            <th rowspan="2">Quarter  KPI Result (%)</th>
+                            <th rowspan="2">KPI Weight (%)</th>
+                            <th rowspan="2">Actual vs. Target (%)</th>
+                            <th rowspan="2">KPI Bonus (%)</th>
+                            <th rowspan="2">Final Score (%)</th>
+                            <th rowspan="2">Note</th>
+                        </tr>
+                        <tr style="background-color:#ddd">
+                            <th class="Q1">Q1</th>
+                            <th class="Q1">Q2</th>
+                            <th class="Q1">Q3</th>
+                            <th class="Q1">Q4</th>
+
+
+                        </tr>
+                        @{var stt = 0; var SumScore = 0;}
+                        @foreach (KPI_Y_Review KPI in Model.KPIQReview)
+                        {
+                            if (KPI.Level == "1")
+                            {
+                                stt = stt + 1;
+                                <tr>
+                                    <td>@stt</td>
+                                    <td class="calculateKPI ">@KPI.KPIs</td>
+                                    <td class="calculateKPI">@KPI.KPI</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q1</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q2</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q3</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q4</td>
+                                    <td contenteditable="true" class="td" align="center">@KPI.Quarter_KPI_Result</td>
+                                    <td class="calculateKPI">@KPI.KPI_Weight</td>
+                                    <td contenteditable="true" class="td">@KPI.Actual_Target</td>
+                                    <td class="Calbonus">@KPI.KPI_Bonus</td>
+                                    <td class="Calbonus">@KPI.Final_Score</td>
+                                    <td contenteditable="true" class="td">@KPI.Note</td>
+                                    <td class="tdLevel">1</td>
+                                </tr>
+                                SumScore = SumScore + int.Parse(@KPI.Final_Score);
+                            }
+                        }
+                        <tr>
+                            <td colspan="13"><b>2. Organizational Development (for team leading roles) </b></td>
+                        </tr>
+                        @{var d = 0;}
+                        @foreach (KPI_Y_Review KPI in Model.KPIQReview)
+                        {
+                            if (KPI.Level == "2")
+                            {
+                                d = d + 1;
+                                <tr>
+                                    <td>@d</td>
+                                    <td class="calculateKPI ">@KPI.KPIs</td>
+                                    <td class="calculateKPI">@KPI.KPI</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q1</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q2</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q3</td>
+                                    <td contenteditable="true" class="Q1 td">@KPI.Q4</td>
+                                    <td contenteditable="true" class="td" align="center">@KPI.Quarter_KPI_Result</td>
+                                    <td class="calculateKPI">@KPI.KPI_Weight</td>
+                                    <td contenteditable="true" class="td">@KPI.Actual_Target</td>
+                                    <td class="Calbonus">@KPI.KPI_Bonus</td>
+                                    <td class="Calbonus">@KPI.Final_Score</td>
+                                    <td contenteditable="true" class="td">@KPI.Note</td>
+                                    <td class="tdLevel">2</td>
+                                </tr>
+                                SumScore = SumScore + int.Parse(@KPI.Final_Score);
+                            }
+                        }
+                        <tr>
+                            <td colspan="11" align="right" style="background-color:#ddd"><b>Completion Ratio</b></td>
+                            <td  id="SumKPI_Weight">@SumScore</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="13"><b><i>*KPI Bonus: 10% KPI Weight for each KPI exceeds target</i></b></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:  #c2c2d6"><b>III. EMPLOYEE'S SELF ASSESSMENT</b></div>
+        <div class="panel-body">
+            <div class="row" style="margin-top: -15px">
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea name="" id="cmtASSESSMENT" class="form-control" rows="7">@p.Comments</textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    if (user.Role.ToString() == "1002" && p.ReviewedByEvaluator != 1)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:  #c2c2d6"><b>IV. EVALUATOR'S ASSESSMENT</b></div>
+            <div class="panel-body">
+                <input type="hidden" id="rowIndexOnClick" />
+                <div class="row marginTable">
+                    <input type="hidden" id="SettingCoreValues" value="@ViewBag.CoreValues" />
+                    <table class="table  tblKPISetting">
+
+                        <tbody id="tblRatingQReview">
+                            <tr>
+                                <td colspan="12"><b>1. Core Values</b> <i>(Rate the following values using a scale of 1 to 5 with 1: Never, 2: Rarely, 3: Sometimes, 4: Frequent, 5: Always)</i></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="padding: 0px; border: 1px solid #fff;">
+                                    <table class="table " id="tblRating1">
+                                        <tr style="background-color:#ddd">
+                                            <th>Value & Behaviors</th>
+                                            <th>Rating</th>
+                                            <th>Star Rating</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><b>1.1 Team work</b></td>
+                                        </tr>
+                                        @{ var n = 1; }
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            n = n + 1;
+                                            if (core.Level == 1)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable1(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                        <tr>
+                                            <td colspan="3"><b>1.2 Respect for Individuals </b></td>
+                                        </tr>
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            if (core.Level == 2)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable1(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </td>
+                                <td colspan="6" style="padding: 0px; border: 1px solid #fff;">
+                                    <table class="table " id="tblRating2">
+                                        <tr style="background-color:#ddd">
+                                            <th>Value & Behaviors</th>
+                                            <th>Rating</th>
+                                            <th>Star Rating</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3"><b>1.3 Commitment</b></td>
+                                        </tr>
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            if (core.Level == 3)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable2(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                        <tr>
+                                            <td colspan="3"><b>1.4 Continuous Improvement  </b></td>
+                                        </tr>
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            if (core.Level == 4)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable2(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr style="background-color:  #c2c2d6">
+                                <td colspan="12"><b>2. Competence & Behaviors  </b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Strengths:</td>
+                                <td contenteditable="true" colspan="9">@p.Strength</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">Areas need to improve:</td>
+                                <td contenteditable="true" colspan="9">@p.AreasImprove</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:  #c2c2d6"><b>IV. EVALUATOR'S ASSESSMENT</b></div>
+            <div class="panel-body">
+                <input type="hidden" id="rowIndexOnClick" />
+                <div class="row marginTable">
+                    <input type="hidden" id="SettingCoreValues" value="@ViewBag.CoreValues" />
+                    <table class="table  tblKPISetting">
+
+                        <tbody id="tblRatingQReview">
+                            <tr>
+                                <td colspan="12"><b>1. Core Values</b> <i>(Rate the following values using a scale of 1 to 5 with 1: Never, 2: Rarely, 3: Sometimes, 4: Frequent, 5: Always)</i></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="padding: 0px; border: 1px solid #fff;">
+                                    <table class="table " id="tblRating1">
+                                        <tr style="background-color:#ddd">
+                                            <th>Value & Behaviors</th>
+                                            <th>Rating</th>
+                                            <th>Star Rating</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><b>1.1 Team work</b></td>
+                                        </tr>
+                                        @{ var n = 1; }
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            n = n + 1;
+                                            if (core.Level == 1)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable1(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                        <tr>
+                                            <td colspan="3"><b>1.2 Respect for Individuals </b></td>
+                                        </tr>
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            if (core.Level == 2)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable1(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </td>
+                                <td colspan="6" style="padding: 0px; border: 1px solid #fff;">
+                                    <table class="table " id="tblRating2">
+                                        <tr style="background-color:#ddd">
+                                            <th>Value & Behaviors</th>
+                                            <th>Rating</th>
+                                            <th>Star Rating</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3"><b>1.3 Commitment</b></td>
+                                        </tr>
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            if (core.Level == 3)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable2(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                        <tr>
+                                            <td colspan="3"><b>1.4 Continuous Improvement  </b></td>
+                                        </tr>
+                                        @foreach (KPI_Core_Values core in Model.KPI_Core_Values)
+                                        {
+                                            if (core.Level == 4)
+                                            {
+                                                <tr>
+                                                    <td>@core.ValueName</td>
+                                                    <td onkeyup="typeTable2(Star_@core.ID)" class="colEdit_@core.Level cssColEdit"></td>
+                                                    <td class="showStar" id="Star_@core.ID"></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr style="background-color:  #c2c2d6">
+                                <td colspan="12"><b>2. Competence & Behaviors  </b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Strengths:</td>
+                                <td contenteditable="true" class="reviewByEval" colspan="9">@p.Strength</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">Areas need to improve:</td>
+                                <td contenteditable="true" class="reviewByEval" colspan="9">@p.AreasImprove</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <input type="hidden" class="td" id="CoreValuesQuarter" value="@p.CoreValues" />
+                </div>
+            </div>
+        </div>
+    }
+}
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>V. OVERAL PERFORMANCE RATING </b></div>
+    <div class="panel-body">
+        @foreach (KPI_Y_Review p in Model.getOneKPI)
+        {
+            if ((p.ReviewedByEvaluator == null || p.ReviewedByEvaluator == 0) && user.Username == p.EvaluatorID)
+            {
+        <div class="row Firstpart">
+            <div class="col-md-3">
+                @if (p.Overal_Checkbox == "1")
+                {
+                    <input type="radio" name="radio" value="1" checked  />
+                }
+                else
+                {
+                    <input type="radio" name="radio" value="1"  />
+                } Exceeded Objectives(.....)
+            </div>
+            <div class="col-md-3">
+                @if (p.Overal_Checkbox == "2")
+                {
+                    <input type="radio" name="radio" value="2" checked />
+                }
+                else
+                {<input type="radio" name="radio" value="2" />} Met Objectives(.....)
+            </div>
+            <div class="col-md-3">
+                @if (p.Overal_Checkbox == "3")
+                {
+                    <input type="radio" name="radio" value="3" checked />
+                }
+                else
+                {<input type="radio" name="radio" value="3" />} Did not meet Objectives
+
+            </div>
+            <div class="col-md-3">
+                @if (p.Overal_Checkbox == "4")
+                {
+                    <input type="radio" name="radio" value="4" checked />
+                }
+                else
+                {<input type="radio" name="radio" value="4" />} New in position
+            </div>
+        </div>
+            }
+            else
+            {
+            <div class="row Firstpart">
+                <div class="col-md-3">
+                    @if (p.Overal_Checkbox == "1")
+                    {
+                        <input type="radio" name="radio" value="1" checked disabled />
+                    }
+                    else
+                    {
+                        <input type="radio" name="radio" value="1" disabled />
+                    } Exceeded Objectives(.....)
+                </div>
+                <div class="col-md-3">
+                    @if (p.Overal_Checkbox == "2")
+                    {
+                        <input type="radio" name="radio" value="2" checked disabled />
+                    }
+                    else
+                    {<input type="radio" name="radio" value="2" disabled />} Met Objectives(.....)
+                </div>
+                <div class="col-md-3">
+                    @if (p.Overal_Checkbox == "3")
+                    {
+                        <input type="radio" name="radio" value="3" checked disabled />
+                    }
+                    else
+                    {<input type="radio" name="radio" value="3" disabled />} Did not meet Objectives
+
+                </div>
+                <div class="col-md-3">
+                    @if (p.Overal_Checkbox == "4")
+                    {
+                        <input type="radio" name="radio" value="4" checked disabled />
+                    }
+                    else
+                    {<input type="radio" name="radio" value="4" disabled />} New in position
+                </div>
+            </div>
+            }
+
+            <div>
+                Comment (if any):
+                @if (user.Username != p.EvaluatorID)
+                {
+                    <textarea id="Overal_Comment" placeholder="Input your comment..." rows="3" class="form-control" disabled>@ViewBag.Overal_Comment</textarea>
+                }
+                else
+                {
+                    <textarea id="Overal_Comment" placeholder="Input your comment..." rows="3" class="form-control">@ViewBag.Overal_Comment</textarea>
+                }
+            </div>
+            }
+        </div>
+        </div>
+        
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color:  #c2c2d6"><b>VI. SIGNATURE & COMPLETION</b></div>
+    <div class="panel-body">
+        @foreach (KPI_Y_Review q in Model.getOneKPI)
+        {
+            <div class="row" style="margin-top: -15px">
+                <div class="row">
+                    <div class="col-md-12 comment">
+                        <b>Comment Manager</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (user.Role == "3")
+                        {
+                            <textarea id="CmtManager" class="form-control" rows="7">@q.CmtManager</textarea>
+                        }
+                        else
+                        { <textarea class="form-control" rows="7" disabled>@q.CmtManager</textarea>}
+                    </div>
+
+                </div>
+            </div>
+            <div class="row marginTable">
+                <input type="hidden" value="@q.SubmittedByEmp" id="EmpSubmitted" />
+                <table class="table  tblKPISetting">
+                    <tbody id="list">
+                        <tr>
+                            <td style="background-color:#ddd">Date, Signature Employee:</td>
+                            <td>@q.SubmittedDate</td>
+                            @if (q.SubmittedByEmp == 0 && user.Role == "5")
+                            {
+                                <td align="center"><button type="submit" onclick="savedata()" class="btn btn-danger btn-sm"> Submit</button></td>
+                            }
+                            else
+                            {
+                                <td align="center"> <button disabled class="btn btn-danger btn-sm">Submited</button></td>
+                            }
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:#ddd">Date, Signature Superior/Evaluator:</td>
+
+                            <td>@q.ReviewedDate  <input type="hidden" value="@q.ReviewedByEvaluator" id="ReviewedByEvaluator" /></td>
+                            @if (q.ReviewedByEvaluator == 1 || user.Role != "1002")
+                            {
+                                <td align="center"><button type="button" class="btn btn-primary btn-sm" id="btnReview" disabled> Review</button></td>
+                            }
+                            else
+                            {
+                                <td align="center"><button type="button" class="btn btn-primary btn-sm" onclick="Review()"> Review</button></td>
+                            }
+
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:#ddd">Date, Signature Manager:</td>
+
+                            <td>@q.ApprovedDate </td>
+
+                            @if (q.ReviewedByEvaluator == 1 && q.ApprovedByManager != 1 && user.Role == "3")
+                            {
+                                <td align="center"><button type="button" class="btn btn-info btn-sm" onclick="Approve()" id="btnApprove"> Approved</button></td>
+                            }
+                            else
+                            {
+                                <td align="center"><button type="button" disabled class="btn btn-info btn-sm" id="btnApprove"> Approve</button></td>
+                            }
+                            @if (q.ApprovedByManager == 1 && user.Role == "3")
+                            {
+                                <td align="center"><button type="button" class="btn btn-warning btn-sm" onclick="Revise()" id="btnRevise"> Revise KPI</button></td>
+                            }
+                            else
+                            {
+                                <td align="center"><button type="button" class="btn btn-warning btn-sm" disabled id="btnRevise"> Revise KPI</button></td>
+                            }
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var SettingCoreValues = $("#SettingCoreValues").val();
+        var ma = $("#txtIDName").val();
+        getLogin(ma);
+    $(".tdLevel").addClass("hide");
+   var user = '@user.Username';
+        var EmpSubmitted = $("#EmpSubmitted").val();
+        var ReviewedByEvaluator = $("#ReviewedByEvaluator").val();
+        if (ReviewedByEvaluator == "1" || user.Role != "1002")
+        {
+            $(".reviewByEval").removeAttr("contenteditable");
+}
+var td = document.getElementById("td");
+if (user !== '@ViewBag.EmpID' || EmpSubmitted == 1 ) {
+        $(".td").removeAttr("contenteditable");
+    document.getElementById("cmtASSESSMENT").disabled = true;
+}
+
+if (@user.Role == "1002") {
+    for (var i = 0; i <= 4; i++) {
+                $(".showStar").append("<i class='far fa-star iconStar'></i>");
+    }
+}
+
+var CoreValuesQuarter = $("#CoreValuesQuarter").val();
+if (CoreValuesQuarter) {
+            $(".cssColEdit").css("background-color", "#ddd");
+    console.log("CoreValuesQuarter: ", CoreValuesQuarter);
+    var mang = CoreValuesQuarter.split(",");
+    if (SettingCoreValues.indexOf("#1") > -1) {
+        for (var i = 0; i < mang.length; i++) {
+            var subSTR = mang[i].substring(0, mang[i].length - 1);
+            if (mang[i].indexOf("#1") > -1) {
+                var afterSub = subSTR.substr(3).split(";");
+                list = document.getElementsByClassName("colEdit_1");
+                showValuesInColumn(list, afterSub);
+            }
+        }
+    }
+
+    if (SettingCoreValues.indexOf("#2") > -1) {
+        for (var i = 0; i < mang.length; i++) {
+            var subSTR = mang[i].substring(0, mang[i].length - 1);
+            if (mang[i].indexOf("#2") > -1) {
+                var afterSub = subSTR.substr(3).split(";");
+                list = document.getElementsByClassName("colEdit_2");
+                showValuesInColumn(list, afterSub);
+            }
+        }
+    }
+
+    if (SettingCoreValues.indexOf("#3") > -1) {
+        for (var i = 0; i < mang.length; i++) {
+            var subSTR = mang[i].substring(0, mang[i].length - 1);
+            if (mang[i].indexOf("#3") > -1) {
+                var afterSub = subSTR.substr(3).split(";");
+                list = document.getElementsByClassName("colEdit_3");
+                showValuesInColumn(list, afterSub);
+            }
+        }
+    }
+
+    if (SettingCoreValues.indexOf("#4") > -1) {
+        for (var i = 0; i < mang.length; i++) {
+            var subSTR = mang[i].substring(0, mang[i].length - 1);
+            if (mang[i].indexOf("#4") > -1) {
+                var afterSub = subSTR.substr(3).split(";");
+                list = document.getElementsByClassName("colEdit_4");
+                showValuesInColumn(list, afterSub);
+            }
+        }
+    }
+
+    showStars("tblRating1");
+    showStars("tblRating2");
+
+        }
+
+function showValuesInColumn(list, afterSub) {
+    for (indexList = 0; indexList < list.length; ++indexList) {
+        list[indexList].innerHTML = afterSub[indexList];
+    }
+}
+
+function showStars(name) {
+    var table = document.getElementById(name);
+    for (var i = 1; i < table.rows.length; i++) {
+        var countCols = table.rows[i].cells.length;
+        //console.log(countCols)
+
+        if (countCols == 3) {
+            var x = table.rows[i].cells[1].innerHTML.trim();
+            table.rows[i].cells[2].innerHTML = "";
+            if (x <= 0.3) {
+                table.rows[i].cells[2].innerHTML = "<i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 0.3 && x <= 0.5 ) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star-half-alt iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 0.5 && x <= 1.3) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 1.3 && x <= 1.5 ) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star-half-alt iconStar' ></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 1.5 && x <= 2.3) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 2.3 && x <= 2.5) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar' ></i ><i class='fas fa-star-half-alt iconStar'></i > <i class='far fa-star iconStar'></i> <i class='far fa-star iconStar'></i>";
+            }
+            if (x > 2.5 && x <= 3.3) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='far fa-star iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 3.3 && x <= 3.5) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star-half-alt iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 3.5 && x <= 4.3) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='far fa-star iconStar'></i>";
+            }
+            if (x > 4.3 && x <= 4.5) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star-half-alt iconStar'></i>";
+            }
+            if (x > 4.5) {
+                table.rows[i].cells[2].innerHTML = "<i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i><i class='fas fa-star iconStar'></i>";
+            }
+        }
+    }
+}
+
+console.log(SettingCoreValues);
+var evaluator = $("#txtEvaluatorID").val();
+var list, indexList;
+if (user == evaluator) {
+    if (SettingCoreValues.indexOf("#1") > -1) {
+        list = document.getElementsByClassName("colEdit_1");
+        EnableEditRating(list);
+    }
+    if (SettingCoreValues.indexOf("#2") > -1) {
+        list = document.getElementsByClassName("colEdit_2");
+        EnableEditRating(list);
+    }
+    if (SettingCoreValues.indexOf("#3") > -1) {
+        list = document.getElementsByClassName("colEdit_3");
+        EnableEditRating(list);
+    }
+    if (SettingCoreValues.indexOf("#4") > -1) {
+        list = document.getElementsByClassName("colEdit_4");
+        EnableEditRating(list);
+    }
+}
+
+function EnableEditRating(list) {
+    for (indexList = 0; indexList < list.length; ++indexList) {
+        list[indexList].contentEditable = true;
+        list[indexList].style.backgroundColor = "#fff";
+    }
+}
+
+var table = document.getElementById("tblRating1"), rIndex;
+for (var i = 1; i < table.rows.length; i++) {
+    table.rows[i].onclick = function () {
+        rIndex = this.rowIndex;
+            $("#rowIndexOnClick").val(rIndex);
+    }
+}
+var table = document.getElementById("tblRating2"), rIndex;
+for (var i = 1; i < table.rows.length; i++) {
+    table.rows[i].onclick = function () {
+        rIndex = this.rowIndex;
+            $("#rowIndexOnClick").val(rIndex);
+    }
+}
+function typeTable1(idRow) {
+    var table = document.getElementById("tblRating1");
+    Rating(idRow, table);
+}
+
+function typeTable2(idRow) {
+    var table = document.getElementById("tblRating2");
+    Rating(idRow, table);
+}
+
+function Rating(idRow, table) {
+    var rowIndex = $("#rowIndexOnClick").val();
+    var rate1 = table.rows[rowIndex].cells[1].innerHTML.trim();
+    if (rate1.indexOf(",") > -1) rate1 = rate1.replace(",", ".");
+    if (rate1 == "" || isNaN(rate1)) {
+        rate1 = 0;
+        table.rows[rowIndex].cells[1].innerHTML = rate1;
+    }
+
+    var x = parseInt(rate1)
+        var y = parseFloat(rate1);
+    if (x <= 0) {
+            $(idRow).html("");
+        for (var i = 0; i <= 4; i++) {
+                $(idRow).append("<i class='far fa-star iconStar'></i>");
+        }
+    }
+    if (x >= 5) {
+            $(idRow).html("");
+        for (var i = 0; i <= 4; i++) {
+                $(idRow).append("<i class='fas fa-star iconStar'></i>");
+        }
+    }
+    else {
+        var Rating = y - x;
+            $(idRow).html("");
+        for (var i = 0; i < x; i++) {
+                $(idRow).append("<i class='fas fa-star iconStar'></i>");
+        }
+
+        if (Rating <= 0.3) {
+            for (var i = 0; i < 5 - x; i++) {
+                    $(idRow).append("<i class='far fa-star iconStar'></i>");
+            }
+        }
+        if (Rating > 0.3 && Rating < 0.8) {
+                $(idRow).append("<i class='fas fa-star-half-alt iconStar'></i>");
+            for (var i = 1; i < 5 - x; i++) {
+                    $(idRow).append("<i class='far fa-star iconStar'></i>");
+            }
+        }
+
+        if (Rating >= 0.8 && Rating <= 0.9) {
+                $(idRow).append("<i class='fas fa-star iconStar'></i>");
+            for (var i = 1; i < 5 - x; i++) {
+                    $(idRow).append("<i class='far fa-star iconStar'></i>");
+            }
+        }
+
+    }
+}
+
+function checkValueRating(value) {
+    if (value.startsWith(".") || value.startsWith(","))
+        value = value.slice(0, 1);
+    else if (value.endsWith(".") || value.endsWith(","))
+    {
+        value = value.substring(0, value.length-1);
+    }
+    else if (value.indexOf(",") > -1) value = value.replace(",", ".");
+    else if (value == "") value = 0;
+
+    return value;
+}
+var Period = document.getElementById("txtPeriod").value;
+var EmpID = document.getElementById("txtIDName").value;
+
+        function Review() {
+            var tbl = document.getElementById("tblRatingQReview");
+            var table1 = document.getElementById("tblRating1"), rIndex;
+            var table2 = document.getElementById("tblRating2"), rIndex;
+            var CoreValues = $("#SettingCoreValues").val();
+
+            list1 = document.getElementsByClassName("colEdit_1");
+            list2 = document.getElementsByClassName("colEdit_2");
+            list3 = document.getElementsByClassName("colEdit_3");
+            list4 = document.getElementsByClassName("colEdit_4");
+            var val1 = ""; val2 = ""; val3 = ""; val4 = ""; level1 = ""; level2 = ""; level3 = ""; level4 = ""; arrRating = [];
+            for (indexList = 0; indexList < list1.length; ++indexList) {
+                val1 = val1 + checkValueRating(list1[indexList].innerHTML.trim()) + ";";
+            }
+            level1 = "#1{" + val1 + "}";
+
+            for (indexList = 0; indexList < list2.length; ++indexList) {
+                val2 = val2 + checkValueRating(list2[indexList].innerHTML.trim()) + ";";
+            }
+            level2 = "#2{" + val2 + "}";
+
+            for (indexList = 0; indexList < list3.length; ++indexList) {
+                val3 = val3 + checkValueRating(list3[indexList].innerHTML.trim()) + ";";
+            }
+            level3 = "#3{" + val3 + "}";
+
+            for (indexList = 0; indexList < list4.length; ++indexList) {
+                val4 = val4 + checkValueRating(list4[indexList].innerHTML.trim()) + ";";
+            }
+            level4 = "#4{" + val4 + "}";
+
+            if (SettingCoreValues.indexOf("#1") != -1) {
+                arrRating.push(level1);
+            }
+            if (SettingCoreValues.indexOf("#2") != -1) {
+                arrRating.push(level2);
+            }
+            if (SettingCoreValues.indexOf("#3") != -1) {
+                arrRating.push(level3);
+            }
+            if (SettingCoreValues.indexOf("#4") != -1) {
+                arrRating.push(level4);
+            }
+            var CoreValueResults = arrRating.toString();
+            console.log(CoreValueResults)
+            for (var i = 0; i < tbl.rows.length; i++) {
+                var EmpID = $("#txtIDName").val();
+                var Period = $("#txtPeriod").val();
+                var EvaluatorID = document.getElementById("txtEvaluatorID").value;
+                var ManagerID = document.getElementById("txtManagerID").value;
+                Strengths = tbl.rows[tbl.rows.length - 2].cells[1].innerHTML.trim();
+                Areas = tbl.rows[tbl.rows.length - 1].cells[1].innerHTML.trim();
+                var Overal_Checkbox = $("input:radio[name=radio]:checked").val();
+                var Overal_Comment = $("#Overal_Comment").val();
+                $.post("/KPISetting/Review_Year", { EmpID: EmpID, Period: Period, Strengths: Strengths, Areas: Areas, CoreValueResults: CoreValueResults, Overal_Comment: Overal_Comment, Overal_Checkbox: Overal_Checkbox }, function (data) {
+                    alert("Successfully!");
+                });
+
+                $.get("/KPISetting/SendMailToManager", { type: "Year", EmpID: EmpID, Period: Period, ManagerID: ManagerID, EvaluatorID: EvaluatorID }, function (data) {
+                    console.log(data);
+                });
+                reload();
+            }
+        }
+
+        function Approve() {
+            var EmpID = $("#txtIDName").val();
+            var Period = $("#txtPeriod").val();
+            var ManagerID = document.getElementById("txtManagerID").value;
+            $.get("/KPISetting/ApproveYearEndPA", { EmpID: EmpID, Period: Period }, function (data) {
+                alert("Successfully!");
+                $.get("/KPISetting/SendMailToEmployee", { type: "Year", EmpID: EmpID, Period: Period, ManagerID: ManagerID, CmtManager: "" }, function (data) {
+                    console.log(data);
+                });
+                reload();
+            });
+        }
+
+        function Revise() {
+            var EmpID = $("#txtIDName").val();
+            var Period = $("#txtPeriod").val();
+            var ManagerID = document.getElementById("txtManagerID").value;
+            var CmtManager = $("#CmtManager").val().trim();
+            console.log(CmtManager);
+            if (CmtManager == "" || CmtManager == null) {
+                alert("Please comment the reason why this employee must edit again! ");
+            }
+            else {
+                $.get("/KPISetting/ReviseYearEndPA", { EmpID: EmpID, Period: Period, CmtManager: CmtManager }, function (data) {
+                    alert("Successfully!");
+                    reload();
+                    $.get("/KPISetting/SendMailToEmployee", { type: "Year", EmpID: EmpID, Period: Period, ManagerID: ManagerID, CmtManager: CmtManager }, function (data) {
+                        console.log(data);
+                    });
+                });
+
+            }
+        }
+
+        function reload() {
+            var EmpID = $("#txtIDName").val();
+            var Period = $("#txtPeriod").val();
+            window.location.assign("/KPISetting/getOneYearEndKpi/?Type=1&EmpID=" + EmpID + "&Period=" + Period + "");
+        }
+
+        function loadData() {
+            var table = document.getElementById("tableId"), rIndex;
+            for (var i = 0; i <= table.rows.length; i++) {
+                table.rows[i].onclick = function () {
+                    rIndex = this.rowIndex;
+                    //console.log(rIndex); table.rows[i].cells[6].innerHTML.trim()
+                    KPI_Items = this.cells[1].innerHTML.trim();
+                    KPI_Quarter = this.cells[2].innerHTML.trim();
+                    m1 = this.cells[3].innerHTML.trim() == "" ? 0 : this.cells[3].innerHTML.trim();
+                    m2 = this.cells[4].innerHTML.trim() == "" ? 0 : this.cells[4].innerHTML.trim();
+                    m3 = this.cells[5].innerHTML.trim() == "" ? 0 : this.cells[5].innerHTML.trim();
+                    m4 = this.cells[6].innerHTML.trim() == "" ? 0 : this.cells[6].innerHTML.trim();
+                    KPI_Result = table.rows[i].cells[7].innerHTML.trim();
+                    KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                    ActualTarget = table.rows[i].cells[9].innerHTML.trim();
+                    KPI_Bonus = table.rows[i].cells[10].innerHTML.trim();
+                    FinalScore = table.rows[i].cells[11].innerHTML.trim();
+
+                    if ((m1 != "" && isNaN(m1)) || (m2 != "" && isNaN(m2)) || (m3 != "" && isNaN(m3)) || (m4 != "" && isNaN(m4))) {
+                        alert("Dữ liệu trong các cột Q1, Q2, Q3, Q4 phải là số");
+                    }
+                    else {
+                        KPI_Result = (parseInt(m1) + parseInt(m2) + parseInt(m3) + parseInt(m4)) / 4;
+                    }
+                };
+            }
+
+        }
+
+        var SumKPI_Weight = 0;
+        function Sum() {
+            var SumKPI_Weight = 0;
+            var table = document.getElementById("tableId");
+            for (var i = 0; i < table.rows.length; i++) {
+                var countCols = table.rows[i].cells.length;
+                var QuarterResult;
+                if (countCols == 14) {
+                    KPI_Items = table.rows[i].cells[1].innerHTML.trim();
+                    KPI_Quarter = table.rows[i].cells[2].innerHTML.trim();
+                    m1 = table.rows[i].cells[3].innerHTML.trim() == "" ? 0 : table.rows[i].cells[3].innerHTML.trim();
+                    m2 = table.rows[i].cells[4].innerHTML.trim() == "" ? 0 : table.rows[i].cells[4].innerHTML.trim();
+                    m3 = table.rows[i].cells[5].innerHTML.trim() == "" ? 0 : table.rows[i].cells[5].innerHTML.trim();
+                    m4 = table.rows[i].cells[6].innerHTML.trim() == "" ? 0 : table.rows[i].cells[6].innerHTML.trim();
+                    if (isNaN(m1) || isNaN(m2) || isNaN(m3) || isNaN(m4)) {
+                        alert("Cột Q1, Q2, Q3, Q4 phải là ký tự số. Vui lòng nhập lại!")
+                    }
+                    QuarterResult = (parseInt(m1) + parseInt(m2) + parseInt(m3) + parseInt(m4)) / 4;
+                    console.log(QuarterResult);
+                    table.rows[i].cells[7].innerHTML = QuarterResult.toFixed(2);
+                    KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                    var Actual = table.rows[i].cells[9].innerHTML.trim();
+                    //  var passQuarterResult = Quarter.toFixed(2);
+                    var Target = (QuarterResult.toFixed(2) / parseFloat(KPI_Quarter)) * 100;
+                    var ActualAndTarget = Target.toFixed(0);
+
+                    var Bonus = ActualAndTarget > 100 ? (KPI_Weight * 0.1) : 0;
+                    var b = Bonus.toFixed(1);
+                    table.rows[i].cells[10].innerHTML = b;
+                    var Score = 0;
+                    // var Score = ActualAndTarget <= 100 ? ((ActualAndTarget * KPI_Weight) / 100) + b : ((100 * KPI_Weight) /100)+b;
+                    if (ActualAndTarget <= 100) {
+                        Score = ((ActualAndTarget * parseInt(KPI_Weight)) / 100) + + parseInt(b);
+                    }
+                    else {
+                        Score = (1 * parseInt(KPI_Weight)) + parseInt(b);
+                    }
+                    //var s = Score.toFixed(1);
+                    table.rows[i].cells[11].innerHTML = Score;
+
+                    if (KPI_Weight == "" || KPI_Weight == null) {
+                        KPI_Weight = 0;
+                    }
+                    SumKPI_Weight = SumKPI_Weight + parseInt(KPI_Weight);
+                }
+                document.getElementById('SumKPI_Weight').innerHTML = SumKPI_Weight;
+            }
+
+        }
+        Sum()
+        function savedata() {
+
+            var EmpID = $("#txtIDName").val();
+            var EvaluatorID = $("#txtEvaluatorID").val();
+            var ManagerID = $("#txtManagerID").val();
+            var Position = $("#txtPosition").val();
+            var Period = document.getElementById("txtPeriod").value;
+            var DepartmentID = $("#txtDepartmentID").val();
+            var CmtEmployee = document.getElementById("cmtASSESSMENT").value;
+
+            $.get("/KPISetting/checkKPI_YearEndPA", { EmpID: EmpID, Period: Period }, function (data) {
+                if (data == 1) {
+                    var message = "Your KPI in this year existed. Please do not submit again!";
+                    alert(message);
+                }
+
+                else {
+                    if (loopTable() > 0) {
+                        var message = "Failed! Please check your input data again.";
+                        alert(message);
+                    }
+
+                    else {
+                        var table = document.getElementById("tableId");
+                        var result = 0;
+                        for (var i = 0; i < table.rows.length; i++) {
+                            var countCols = table.rows[i].cells.length;
+                            if (countCols == 14) {
+
+                                var KPIs = table.rows[i].cells[1].innerHTML.trim();
+                                var QuarterKPI = table.rows[i].cells[2].innerHTML.trim();
+                                m1 = table.rows[i].cells[3].innerHTML.trim();
+                                m2 = table.rows[i].cells[4].innerHTML.trim();
+                                m3 = table.rows[i].cells[5].innerHTML.trim();
+                                m4 = table.rows[i].cells[6].innerHTML.trim();
+                                KPI_Result = table.rows[i].cells[7].innerHTML.trim();
+                                KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                                ActualTarget = table.rows[i].cells[9].innerHTML.trim();
+                                KPI_Bonus = table.rows[i].cells[10].innerHTML.trim();
+                                if (KPI_Bonus.toString() == "0.0") {
+                                    KPI_Bonus = 0;
+                                }
+                                lastScore = table.rows[i].cells[11].innerHTML.trim();
+                                FinalScore = parseInt(lastScore);
+                                Note = table.rows[i].cells[12].innerHTML.trim();
+                                var Level = table.rows[i].cells[13].innerHTML.trim();
+                                $.post("/KPISetting/AddKpiYearEndPA", {
+                                    EmpID: EmpID, EvaluatorID: EvaluatorID, ManagerID: ManagerID, Position: Position, Period: Period,
+                                    DepartmentID: DepartmentID, CmtEmployee: CmtEmployee, KPIs: KPIs, QuarterKPI: QuarterKPI,
+                                    m1: m1, m2: m2, m3: m3, m4: m4,
+                                    KPI_Weight: KPI_Weight, KPI_Result: KPI_Result, ActualTarget: ActualTarget, KPI_Bonus: KPI_Bonus,
+                                    FinalScore: FinalScore, Note: Note, Level: Level
+                                }, function (data) {
+
+                                });
+                            }
+                        }
+                        alert("Successfully!");
+                        var type = "Year";
+                        $.get("/KPISetting/SendMailToEvaluator", { type: type, EmpID: EmpID, EvaluatorID: EvaluatorID, Period: Period }, function (data) {
+                            console.log(data);
+                        });
+
+                    }
+                }
+            });
+        }
+        function loopTable() {
+            var table = document.getElementById("tableId");
+            var count = 0;
+            for (var i = 0; i < table.rows.length; i++) {
+                var countCols = table.rows[i].cells.length;
+                if (countCols == 14) {
+                    m1 = table.rows[i].cells[3].innerHTML.trim();
+                    m2 = table.rows[i].cells[4].innerHTML.trim();
+                    m3 = table.rows[i].cells[5].innerHTML.trim();
+                    m4 = table.rows[i].cells[6].innerHTML.trim();
+                    KPI_Result = table.rows[i].cells[7].innerHTML.trim();
+                    KPI_Weight = table.rows[i].cells[8].innerHTML.trim();
+                    ActualTarget = table.rows[i].cells[9].innerHTML.trim();
+                    KPI_Bonus = table.rows[i].cells[10].innerHTML.trim();
+                    FinalScore = table.rows[i].cells[11].innerHTML.trim();
+                    if (m1 == "" || isNaN(m1) || m2 == "" || isNaN(m2) || m3 == "" || isNaN(m3) || m4 == "" || isNaN(m4)) {
+                        count++;
+                    }
+                    if (KPI_Result == "" || isNaN(KPI_Result) || KPI_Weight == "" || isNaN(KPI_Weight) ||
+                        ActualTarget == "" || isNaN(ActualTarget) || KPI_Bonus == "" || isNaN(KPI_Bonus) ||
+                        FinalScore == "" || isNaN(FinalScore)) {
+                        count++;
+                    }
+
+                }
+
+            }
+            return count;
+        }
+        function getLogin(username) {
+            $.get("/KPISetting/getInforLogin", { username: username }, function (data) {
+                console.log(data);
+                $("#showInforEmp").val(data.Emp.EmpID + " - " + data.Emp.EmpName);
+                $("#EvaluatorName").val(data.Evaluator.FULLNAME);
+                $("#ManagerName").val(data.Manager.FULLNAME);
+            });
+        }
+    </script>
+
+
+}

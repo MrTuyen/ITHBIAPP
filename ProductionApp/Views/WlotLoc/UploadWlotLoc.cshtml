@@ -1,0 +1,69 @@
+﻿@section Styles {
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <link href="~/Content/themes/assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+}
+@{
+    string status = ViewBag.Status;
+}
+
+@using (Html.BeginForm("UploadWlotLoc", "WlotLoc", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+        <!-- BEGIN PAGE HEADER-->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+            <h3 class="page-title">
+                <small>Upload Sewing Plan</small>
+            </h3>
+            <!-- END PAGE TITLE & BREADCRUMB-->
+        </div>
+    </div>
+    <!-- END PAGE HEADER-->
+
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+    <div class="portlet box gray">
+        <div class="portlet-title">
+
+        </div>
+        <div class="portlet-body ">
+            <table class="table-actions-wrapper margin-bottom-10" style="width: 100%">
+                
+                <tr>
+
+                    <td>
+                        <input type="file" name="UploadedFile" class="uploader  margin-bottom-10" />
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <div class="row margin-bottom-20">
+
+                            <div class="col-md-2 bold" style="line-height: 32px; text-align: left"><label> <input type="radio" id="RdoModule" name="RdoModule" value="UploadSewingPlan" style="" /> Upload Sewing Plan </label></div>
+                            @*<div class="col-md-2 bold" style="line-height: 32px; text-align: left"><label> <input type="radio" id="RdoModule" name="RdoModule" value="EmployeeByGroup" style="" /> Employee by Group </label></div>*@
+                            <div class="col-md-2 bold" style="line-height: 32px; text-align: left"><label> <input type="radio" id="RdoModule" name="RdoModule" value="TargetOfEff" style="" /> Target of Eff </label></div>
+                            <div class="col-md-2 bold" style="line-height: 32px; text-align: left"><label> <input type="radio" id="RdoModule" name="RdoModule" value="WorkingHour" style="" /> Working hour </label></div>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" name="Submit" value="Submit" class="btn green purple-stripe margin-bottom-10" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color:red" colspan="2">@Html.Raw(status)</td>
+                </tr>
+            </table>
+
+
+        </div>
+    </div>
+}
+

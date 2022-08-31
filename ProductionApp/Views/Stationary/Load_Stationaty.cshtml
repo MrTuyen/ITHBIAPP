@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Load_Stationaty";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<ProductionApp.Models.STA_Orders>
+@using ProductionApp.Models;
+@{
+    MyContext db = new MyContext();
+}
+
+@Html.Raw(TempData["msg"])
+
+<h3 style="text-align: center;margin-bottom: 40px;">DANH SÁCH ĐỀ NGHỊ VĂN PHÒNG PHẨM / STATIONERY REQUEST LIST</h3>
+<form method="post">
+    <a class="btn btn-primary btn-sm" href="@Url.Action("Add", "Stationary")" style="margin-bottom: 10px">Add New</a>
+    @if(ViewBag.per > 1) {
+        <a href="#" class="btn btn-primary btn-sm" style="text-align: right; margin-bottom: 10px" data-toggle="modal" data-target="#myModal1">Export Request</a>
+
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal4" style="text-align: right; margin-bottom: 10px">Upload Item</button>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal3" style="text-align: right; margin-bottom: 10px">Upload Budget</button>
+
+        <input type="submit" class="btn btn-primary btn-sm" style="text-align: right; margin-bottom: 10px" name="DownloadBudget" value="Download Budget" />
+
+    }
+</form>
+
+<table class="table table-striped table-bordered " style="width: 100%;" id="data">
+    <tr style="background-color:#f5f5f5">
+        <th>No# </th>
+        <th>Người Đề nghị/Requester</th>
+        <th>Bộ Phận/Dept</th>
+        <th>Ngày Đề nghị/Requested Date</th>
+        <th>Tổng tiền/Total Amount</th>
+        <th>Người phê duyệt/Approver</th>
+        <th>Mô tả/Description</th>
+        <th>Trạng thái/Status</th>
+        <th>Chi tiết/Detail</th>
+    </tr>
+  
+    @foreach (STA_Orders order in ViewBag.list ?? new List<STA_Orders>())
+    {
+     
+        <tr>
+            <td>@order.OrderId</td>
+            <td>@(order.TBL_USERS_MST!=null?order.TBL_USERS_MST.FULLNAME:"")</td>
+            <td>@(order.TBL_USERS_MST!=null?order.TBL_USERS_MST.TBL_DEPARTMENT_MST.NAME:"")</td>
+            <td>@string.Format("{0:MM/dd/yyyy}", order.DateTime)</td>
+            <td>@string.Format("{0:#,##0}", order.Cost) VNĐ</td>
+            <td>@(order.TBL_USERS_MST1 != null ? order.TBL_USERS_MST1.FULLNAME : "")</td>
+            <td>@order.Description</td>
+            @if (order.Status == 1)
+            {
+                <td>
+                    <span style="color:#ff0000;font-weight:bold">Pending</span>
+                </td>
+            }
+            else if (order.Status ==2)
+            {
+                <td>
+                    <span style="color:#5b9b0a;font-weight:bold">Approved</span>
+
+                </td>
+            }
+            else 
+            {
+                <td>
+                    <span style="color: #0000ff; font-weight: bold">Rejected</span>
+
+                </td>
+            }
+            <td><a href="@Url.Action("Edit","Stationary",new { id = order.OrderId })" class="btn btn-info btn-sm">Chi tiết</a></td>
+        </tr>
+    }
+</table>
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h6 class="modal-title">Xuất file Excel</h6>
+            </div>
+            @using (Html.BeginForm("Export", "Stationary", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+
+                    <label>Ngày bắt đầu</label>
+                    <input type="text" name="ngaybatdau" class="form-control isdate" autocomplete="off" />
+
+
+                    <label>Ngày kết thúc</label>
+                    <input type="text" name="ngayketthuc" class="form-control isdate" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input name="submit1" type="submit" class="btn btn-info" value="Thực Hiện" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+
+        @using (Html.BeginForm("Upload_Dept", "Stationary", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {<!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog">
+
+        @using (Html.BeginForm("Upload_STA_Item", "Stationary", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {<!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><span class="glyphicon glyphicon-folder-open icchontep"></span>&nbsp&nbsp&nbsp <b>Choose a file:</b></p>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a file: <input type="file" name="UploadedFile1" class="form-control" /></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $('.isdate').datepicker({ dateFormat: "mm/dd/yy" });
+    </script>
+
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

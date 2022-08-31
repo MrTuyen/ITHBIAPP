@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "Edit_TeaBreak";
+}
+
+@using ProductionApp.Models
+@{
+    ProductionAppEntities db = new ProductionAppEntities();
+    var rq = (PR_TeaBreak_Request)ViewData["request"];
+    var dept = (TBL_DEPARTMENT_MST)ViewData["dept"];
+    var List = (List<PR_TeaBreak_Items>)ViewData["item"];
+    var manager = (TBL_USERS_MST)ViewData["manager"];
+    var hrmanager = (TBL_USERS_MST)ViewData["hrmanager"];
+    var hrteam = (TBL_SYSTEM)ViewData["hrteam"];
+    UserModels user = (UserModels)Session["SignedInUser"];
+    Double tongtien = 0;
+    var user1 = db.TBL_USERS_MST.Find(user.Username);
+    foreach(PR_TeaBreak_Items tb in db.PR_TeaBreak_Items.Where(s => s.RequestID == rq.ID).ToList()) {
+        tongtien = tongtien + Double.Parse(tb.TotalPrice.ToString());
+    }
+    ViewBag.total = tongtien;
+
+}
+
+
+
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            PHIẾU YÊU CẦU SUẤT ĂN ĐẶC BIỆT
+        </h3>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+@Html.Raw(TempData["msg"])
+<div class="panel panel-default" id="panel1">
+    <div class="panel-heading">Thông tin</div>
+    <div class="panel-body">
+
+
+        <div class="row">
+            <div class="col-md-3">
+                <input type="hidden" id="id" name="id" />
+                <span class="col-input">Phòng ban:</span>
+                <select class="form-control" id="dept" name="dept">
+
+                    <option value="@dept.DEPT_ID">@dept.NAME</option>
+
+
+                </select>
+
+            </div>
+            <div class="col-md-9">
+
+                <span class="col-input">Lý do:</span>
+                <input type="text" name="content" class="form-control" value="@rq.Content">
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <table class="table  table-bordered " id="table1">
+
+                    <tr style="background-color: #f5f5f5">
+
+
+                        <td>Suất ăn</td>
+                        <td>Giá</td>
+                        <td>Số lượng</td>
+                        <td>Thành tiền</td>
+                    </tr>
+
+
+
+                    @foreach(PR_TeaBreak_Items item in List) {
+
+                        <tr>
+
+                            <td>@item.PR_TeaBreak_Mst.Name_teabreak</td>
+                            <td>@item.price</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.TotalPrice</td>
+
+                        </tr>
+                    }
+                </table>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        Tổng tiền: <span id="tongtien">@ViewBag.total.ToString("#,##0").Replace(',' ,'.') VNĐ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<div class="panel panel-default" id="panel1">
+    <div class="panel-heading">Trạng thái phê duyệt</div>
+    <div class="panel-body">
+        <style>
+            #table2 td {
+                padding: 3px;
+            }
+        </style>
+        <table id="table2" style="width: auto">
+
+            <tr>
+                <td>Trưởng phòng</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="manager">
+
+                        <option value="@manager.USERNAME">@manager.FULLNAME</option>
+
+
+                    </select>
+                </td>
+                @if(rq.Status == 1) {
+                    <td>
+                        @using(Html.BeginForm("Approve" ,"TeaBreak" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@rq.ID" />
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Approve" class="btn btn-info" />
+                        }
+                    </td>
+                    <td><a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_theme_primary">Reject</a></td>
+                } else if(rq.Status == -1) {
+                    <td><span style="color: #ff0000; font-weight: bold"> Reject</span></td>
+                } else if(rq.Status >= 2 || rq.Status <= -2) {
+                    <td> <span style="color: #5b9b0a; font-weight: bold"> Approve</span></td>
+                }
+                <td></td>
+            </tr>
+            <tr>
+                <td>HR Manager</td>
+                <td>
+                    <input type="text" value="@hrmanager.FULLNAME" name="hrmanager" class="form-control" style="width: 200px" />
+                </td>
+                @if(rq.Status < 3 && rq.Status > -2) {
+                    <td>
+                        @using(Html.BeginForm("HR_Approve" ,"TeaBreak" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@rq.ID" />
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Approve" class="btn btn-info" />
+                        }
+                    </td>
+                    <td><a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_theme_primary1">Reject</a></td>
+
+                } else if(rq.Status == -2) {
+                    <td><span style="color: #ff0000; font-weight: bold"> Reject</span></td>
+                } else if(rq.Status >= 3) {
+                    <td> <span style="color: #5b9b0a; font-weight: bold"> Approve</span></td>
+                }
+                <td></td>
+            </tr>
+            <tr>
+                <td>HR Team</td>
+                <td>
+                    <select style="width: 200px" class="form-control" name="hrteam">
+
+                        <option value="@hrteam.id">@hrteam.fullname</option>
+                    </select>
+                </td>@if(rq.Status < 5) {
+                    <td>
+
+                        @using(Html.BeginForm("HRteam_Approve" ,"TeaBreak" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {
+                            <input type="hidden" id="id" name="id" value="@rq.ID" />
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Process" class="btn btn-info" />
+                        }
+
+                    </td> } else {
+                    <td> <span style="color: #5b9b0a; font-weight: bold"> Processed</span></td>
+                }
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+
+<div id="modal_theme_primary" class="modal fade in" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Lý do không chấp nhận</h5>
+            </div>
+            @using(Html.BeginForm("SendMail" ,"TeaBreak" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {       <input type="hidden" id="id" name="id" value="@rq.ID" />
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label>Lý do</label>
+                            <textarea class="form-control" name="body"></textarea>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input class="btn btn-primary" type="submit" name="GiaUD" value="Gửi">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="modal_theme_primary1" class="modal fade in" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Lý do không chấp nhận</h5>
+            </div>
+            @using(Html.BeginForm("SendMail1" ,"TeaBreak" ,FormMethod.Post ,new { id = rq.ID ,@class = "form-horizontal" ,role = "form" })) {       <input type="hidden" id="id" name="id" value="@rq.ID" />
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label>Lý do</label>
+                            <textarea class="form-control" name="body1"></textarea>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <input class="btn btn-primary" type="submit" name="" value="Gửi">
+                </div>
+            }
+        </div>
+    </div>
+</div>

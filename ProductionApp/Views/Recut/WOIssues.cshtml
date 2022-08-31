@@ -1,0 +1,509 @@
+﻿@{
+    //ViewBag.Title = "Recut";
+}
+@model List<ProductionApp.Models.TBL_RC_Request>
+@{
+    
+}
+
+@section styles{
+    <style>
+     .upload-btn-wrapper {
+         position: relative;
+         overflow: hidden;
+         display: inline-block;
+     }
+
+     .page-content {
+         padding-top: 0 !important;
+     }
+
+     .btn {
+         /*border: 2px solid gray !important;*/
+         padding: 8px 20px;
+         border-radius: 8px;
+         font-size: 20px;
+         font-weight: bold;
+         cursor: pointer;
+     }
+
+     .auto-kanban-area .upload-btn-wrapper input[type=file] {
+         width: 115px;
+         height: 35px;
+         position: absolute;
+         left: 0;
+         top: 0;
+         opacity: 0;
+     }
+
+     .auto-kanban-area .fileUploadName {
+         color: black;
+     }
+
+     .table-kanban tr, .table-kanban th, .table-kanban td {
+         text-align: -webkit-center;
+     }
+
+     .rounded-circle {
+         width: 32px;
+         height: 32px;
+         border: 1px solid grey;
+         background: white;
+         border-radius: 50%;
+     }
+
+     .txtTime {
+         font-size: 20px;
+     }
+
+     .red {
+         background: red;
+     }
+
+     .yellow {
+         background: yellow;
+     }
+
+     .green {
+         background: green;
+     }
+
+     .white {
+         background: white;
+     }
+
+     .select-location {
+         width: 130px;
+     }
+    </style>
+}
+
+<div class="recut-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title text-center">
+                <small><strong>Recut - WO Issues</strong></small>
+            </h3>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="d-none d-sm-block">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 float-left form-inline">
+                            <button type="button" class="btn btn-light btn-sm" onclick="GoBack()"><i class="fa fa-arrow-left"></i>&nbsp;Back</button>
+                            <button type="button" class="btn btn-light btn-sm" onclick="RefreshWoIssue()"><i class="fa fa-refresh"></i>&nbsp;Refresh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body overflow-auto pt-0">
+                    <table class="table table-responsive table-hover table-bordered table-scrollable table-kanban">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>WO</th>
+                                <th>Selling</th>
+                                <th>Size</th>
+                                <th>Color</th>
+
+                                <th>SX</th>
+                                <th>QC May</th>
+                                <th>SX Duyệt</th>
+                                <th>Kế hoạch</th>
+                                <th>CCD vải</th>
+                                <th>Warehouse</th>
+                                <th>CCD xác nhận</th>
+                                <th>QC cut</th>
+                                <th>SX xác nhận</th>
+
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recut-table-body">
+                            @foreach (var item in (List<ProductionApp.Models.TBL_RC_Request>)ViewData["ListRCRequest"])
+                            {
+                                <tr>
+                                    <td>@item.RequestDate.Substring(0, 10)</td>
+                                    <td>@item.WO</td>
+                                    <td>@item.SellingStyle</td>
+                                    <td>@item.Size</td>
+                                    <td>@item.MnfColor</td>
+                                    <td>
+                                        <div class="rounded-circle green"></div><br />
+                                        @item.RequestDate
+                                    </td>
+                                    @*QC sew*@
+                                    <td>
+                                        @if (item.QCSewStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCSewStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCSewStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="qasew-date-@item.ID">&nbsp;@item.QCSewDate</span>
+                                    </td>
+                                    @*Sản xuất duyệt*@
+                                    <td>
+                                        @if (item.RequestManagerStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="manager-circle-@item.ID"></div>
+                                        }
+                                        else if (item.RequestManagerStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="manager-circle-@item.ID"></div>
+                                        }
+                                        else if (item.RequestManagerStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="manager-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="manager-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="manager-date-@item.ID">@item.ManagerDate</span>
+                                    </td>
+                                    @*Kế hoạch*@
+                                    <td>
+                                        @if (item.PlanStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="plan-circle-@item.ID"></div>
+                                        }
+                                        else if (item.PlanStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="plan-circle-@item.ID"></div>
+                                        }
+                                        else if (item.PlanStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="plan-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="plan-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="plan-date-@item.ID">@item.PlanDate</span>
+                                    </td>
+                                    @* Ccd vải *@
+                                    <td>
+                                        @if (item.CCDRequesStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDRequesStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDRequesStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="ccdfabric-date-@item.ID">@item.CCDRequesDate</span>
+                                    </td>
+                                    @* Warehouse *@
+                                    <td>
+                                        @if (item.WHStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="wh-circle-@item.ID"></div>
+                                        }
+                                        else if (item.WHStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="wh-circle-@item.ID"></div>
+                                        }
+                                        else if (item.WHStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="wh-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="wh-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="wh-date-@item.ID">@item.WHDate</span>
+                                    </td>
+                                    @* CCD xác nhận *@
+                                    <td>
+                                        @if (item.CCDApproveStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDApproveStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDApproveStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="ccd-date-@item.ID">@item.CCDApproveDate</span>
+                                    </td>
+                                    @* QC cắt *@
+                                    <td>
+                                        @if (item.QCCutStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCCutStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCCutStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="qacut-date-@item.ID">@item.QCCutDate</span>
+                                    </td>
+                                    @* SX xác nhận *@
+                                    <td>
+                                        @if (item.ProductStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="production-circle-@item.ID"></div>
+                                        }
+                                        else if (item.ProductStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="production-circle-@item.ID"></div>
+                                        }
+                                        else if (item.ProductStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="production-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="production-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="production-date-@item.ID">@item.ProductDate</span>
+                                    </td>
+                                    <td>
+                                        <a href="/Recut/Detail/@item.ID-issue" class="btn btn-light btn-sm"> <i class="fa fa-edit"></i> Detail</a>
+                                    </td>
+                                </tr>
+                            }
+
+                            @foreach (var item in (List<ProductionApp.Models.TBL_RC_Request_Data>)ViewData["ListRCRequestData"])
+                            {
+                                <tr>
+                                    <td>@item.RequestDate.Substring(0, 10)</td>
+                                    <td>@item.WO</td>
+                                    <td>@item.SellingStyle</td>
+                                    <td>@item.Size</td>
+                                    <td>@item.MnfColor</td>
+                                    <td>
+                                        <div class="rounded-circle green"></div><br />
+                                        @item.RequestDate
+                                    </td>
+                                    @*QC sew*@
+                                    <td>
+                                        @if (item.QCSewStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCSewStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCSewStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="qasew-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="qasew-date-@item.ID">&nbsp;@item.QCSewDate</span>
+                                    </td>
+                                    @*Sản xuất duyệt*@
+                                    <td>
+                                        @if (item.RequestManagerStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="manager-circle-@item.ID"></div>
+                                        }
+                                        else if (item.RequestManagerStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="manager-circle-@item.ID"></div>
+                                        }
+                                        else if (item.RequestManagerStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="manager-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="manager-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="manager-date-@item.ID">@item.ManagerDate</span>
+                                    </td>
+                                    @*Kế hoạch*@
+                                    <td>
+                                        @if (item.PlanStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="plan-circle-@item.ID"></div>
+                                        }
+                                        else if (item.PlanStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="plan-circle-@item.ID"></div>
+                                        }
+                                        else if (item.PlanStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="plan-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="plan-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="plan-date-@item.ID">@item.PlanDate</span>
+                                    </td>
+                                    @* Ccd vải *@
+                                    <td>
+                                        @if (item.CCDRequesStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDRequesStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDRequesStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="ccdfabric-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="ccdfabric-date-@item.ID">@item.CCDRequesDate</span>
+                                    </td>
+                                    @* Warehouse *@
+                                    <td>
+                                        @if (item.WHStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="wh-circle-@item.ID"></div>
+                                        }
+                                        else if (item.WHStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="wh-circle-@item.ID"></div>
+                                        }
+                                        else if (item.WHStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="wh-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="wh-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="wh-date-@item.ID">@item.WHDate</span>
+                                    </td>
+                                    @* CCD xác nhận *@
+                                    <td>
+                                        @if (item.CCDApproveStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDApproveStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        else if (item.CCDApproveStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="ccd-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="ccd-date-@item.ID">@item.CCDApproveDate</span>
+                                    </td>
+                                    @* QC cắt *@
+                                    <td>
+                                        @if (item.QCCutStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCCutStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        else if (item.QCCutStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="qacut-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="qacut-date-@item.ID">@item.QCCutDate</span>
+                                    </td>
+                                    @* SX xác nhận *@
+                                    <td>
+                                        @if (item.ProductStatus == (int)ProductionApp.Helpers.EnumHelper.Action.None)
+                                        {
+                                            <div class="rounded-circle white" id="production-circle-@item.ID"></div>
+                                        }
+                                        else if (item.ProductStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Processing)
+                                        {
+                                            <div class="rounded-circle yellow" id="production-circle-@item.ID"></div>
+                                        }
+                                        else if (item.ProductStatus == (int)ProductionApp.Helpers.EnumHelper.Action.Approve)
+                                        {
+                                            <div class="rounded-circle green" id="production-circle-@item.ID"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle red" id="production-circle-@item.ID"></div>
+                                        }
+                                        <br />
+                                        <span id="production-date-@item.ID">@item.ProductDate</span>
+                                    </td>
+                                    <td>
+                                        <a href="/Recut/DataDetail/@item.ID-issue" class="btn btn-light btn-sm"> <i class="fa fa-edit"></i> Detail</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/HBI/Controller/RecutController.js"></script>
+}
+
+

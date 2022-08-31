@@ -1,0 +1,472 @@
+﻿@{
+    ViewBag.Title = "Auto Kanban";
+    var listGroup = ViewData["ListGroup"] != null ? (List<ProductionApp.Models.TBL_GROUP_MST>)ViewData["ListGroup"] ?? new List<ProductionApp.Models.TBL_GROUP_MST>() : new List<ProductionApp.Models.TBL_GROUP_MST>();
+    var Enum_Dept = ViewData["ListDept"] != null ? (Dictionary<string, int>)ViewData["ListDept"] ?? new Dictionary<string, int>() : new Dictionary<string, int>();
+    var lastUpload = ViewData["lastUpload"] != null ? ((ProductionApp.Models.TBL_SYSTEM)ViewData["lastUpload"]).value.ToString() : "";
+    var listUncall = ViewData["listUncall"] != null ? (List<ProductionApp.Models.TBL_KANBAN>)ViewData["listUncall"] : new List<ProductionApp.Models.TBL_KANBAN>();
+    var user = (ProductionApp.Models.UserModels)ViewData["user"];
+
+    var planning = user.DeptID == Enum_Dept["Planning"] ? "display-block" : "display-none";
+    var warehouse = user.DeptID == Enum_Dept["Warehouse"] ? "display-block" : "display-none";
+    var sewing = (user.DeptID == Enum_Dept["US Bra Sewing"] || user.DeptID == Enum_Dept["HEI Sewing"] || user.DeptID == Enum_Dept["WB Sewing"]) ? "display-block" : "display-none";
+    var sewing_disable = (user.DeptID == Enum_Dept["US Bra Sewing"] || user.DeptID == Enum_Dept["HEI Sewing"] || user.DeptID == Enum_Dept["WB Sewing"]) ? "" : "disabled";
+    var ccd = user.DeptID == Enum_Dept["CCD"] ? "display-block" : "display-none";
+}
+
+@model List<ProductionApp.Models.TBL_KANBAN>
+@using System.Globalization;
+
+@section styles{
+    <style>
+     .upload-btn-wrapper {
+         position: relative;
+         overflow: hidden;
+         display: inline-block;
+     }
+
+     .page-content {
+         padding-top: 0 !important;
+     }
+
+     .btn {
+         /*border: 2px solid gray !important;*/
+         padding: 8px 20px;
+         border-radius: 8px;
+         font-size: 20px;
+         font-weight: bold;
+         cursor: pointer;
+     }
+
+     .auto-kanban-area .upload-btn-wrapper input[type=file] {
+         width: 115px;
+         height: 35px;
+         position: absolute;
+         left: 0;
+         top: 0;
+         opacity: 0;
+     }
+
+     .auto-kanban-area .fileUploadName {
+         color: black;
+     }
+
+     .table-kanban tr, .table-kanban th, .table-kanban td {
+         text-align: -webkit-center;
+     }
+
+     .rounded-circle {
+         width: 32px;
+         height: 32px;
+         border: 1px solid grey;
+         background: white;
+         border-radius: 50%;
+     }
+
+     .txtTime {
+         font-size: 20px;
+     }
+
+     .red {
+         background: red;
+     }
+
+     .yellow {
+         background: yellow;
+     }
+
+     .white {
+         background: white;
+     }
+
+     .select-location {
+         width: 130px;
+     }
+
+     .auto-kanban-area #formKanbanReport {
+         width: 300px;
+     }
+
+     .radio{
+         transform: scale(1.5);
+         cursor: pointer;
+     }
+
+     .report-complete{
+         display: none;
+     }
+    </style>
+}
+
+<div class="auto-kanban-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title text-center">
+                <small><strong>AUTO KANBAN</strong></small>
+            </h3>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="d-none d-sm-block">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: white">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 float-left form-inline">
+                            <p class="mb-1"><strong>Location</strong></p>
+                            <form action="/AutoKanban/Index" method="GET" style="display: inline;">
+                                <select id="select-group-filter" name="groupId" class="form-control w-25" onchange="GroupFilter()">
+                                    <option value="" selected disabled>Select item...</option>
+                                    @foreach (var item in listGroup)
+                                    {
+                                        <option value="@item.GROUP_ID">@item.GROUP_NAME</option>
+                                    }
+                                </select>
+                                <button type="submit" id="btnKanban" class="display-none"></button>
+                            </form>
+
+                            <button type="button" class="btn btn-light @planning" data-toggle="modal" data-target="#modalUploadKanban"><i class="fa fa-upload"></i> &nbsp;Upload</button>
+                            <div class="btn-group btn-filter">
+                                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
+                                    <span class="fa fa-download"></span> Report
+                                </button>
+                                <div class="dropdown-menu p-3">
+                                    <form class="form-inline" id="formKanbanReport">
+                                        <div class="ml-1 text-center">
+                                            <label class="">
+                                                <input type="radio" class="form-control radio" name="report" value="1"  checked onchange="RadioChange(1)" /> &nbsp;Called
+                                            </label>
+                                            <label class="ml-5">
+                                                <input type="radio" class="form-control radio" name="report" value="2"  onchange="RadioChange(2)" /> &nbsp;Complete
+                                            </label>
+                                        </div>
+                                        <div class="report-complete">
+                                            <div style="display: flex;">
+                                                <div class="">
+                                                    <p class="mb-1">From date</p>
+                                                    <input type="text" class="form-control w-100 isDate" id="txtReportFrom" />
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p class="mb-1">To date</p>
+                                                    <input type="text" class="form-control w-100 isDate" id="txtReportTo" />
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <p class="mb-1">Location</p>
+                                                <select id="txtLocation" class="form-control" style="width: 100%">
+                                                    <option value="" selected disabled>Select item...</option>
+                                                    @foreach (var item in listGroup)
+                                                    {
+                                                        <option value="@item.GROUP_ID">@item.GROUP_NAME</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-3 text-right">
+                                            <button type="button" class="btn btn-success btn-sm" onclick="Report()">Download</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-light" onclick="Refresh()"><i class="fa fa-refresh"></i>&nbsp;Refresh</button>
+                            @if (!string.IsNullOrEmpty(ViewData["tags"].ToString()))
+                            {
+                                <span class="label label-info" style="cursor: pointer;" onclick="Refresh()">@ViewData["tags"].ToString() <i class="fa fa-times"></i></span>
+                            }
+                        </div>
+                        <div class="float-right text-right pr-2">
+                            <span>Last Upload Date: <text class="text-success">@lastUpload</text></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body overflow-auto pt-0">
+                    <table class="table table-responsive table-hover table-bordered table-scrollable table-kanban">
+                        <thead>
+                            <tr>
+                                <th>Ass</th>
+                                <th>Qty</th>
+                                <th>CP</th>
+                                <th>SP</th>
+                                <th>Call Date</th>
+                                <th>Time</th>
+                                <th style="width: 130px">Location</th>
+                                <th>Sew Date</th>
+                                <th>Priority</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-kanban-body">
+                            @foreach (var item in Model)
+                            {
+                                <tr id="tr-@item.WLChild">
+                                    <td>@item.AsstWO</td>
+                                    <td>@item.Qty</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.CallBy))
+                                        {
+                                            if (!string.IsNullOrEmpty(item.CPSendBy))
+                                            {
+                                                <div class="rounded-circle yellow" id="cp-circle-@item.WLChild"></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="rounded-circle red" id="cp-circle-@item.WLChild"></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle white" id="cp-circle-@item.WLChild"></div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.CallBy))
+                                        {
+                                            if (!string.IsNullOrEmpty(item.SPSendBy))
+                                            {
+                                                <div class="rounded-circle yellow" id="sp-circle-@item.WLChild"></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="rounded-circle red" id="sp-circle-@item.WLChild"></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle white" id="sp-circle-@item.WLChild"></div>
+                                        }
+                                    </td>
+                                    <td id="call-date-@item.WLChild">@(string.IsNullOrEmpty(item.CallDate) ? "" : DateTime.Parse(item.CallDate).ToString("dd/MM/yyyy HH:mm:ss"))</td>
+                                    <td style="vertical-align: middle">
+                                        <span class="txtTime" id="action-time-@item.WLChild">0</span>
+                                    </td>
+                                    <td style="width: 130px" id="td-@item.WLChild">
+                                        <select class="form-control" id="select-location-@item.WLChild" onmouseover="BindSelect(@item.WLChild, @item.TBL_GROUP_MST.GROUP_ID)" @sewing_disable>
+                                            <option value="@item.TBL_GROUP_MST.GROUP_ID">@item.TBL_GROUP_MST.GROUP_NAME</option>
+                                        </select>
+                                    </td>
+                                    <td>@DateTime.Parse(item.SewDate).ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.Priority != null && item.Priority.Length > 2)
+                                        {
+                                            <span class="text-danger bold">@item.Priority</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@item.Priority</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm @warehouse" data-asswo="@item.WLChild" onclick="OpenCancelModal(@item.WLChild)">Cancel</button>
+                                        <button class="btn btn-primary btn-sm @sewing" data-asswo="@item.WLChild" onclick="Action(Enum_Action.Call)">Call</button>
+                                        <button class="btn btn-primary btn-sm @ccd" data-asswo="@item.WLChild" onclick="Action(Enum_Action.CPSend)">CP Send</button>
+                                        <button class="btn btn-primary btn-sm @warehouse" data-asswo="@item.WLChild" onclick="Action(Enum_Action.SPSend)">SP Send</button>
+                                        <button class="btn btn-primary btn-sm @sewing" data-asswo="@item.WLChild" onclick="Action(Enum_Action.Complete)">Complete</button>
+                                    </td>
+                                </tr>
+                            }
+                            
+                            @*Uncall List*@
+
+                            @foreach (var item in listUncall)
+                            {
+                                <tr id="tr-@item.WLChild">
+                                    <td>@item.AsstWO</td>
+                                    <td>@item.Qty</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.CallBy))
+                                        {
+                                            if (!string.IsNullOrEmpty(item.CPSendBy))
+                                            {
+                                                <div class="rounded-circle yellow" id="cp-circle-@item.WLChild"></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="rounded-circle red" id="cp-circle-@item.WLChild"></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle white" id="cp-circle-@item.WLChild"></div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.CallBy))
+                                        {
+                                            if (!string.IsNullOrEmpty(item.SPSendBy))
+                                            {
+                                                <div class="rounded-circle yellow" id="sp-circle-@item.WLChild"></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="rounded-circle red" id="sp-circle-@item.WLChild"></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle white" id="sp-circle-@item.WLChild"></div>
+                                        }
+                                    </td>
+                                    <td id="call-date-@item.WLChild">@(string.IsNullOrEmpty(item.CallDate) ? "" : DateTime.Parse(item.CallDate).ToString("dd/MM/yyyy HH:mm:ss"))</td>
+                                    <td style="vertical-align: middle">
+                                        <span class="txtTime" id="action-time-@item.WLChild">0</span>
+                                    </td>
+                                    <td style="width: 130px" id="td-@item.WLChild">
+                                        <select class="form-control" id="select-location-@item.WLChild" onmouseover="BindSelect(@item.WLChild, @item.TBL_GROUP_MST.GROUP_ID)" @sewing_disable>
+                                            <option value="@item.TBL_GROUP_MST.GROUP_ID">@item.TBL_GROUP_MST.GROUP_NAME</option>
+                                        </select>
+                                    </td>
+                                    <td>@DateTime.Parse(item.SewDate).ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.Priority != null && item.Priority.Length > 2)
+                                        {
+                                            <span class="text-danger bold">@item.Priority</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@item.Priority</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm @warehouse" data-asswo="@item.WLChild" onclick="OpenCancelModal(@item.WLChild)">Cancel</button>
+                                        <button class="btn btn-primary btn-sm @sewing" data-asswo="@item.WLChild" onclick="Action(Enum_Action.Call)">Call</button>
+                                        <button class="btn btn-primary btn-sm @ccd" data-asswo="@item.WLChild" onclick="Action(Enum_Action.CPSend)">CP Send</button>
+                                        <button class="btn btn-primary btn-sm @warehouse" data-asswo="@item.WLChild" onclick="Action(Enum_Action.SPSend)">SP Send</button>
+                                        <button class="btn btn-primary btn-sm @sewing" data-asswo="@item.WLChild" onclick="Action(Enum_Action.Complete)">Complete</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal upload excel -->
+    <div id="modalUploadKanban" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Upload Auto Kanban</b></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="w-100">
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>File: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <button class="btn btn-light">Upload a file</button>
+                                                <input type="file" name="UploadedFile" id="fileAutoKanbanUpload" onchange="UploadExcel()" accept=".xlsx, .xls" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sheet: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <select class="form-control selected-sheet" style="width: 116px;"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Header: </td>
+                                        <td>
+                                            <div class="ml-3 upload-btn-wrapper">
+                                                <input type="text" name="name" class="form-control selected-header" value="1" style="width: 116px" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Your selected file: </td>
+                                        <td><span class="label label-warning ml-3 fileUploadName"></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn green purple-stripe" onclick="UploadKanban()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal add reason -->
+    <div id="modalReason" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Reason</b></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="txtWo" name="name" value=" " />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtReason">Name</label>
+                            <input type="text" class="form-control" id="txtReason" placeholder="Reason" autofocus autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success btn-sm" onclick="Action(Enum_Action.Cancel)">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/HBI/Controller/AutoKanban.js"></script>
+
+    <script>
+
+
+         @foreach (var item in Model)
+        {
+            double totalMinutes = 0;
+            if (!string.IsNullOrEmpty(item.CallDate))
+            {
+                var callDate = DateTime.ParseExact(item.CallDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                var nextDayString = callDate.Date.AddDays(1).ToString("MM/dd/yyyy 06:00:00");
+                var nextDay = DateTime.ParseExact(nextDayString, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                if (DateTime.Now > nextDay)
+                {
+                    var days = DateTime.Now.Date.Day - callDate.Date.Day;
+                    var counterTime = DateTime.Now.ToUniversalTime().Subtract(callDate.ToUniversalTime());
+                    totalMinutes = Math.Round(counterTime.TotalMinutes) - 480 * days; // 480 = 8 * 60 from 22h previous day to 06h next day
+                }
+                else
+                {
+                    var maxCallDateString = callDate.ToString("MM/dd/yyyy 22:00:00");
+                    var maxCallDate = DateTime.ParseExact(maxCallDateString, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    if (DateTime.Now > maxCallDate)
+                    {
+                        var counterTime = maxCallDate.ToUniversalTime().Subtract(callDate.ToUniversalTime());
+                        totalMinutes = Math.Round(counterTime.TotalMinutes);
+                    }
+                    else
+                    {
+                        var counterTime = DateTime.Now.Subtract(callDate);
+                        totalMinutes = Math.Round(counterTime.TotalMinutes);
+                    }
+                }
+                @:RunTime(@item.WLChild, @totalMinutes);
+            }
+        }
+
+    </script>
+}
